@@ -22,12 +22,14 @@ import ar.edu.itba.paw.persistence.UserJDBC;
 public class UserJDBCTest {
 
 	private UserJDBC userJDBC;
-	private DataSource ds;
+
 	private static final String USERNAME = "@raptorTest", PASSWORD = "raptor", EMAIL= "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
+	
+	private static final String USERNAME2 = "@rawr";
 	
 	private static final String INVALIDUSERNAME = "";
 	
-	private static final String UNAME1 = "user1", UNAME2 = "user2", UNAME3 = "user3";
+	private static final String UNAME1 = "@user1", UNAME2 = "@user2", UNAME3 = "@user3";
 	
 	private static final String SEARCHALL = ""	;
 	private static final int RESULTSPERPAGE = 3, PAGE = 1;
@@ -51,21 +53,26 @@ public class UserJDBCTest {
 		sds.setUrl("jdbc:hsqldb:mem:paw");
 		sds.setUsername("hq");
 		sds.setPassword("");
+
+		userJDBC = new UserJDBC(sds);
 		
-		ds = sds;
-		
-		userJDBC = new UserJDBC(ds);
+
 		
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		
+		
 	}
 
 	@Test
 	public void createTest() {
-		User u = userJDBC.create(USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
-		User other = userJDBC.getByUsername(USERNAME);
+		User u = userJDBC.create(USERNAME2, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+		User other = userJDBC.getByUsername(USERNAME2);
+		
+	System.out.println(u);
+	System.out.println(other);
 		
 		assert(u.getUsername().equals(USERNAME));
 		assert(u.getEmail().equals(EMAIL));
