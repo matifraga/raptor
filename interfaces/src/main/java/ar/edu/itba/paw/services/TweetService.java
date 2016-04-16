@@ -94,4 +94,14 @@ public interface TweetService {
      * @return
      */
 	public List<Tweet> globalFeed(final int resultsPerPage, final int page);
+	
+	/**
+	 * Get a list of the latest tweets from the logged in user.
+	 *
+	 * @param userID the id of the current user.
+	 * @param resultsPerPage limit number of tweets per page
+	 * @param page number of page needed
+     * @return
+     */
+	public List<Tweet> currentSessionFeed(final String userID, final int resultsPerPage, final int page);
 }

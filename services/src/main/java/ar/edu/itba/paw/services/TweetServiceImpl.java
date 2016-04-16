@@ -107,4 +107,12 @@ public class TweetServiceImpl implements TweetService {
 		}
 		return ans;
 	}
+	@Override
+	public List<Tweet> currentSessionFeed(final String userID, final int resultsPerPage, final int page) {
+		List<Tweet> ans = tweetDAO.getLogedInFeed(userID, resultsPerPage, page);
+		if(ans == null) {
+			// TODO handle null
+		}
+		return ans;
+	}
 }

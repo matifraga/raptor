@@ -64,4 +64,14 @@ public interface TweetDAO {
      * @return
      */
 	List<Tweet> getGlobalFeed(final int resultsPerPage, final int page);
+	
+	/**
+	 * Get a list of the latest tweets from the users you follow.
+	 * 
+	 * @param userID the user's ID.
+	 * @param resultsPerPage limit number of tweets per page.
+	 * @param page number of page needed.
+     * @return
+     */
+	List<Tweet> getLogedInFeed(final String userID, final int resultsPerPage, final int page);
 }

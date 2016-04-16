@@ -45,6 +45,10 @@ public class TweetJDBC implements TweetDAO {
 	private static final String LAST_NAME = "lastName";
 	private static final String EMAIL = "email";
 	
+	private static final String FOLLOWER_ID = "followerID";
+	private static final String FOLLOWING_ID = "followingID";
+	private static final String FOLLOWERS = "followers";
+	
 	private static final int	MESSAGE_MAX_LENGTH = 256;
 	private static final int	USER_ID_LENGTH = 12;
 	private static final int	TWEET_ID_LENGTH = 12;
@@ -79,6 +83,13 @@ public class TweetJDBC implements TweetDAO {
 	private static final String SQL_GET_GLOBAL_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
 						+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
 						+ " ORDER BY " + TIMESTAMP + " DESC";
+	
+	private static final String SQL_GET_FOLLOWING = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
+	
+	private static final String SQL_GET_LOGED_IN_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
+			+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
+			+ " AND " + USERS + "." + USER_ID + " IN (" + SQL_GET_FOLLOWING + ")" 
+			+ " ORDER BY " + TIMESTAMP + " DESC";
 
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -180,6 +191,16 @@ public class TweetJDBC implements TweetDAO {
 			return ans;
 		} catch (Exception e){
 			return null;
+		}
+	}
+	
+	@Override
+	public List<Tweet> getLogedInFeed(String userID, int resultsPerPage, int page) {
+		try {
+			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_LOGED_IN_FEED + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, userID);
+			return ans;
+		} catch (Exception e){
+					return null;
 		}
 	}
 
