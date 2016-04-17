@@ -74,4 +74,12 @@ public interface TweetDAO {
      * @return
      */
 	List<Tweet> getLogedInFeed(final String userID, final int resultsPerPage, final int page);
+	
+	/**
+	 * Get the amount of tweets the user has
+	 * 
+	 * @param userID the user's ID.
+	 * @return the amount of tweets the user has.
+	 */
+	public Integer countTweets(final String userID);
 }

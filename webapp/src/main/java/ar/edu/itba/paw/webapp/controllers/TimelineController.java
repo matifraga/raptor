@@ -75,7 +75,7 @@ public class TimelineController {
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
 			userInfo.put("followers", followerService.countFollowers(u));
 			userInfo.put("following", followerService.countFollowing(u));
-			userInfo.put("tweets", 24);
+			userInfo.put("tweets", tweetService.countTweets(u));
 
 			mav.addObject(TWEET_LIST, tweetList);
 			mav.addObject(TRENDS_LIST, trendsList);
@@ -105,7 +105,7 @@ public class TimelineController {
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
 			userInfo.put("followers", followerService.countFollowers(u));
 			userInfo.put("following", followerService.countFollowing(u));
-			userInfo.put("tweets", 24);
+			userInfo.put("tweets", tweetService.countTweets(u));
 
 			mav.addObject(TWEET_LIST, mentionList);
 			mav.addObject(TRENDS_LIST, trendsList);

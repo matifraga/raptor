@@ -115,4 +115,13 @@ public class TweetServiceImpl implements TweetService {
 		}
 		return ans;
 	}
+	
+	@Override
+	public Integer countTweets(final User user) {
+		Integer ans = tweetDAO.countTweets(user.getId());
+		if(ans == null){
+			//TODO handle DB error
+		}
+		return ans;
+	}
 }

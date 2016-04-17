@@ -90,6 +90,8 @@ public class TweetJDBC implements TweetDAO {
 			+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
 			+ " AND " + USERS + "." + USER_ID + " IN (" + SQL_GET_FOLLOWING + ")" 
 			+ " ORDER BY " + TIMESTAMP + " DESC";
+	
+	private static final String SQL_COUNT_TWEETS = "SELECT COUNT(aux) FROM (" + SQL_GET_TWEETS + ") as aux";
 
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -203,6 +205,15 @@ public class TweetJDBC implements TweetDAO {
 					return null;
 		}
 	}
+	
+	@Override
+	public Integer countTweets(final String userID) {
+		try{
+			Integer ans = jdbcTemplate.queryForObject(SQL_COUNT_TWEETS, Integer.class, userID);
+			return ans;
+		} catch(Exception e) { return null; } //SQLException or DataAccessException
+	}
+	
 
 	private static class TweetRowMapper implements RowMapper<Tweet>{
 
