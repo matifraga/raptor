@@ -84,7 +84,16 @@ input[type="text"], input[type="password"] {
 
 /* PROFILE */
 
+.section-profile, .section-timeline, .section-trends {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
 .panel-profile {
+  min-width: 150px;
+}
+
+.panel-profile-info {
   padding-top: 30px;
   padding-bottom: 40px;
   background: rgba(60,139,237,1);
@@ -95,34 +104,50 @@ input[type="text"], input[type="password"] {
   background: -ms-linear-gradient(top, rgba(60,139,237,1) 0%, rgba(15,89,179,1) 100%);
   background: linear-gradient(to bottom, rgba(60,139,237,1) 0%, rgba(15,89,179,1) 100%);
   border-color: #246CC6;
+  margin-bottom: -5px;
   color: white;
-  max-width: 300px;
-  min-width: 150px;
-  margin-bottom: 20px;
 }
 
-.panel-profile a {
+.panel-profile-info a {
   color:white;
 }
 
-.panel-profile ul {
+.panel-profile-info ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.panel-profile li {
+.panel-profile-info li {
   display: block;
   text-align: center;
 }
 
-.panel-profile .profile-picture {
+.panel-profile-info .profile-picture {
   margin: 20px 0px 20px 0px;
   height: 100px;
   width: 100px;
   border-radius: 50%;
   border: solid 3px;
   border-color: white;
+}
+
+.panel-profile-stats {
+  height: 60px;
+  padding-top: 6px;
+}
+
+.panel-profile-stats a{
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  width: 31.5%;
+  font-size: 11px;
+  vertical-align: middle;
+}
+
+.panel-profile-stats a .number {
+  font-size: 20px;
 }
 
 /* TIMELINE */
@@ -163,7 +188,7 @@ input[type="text"], input[type="password"] {
   border-color: #ddd;
   margin: 0;
   padding: 10px;
-  padding-bottom: 20px;
+  padding-bottom: 5px;
   word-wrap:break-word;
   overflow-wrap: break-word;
 }

@@ -34,8 +34,9 @@
                         <div class="col-xs-8 col-sm-10 col-md-10">
                             <a href="/user/${tweet.owner.username}">${tweet.owner.firstName} ${tweet.owner.lastName}</></a>
                             <a href="/user/${tweet.owner.username}" style="color: #9B9B9B;">@${tweet.owner.username}</a>
-                            <span style="color: #9B9B9B" class="pull-right">${tweet.timestamp}</span><br/><br/>
+                            <span style="color: #9B9B9B" class="pull-right hidden-xs">${tweet.timestamp}</span><br/><br/>
                             <span style="font-size:1.2em;">${tweet.msg}</span>
+                            <span style="color: #9B9B9B" class="hidden-sm hidden-md hidden-lg"><br/><br/>${tweet.timestamp}</span><br/><br/>
                         </div>
                     </div>
                 </div>

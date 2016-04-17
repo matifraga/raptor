@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controllers;
 
 import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.services.FollowerService;
 import ar.edu.itba.paw.services.HashtagService;
 import ar.edu.itba.paw.services.TweetService;
 
@@ -40,6 +41,7 @@ public class TimelineController {
 	
 	private static final String TWEET_LIST = "tweetList";
 	private static final String TRENDS_LIST = "trendsList";
+	private static final String USER_INFO = "userInfo";
 	private static final String HEADER = "header";
 	
 	private static final int TRENDING_TOPIC_LIMIT = 5;
@@ -52,6 +54,9 @@ public class TimelineController {
 
 	@Autowired
 	private HashtagService hashtagService;
+
+	@Autowired
+	private FollowerService followerService;
 
 	@RequestMapping(value={MAP_USERS, MAP_USERS_WITH_PAGING}, method= RequestMethod.GET)
 	public ModelAndView timeline(@PathVariable Map<String, String> pathVariables){
@@ -67,8 +72,14 @@ public class TimelineController {
 			List<Tweet> tweetList = tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page);
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
+			Map<String, Integer> userInfo = new HashMap<String, Integer>();
+			userInfo.put("followers", followerService.countFollowers(u));
+			userInfo.put("following", followerService.countFollowing(u));
+			userInfo.put("tweets", 24);
+
 			mav.addObject(TWEET_LIST, tweetList);
 			mav.addObject(TRENDS_LIST, trendsList);
+			mav.addObject(USER_INFO, userInfo);
 
 			List<Map<String, Object>> header = createHeader(u, "timeline");
 
@@ -91,8 +102,14 @@ public class TimelineController {
 			List<Tweet> mentionList = tweetService.getMentions(u.getId(), TIMELINE_SIZE, page);
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
+			Map<String, Integer> userInfo = new HashMap<String, Integer>();
+			userInfo.put("followers", followerService.countFollowers(u));
+			userInfo.put("following", followerService.countFollowing(u));
+			userInfo.put("tweets", 24);
+
 			mav.addObject(TWEET_LIST, mentionList);
 			mav.addObject(TRENDS_LIST, trendsList);
+			mav.addObject(USER_INFO, userInfo);
 
 			List<Map<String, Object>> header = createHeader(u, "mentions");
 

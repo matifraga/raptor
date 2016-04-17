@@ -16,27 +16,28 @@
     <div class="container">
         <c:choose>
         <c:when test="${user != null}">
-            <div class="section-profile">
-                <div class="col-md-2">
-                    <div class="row">
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    <div class="section-profile">
                         <c:set var="user" value="${user}" scope="request"/>
+                        <c:set var="userInfo" value="${userInfo}" scope="request"/>
                         <jsp:include page="fragments/profileBox.jsp"/>
                     </div>
                 </div>
-            </div>
-            <div class="section-timeline">
-                <div class="col-md-8">
-                    <c:set var="username" value="${user.username}" scope="request"/>
-                    <jsp:include page="fragments/tweetBox.jsp"/>
-                    <c:set var="tweetList" value="${tweetList}" scope="request"/>
-                    <c:set var="tweetListHeader" value="${header}" scope="request"/>
-                    <jsp:include page="fragments/tweetList.jsp"/>
+                <div class="col-md-7 col-lg-7">
+                    <div class="section-timeline">
+                        <c:set var="username" value="${user.username}" scope="request"/>
+                        <jsp:include page="fragments/tweetBox.jsp"/>
+                        <c:set var="tweetList" value="${tweetList}" scope="request"/>
+                        <c:set var="tweetListHeader" value="${header}" scope="request"/>
+                        <jsp:include page="fragments/tweetList.jsp"/>
+                    </div>
                 </div>
-            </div>
-            <div class="section-trends">
-                <div class="col-md-2" style="padding-left:0px;">
-                    <c:set var="trendsList" value="${trendsList}" scope="request"/>
-                    <jsp:include page="fragments/trendingBox.jsp"/>
+                <div class="col-md-2 col-lg-2">
+                    <div class="section-trends">
+                        <c:set var="trendsList" value="${trendsList}" scope="request"/>
+                        <jsp:include page="fragments/trendingBox.jsp"/>
+                    </div>
                 </div>
             </div>
         </c:when>

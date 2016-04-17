@@ -9,7 +9,7 @@
 <div class="section-navbar">
     <nav id="navbar" class="navbar navbar-raptor navbar-fixed-top" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="sr-only">Toggle navigation</span>
