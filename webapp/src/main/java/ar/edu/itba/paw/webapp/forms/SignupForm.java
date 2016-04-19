@@ -1,23 +1,60 @@
 package ar.edu.itba.paw.webapp.forms;
 
+import javax.validation.constraints.AssertTrue;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class SignupForm {
 
-    /*@NotEmpty @Size(max=100)
+    @NotBlank @Length(max=100)
     private String firstName;
 
-    @NotEmpty @Size(max=100)
+    @NotBlank @Length(max=100)
     private String lastName;
 
-    @NotEmpty @Size(max=100)
+    @NotBlank @Length(max=100)
     private String username;
 
-    @Email @NotEmpty @Size(max=100)
+    @NotEmpty @Email @Length(max=100)
     private String email;
-
-    @NotEmpty @Size(max=100)
+    
+	@NotBlank @Length(min=6,max=12)
     private String password;
+	
+	@AssertTrue(message="You have to accept the terms to create an account")
+	private Boolean terms;
 
+    public Boolean getTerms() {
+		return terms;
+	}
 
+	public void setTerms(Boolean terms) {
+		this.terms = terms;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
     public String getFirstName() {
         return firstName;
     }
@@ -46,5 +83,5 @@ public class SignupForm {
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 '}';
-    }*/
+    }
 }

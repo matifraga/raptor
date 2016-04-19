@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+ 
 <html>
 <jsp:include page="fragments/head.jsp" />
 <body>
@@ -8,39 +9,45 @@
     <div class="col-md-6 col-centered">
         <h2>Create your Raptor account</h2>
         <br/>
-        <form role="form" action="/signup" method="post">
+        <form:form role="form" modelAttribute= "signUpForm" action="/signup" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="firstName">First name:</label>
-                        <input type="text" name="firstName" placeholder="First name" class="form-control" id="firstName">
+                        <form:label path="firstName">First name:</form:label>
+                        <form:input type="text" path="firstName" placeholder="First name" class="form-control" id="firstName"/>
+                    	<form:errors path="firstName" cssClass="error"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="lastName">Last name:</label>
-                        <input type="text" name="lastName" placeholder="Last name" class="form-control" id="lastName">
+                        <form:label path="lastName">Last name:</form:label>
+                        <form:input type="text" path="lastName" placeholder="Last name" class="form-control" id="lastName"/>
+                    	<form:errors path="lastName" cssClass="error"/>
                     </div>
                 </div>
             </div>
-            <label for="username">Username:</label>
+            <form:label path="username">Username:</form:label>
             <div class="form-group input-group">
                 <strong class="input-group-addon" style="border-bottom-left-radius: 20px; border-top-left-radius: 20px;" id="usern">@</strong>
-                <input type="text" name="username" class="form-control" placeholder="Username" aria-describedby="usern" id="username">
+                <form:input type="text" path="username" class="form-control" placeholder="Username" aria-describedby="usern" id="username"/>
+            	<form:errors path="username" cssClass="error"/>
             </div>
             <div class="form-group">
-                <label for="email">Email address:</label>
-                <input type="text" name="email" placeholder="Email" class="form-control" id="email">
+                <form:label path="email">Email address:</form:label>
+                <form:input type="text" path="email" placeholder="Email" class="form-control" id="email"/>
+            	<form:errors path="email" cssClass="error"/>
             </div>
             <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" name="password" placeholder="Password" class="form-control" id="password">
+                <form:label path="password">Password:</form:label>
+                <form:input type="password" path="password" placeholder="Password" class="form-control" id="password"/>
+            	<form:errors path="password" cssClass="error"/>
             </div>
             <div class="checkbox">
-                <label><input type="checkbox"> I accept the terms and conditions</label>
+                <form:label path="terms"><form:checkbox path="terms"/> I accept the terms and conditions</form:label>
+            	<form:errors path="terms" cssClass="error"/>
             </div>
             <button type="submit" class="btn btn-raptor pull-right">Sign up</button>
-        </form>
+        </form:form>
     </div>
 </div>
 </body>

@@ -3,8 +3,6 @@ package ar.edu.itba.paw.webapp.controllers;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.services.HashtagService;
 import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.services.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +27,6 @@ public class FeedController {
 	private static final String TRENDS_LIST = "trendsList";
 
 	private static final int TRENDING_TOPIC_LIMIT = 5;
-
-	// THIS IS A HACK
-	/*
-	 * 
-	 * First creates User table.
-	 * 
-	 * */
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private TweetService tweetService;
