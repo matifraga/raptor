@@ -5,9 +5,13 @@ import javax.validation.constraints.AssertTrue;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
 public class SignupForm {
+	
+	@Autowired
+	MessageSource messageSource;
 
     @NotBlank @Length(max=100)
     private String firstName;
@@ -18,13 +22,13 @@ public class SignupForm {
     @NotBlank @Length(max=100)
     private String username;
 
-    @NotEmpty @Email @Length(max=100)
+    @NotBlank @Email @Length(max=100)
     private String email;
     
 	@NotBlank @Length(min=6,max=12)
     private String password;
 	
-	@AssertTrue(message="You have to accept the terms to create an account")
+	@AssertTrue()
 	private Boolean terms;
 
     public Boolean getTerms() {
