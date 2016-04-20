@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <c:set var="pageTitle" value="Search Results" scope="request"/>
@@ -9,11 +10,12 @@
 		<c:choose>
 			<c:when test="${searchType=='tweetSearch'}">
 				<c:set var="tweetList" value="${resultList}" scope="request"/>
-				<c:set var="tweetListTitle" value="${number} result(s) found for ${searchText}" scope="request"/>
+				<spring:message var = "searchResultNumber" code="searchResults.number" arguments="${number};${searchText}" htmlEscape="false" argumentSeparator=";"/>
+				<c:set var="tweetListTitle" value='${searchResultNumber}' scope="request"/>
 				<jsp:include page="fragments/tweetList.jsp"/>
 			</c:when>
 			<c:when test="${searchType=='userSearch'}">
-				<h2>${number} result(s) found for "${searchText}"</h2>
+				<h2><spring:message var = "searchResultNumber" code="searchResults.number" arguments="${number};${searchText}" htmlEscape="false" argumentSeparator=";"/></h2>
 				<div class="row">
 					<c:forEach items="${resultList}" var="user">
 						<c:set var="user" value="${user}" scope="request"/>

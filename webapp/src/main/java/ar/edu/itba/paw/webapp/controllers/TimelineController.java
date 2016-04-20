@@ -6,6 +6,7 @@ import ar.edu.itba.paw.services.HashtagService;
 import ar.edu.itba.paw.services.TweetService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +58,9 @@ public class TimelineController {
 
 	@Autowired
 	private FollowerService followerService;
+	
+	@Autowired
+	MessageSource messageSource;
 
 	@RequestMapping(value={MAP_USERS, MAP_USERS_WITH_PAGING}, method= RequestMethod.GET)
 	public ModelAndView timeline(@PathVariable Map<String, String> pathVariables){
@@ -123,12 +127,12 @@ public class TimelineController {
 		List<Map<String, Object>> header = new ArrayList<Map<String, Object>>();
 
 		HashMap<String, Object> timeline = new HashMap<String, Object>();
-		timeline.put("title", "Timeline");
+		timeline.put("title", messageSource.getMessage("timeline.timelineListTitle", null, null, null));
 		timeline.put("link", "/user/" + u.getUsername());
 		timeline.put("active", (active.equals("timeline")?Boolean.TRUE:Boolean.FALSE));
 
 		HashMap<String, Object> mentions = new HashMap<String, Object>();
-		mentions.put("title", "Mentions");
+		mentions.put("title", messageSource.getMessage("timeline.mentionsListTitle", null, null, null));
 		mentions.put("link", "/user/" + u.getUsername() + "/mentions");
 		mentions.put("active", (active.equals("mentions")?Boolean.TRUE:Boolean.FALSE));
 

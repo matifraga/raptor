@@ -1,9 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <c:choose>
     <c:when test="${user != null}">
-        <c:set var="pageTitle" value="Hi, ${user.username}" scope="request"/>
+    	<spring:message var = "greeting" code="timeline.greeting" arguments="${user.username};${user.firstName};${user.lastName}" htmlEscape="false" argumentSeparator=";"/>
+        <c:set var="pageTitle" value='${greeting}' scope="request"/>
     </c:when>
     <c:otherwise>
         <c:set var="pageTitle" value=":(" scope="request"/>
@@ -42,7 +44,8 @@
             </div>
         </c:when>
             <c:otherwise>
-                <c:set var="errorMessage" value="Ups! The requested user doesn't exist!" scope="request"/>
+            	<spring:message var = "usernameError" code="timeline.errorMessage"/>
+                <c:set var="errorMessage" value='${usernameError}' scope="request"/>
                 <jsp:include page="fragments/errorPage.jsp"/>
             </c:otherwise>
         </c:choose>

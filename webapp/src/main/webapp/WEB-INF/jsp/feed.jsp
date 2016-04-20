@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <c:set var="pageTitle" value="Feed" scope="request"/>
@@ -9,7 +10,8 @@
     <div class="section-timeline">
         <div class="col-md-8 col-md-offset-2">
             <c:set var="tweetList" value="${tweetList}" scope="request"/>
-            <c:set var="tweetListTitle" value="Global feed" scope="request"/>
+            <spring:message code="feed.title.globalFeed" var="globalFeedTitle"/>
+            <c:set var="tweetListTitle" value='${globalFeedTitle}' scope="request"/>
             <jsp:include page="fragments/tweetList.jsp"/>
         </div>
     </div>

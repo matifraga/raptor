@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%-- Params needed: tweetList: List, tweetListTitle: String || header: List<Map<String, Object>> --%>
 <div class="panel panel-raptor">
     <div class="panel-heading timeline-heading">
@@ -19,7 +20,7 @@
             <div class="panel panel-rawr" style="padding-top: 15px;">
                 <div class="row">
                     <div class="col-xs-8 col-sm-10 col-md-10">
-                        <span>Oops! No tweets.</span>
+                        <span><spring:message code="tweetList.noTweets"/></span>
                     </div>
                 </div>
             </div>

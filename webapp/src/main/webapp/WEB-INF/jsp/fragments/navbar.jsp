@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="section-navbar">
     <nav id="navbar" class="navbar navbar-raptor navbar-fixed-top" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -25,7 +26,8 @@
                     <li>
                         <form class="navbar-form navbar-left" role="search" action="/search">
                             <div class="form-group">
-                                <input type="text" class="form-control search-input" name="searchText" placeholder="Search Raptor...">
+                            	<spring:message code="navbar.search" var="search_placeholder" />
+                                <input type="text" class="form-control search-input" name="searchText" placeholder='${search_placeholder}...'>
                             </div>
                             <button type="submit" class="btn btn-default btn-raptor" style="height: 34px; width: 34px;">
                                 <img src="/resources/img/icn-search.png" style="height: 18px; margin-left:-4px;"/>
@@ -34,7 +36,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/signup">Sign up</a></li>
+                    <li><a href="/signup"><spring:message code="navbar.signup"/></a></li>
                 </ul>
             </div>
         </div>
