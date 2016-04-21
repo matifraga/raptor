@@ -28,8 +28,9 @@
                 </div>
                 <div class="col-md-7 col-lg-7">
                     <div class="section-timeline">
-                        <c:set var="username" value="${user.username}" scope="request"/>
-                        <jsp:include page="fragments/tweetBox.jsp"/>
+                        <c:if test="${sessionUser.username == user.username}">
+                            <jsp:include page="fragments/tweetBox.jsp"/>
+                        </c:if>
                         <c:set var="tweetList" value="${tweetList}" scope="request"/>
                         <c:set var="tweetListHeader" value="${header}" scope="request"/>
                         <jsp:include page="fragments/tweetList.jsp"/>

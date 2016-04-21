@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value="/user")
-public class TimelineController {
+public class TimelineController extends RaptorController{
 	
 	private static final String USERNAME = "username";
 	private static final String PAGE = "page";
@@ -61,10 +61,6 @@ public class TimelineController {
 
 	@Autowired
 	private FollowerService followerService;
-	
-	@Autowired
-	MessageSource messageSource;
-	
 	
 
 	@RequestMapping(value={MAP_USERS, MAP_USERS_WITH_PAGING}, method= RequestMethod.GET)

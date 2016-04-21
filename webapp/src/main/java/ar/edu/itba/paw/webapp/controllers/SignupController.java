@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/signup")
-public class SignupController {
+public class SignupController extends RaptorController{
 
 	private final static String SIGNUP = "signup";
 

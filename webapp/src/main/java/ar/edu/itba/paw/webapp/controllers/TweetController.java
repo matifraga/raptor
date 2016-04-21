@@ -11,7 +11,7 @@ import ar.edu.itba.paw.services.UserService;
 
 @Controller
 @RequestMapping("/tweetAction")
-public class TweetController {
+public class TweetController extends RaptorController{
 
 	private static final String USERNAME = "username";
 	private static final String MAP_USER = "/user/";
@@ -27,12 +27,15 @@ public class TweetController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String registerAction(
-			@RequestParam(value = MESSAGE, required = true) String message,
-			@RequestParam(value = USERNAME, required = true) String username) {
+			@RequestParam(value = MESSAGE, required = true) String message) {
+
+		if(sessionUser() == null) {
+			return REDIRECT + "/";
+		}
 
 		tweetService.register(message,
-				userService.getUserWithUsername(username));
+				userService.getUserWithUsername(sessionUser().getUsername()));
 
-		return REDIRECT + MAP_USER + username;
+		return REDIRECT + MAP_USER + sessionUser().getUsername();
 	}
 }

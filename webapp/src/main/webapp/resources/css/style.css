@@ -66,6 +66,21 @@ input[type="text"], input[type="password"] {
 
 /* NAVBAR */
 
+@media (min-width: 979px) {
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+}
+
+.navbar .dropdown-menu {
+  margin-top: 1px !important;
+  background-color: white;
+  border-color: #D6D6D6;
+  border-top: 0px;
+  box-shadow: none;
+  padding: 0px 10px 0px 10px;
+}
+
 .section-navbar .search-input {
   max-width: 200px;
   float: left;
@@ -80,6 +95,18 @@ input[type="text"], input[type="password"] {
 .section-navbar .navbar-raptor {
   background-color: white;
   border-color: #D6D6D6;
+}
+
+.section-navbar a:hover, a:focus, a:active {
+  background-color: transparent !important;
+}
+
+.section-navbar .mini-pic {
+  height: 34px;
+  width: 34px;
+  border-radius: 50%;
+  border-color: #4A4A4A;
+  margin-top: 7px;
 }
 
 /* PROFILE */
@@ -141,7 +168,7 @@ input[type="text"], input[type="password"] {
   text-decoration: none;
   display: inline-block;
   text-align: center;
-  width: 31.5%;
+  width: 32%;
   font-size: 11px;
   vertical-align: middle;
 }

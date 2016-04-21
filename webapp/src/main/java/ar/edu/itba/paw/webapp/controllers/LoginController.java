@@ -24,25 +24,17 @@ import ar.edu.itba.paw.webapp.forms.LoginForm;
 @RequestMapping(value = "/login")
 public class LoginController {
 
-	public static final String LOGIN = "login";
 	private final static String REDIRECT = "redirect:";
 	private final static String FEED = "/";
 
 	@Autowired
 	UserService userService;
-	
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView login(Model model) {
-		final ModelAndView mav = new ModelAndView(LOGIN);
-		model.addAttribute("loginForm", new LoginForm());
-		return mav;
-	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String loginAction(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult results, HttpSession session) {
 		
 		if (results.hasErrors()) {
-			return LOGIN;
+			return REDIRECT + FEED;
 		} else {
 			//User user = userService.getUserWithUsername(form.getUsername());
 			User user = userService.logInUser(form.getUsername(),form.getPassword());
@@ -51,7 +43,7 @@ public class LoginController {
 				return REDIRECT + FEED;
 			} else {
 				results.rejectValue("password", "login.error", null);
-				return LOGIN;
+				return REDIRECT + FEED;
 			}
 		}
 	}

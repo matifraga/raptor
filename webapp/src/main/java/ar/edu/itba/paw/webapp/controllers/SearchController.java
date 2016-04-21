@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/search")
-public class SearchController {
+public class SearchController extends RaptorController{
 	
 	private final static String SEARCH = "searchResults";
 	private final static String SEARCH_TYPE = "searchType";

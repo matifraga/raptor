@@ -6,7 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="section-navbar">
     <nav id="navbar" class="navbar navbar-raptor navbar-fixed-top" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -35,8 +38,39 @@
                         </form>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/signup"><spring:message code="navbar.signup"/></a></li>
+                <ul class="nav navbar-nav navbar-right" style="margin-right: 6px;">
+                    <c:choose>
+                        <c:when test="${sessionUser == null}">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><spring:message code="navbar.login"/><span class="caret"></span></a>
+                                <div class="dropdown-menu">
+                                    <div class="navbar-form" style="margin-bottom: 0px;">
+                                        <form:form role="form" modelAttribute= "loginForm" action="/login" method="post">
+                                        <div class="form-group">
+                                            <spring:message code="form.username" var="username_placeholder" />
+                                            <form:input type="text" path="username" class="form-control search-input" placeholder='${username_placeholder}' aria-describedby="usern" id="username" style="margin-bottom:10px; margin-right: 0px;"/>
+                                            <form:errors path="username" cssClass="error"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <spring:message code="form.password" var="password_placeholder" />
+                                            <form:input type="password" path="password" placeholder='${password_placeholder}' class="form-control search-input" id="password" style="margin-bottom:10px; margin-right: 0px;"/>
+                                            <form:errors path="password" cssClass="error"/>
+                                        </div>
+                                        <button class="btn btn-raptor pull-right" style="margin-bottom:15px;"><spring:message code="form.login"/></button>
+                                        <div class="form-group" style="text-align: center;">
+                                            <a href="/signup" style="text-align: center;"><spring:message code="navbar.no_account"/></a>
+                                        </div>
+                                        </form:form>
+                                    </div>
+                                    <br/>
+                                </div>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="/user/${sessionUser.username}" style="color: #4A4A4A;">${sessionUser.firstName}</a></li>
+                            <li><img src="/resources/img/default-pic.png" class="mini-pic"/></li>
+                        </c:otherwise>
+                    </c:choose>
                 </ul>
             </div>
         </div>
