@@ -27,11 +27,7 @@ public class SignupController {
 	private final static String MAP_USER = "/user/";
 	private final static String REDIRECT = "redirect:";
 
-//	private static final String USERNAME = "username";
-//	private static final String PASSWORD = "password";
-//	private static final String EMAIL = "email";
-//	private static final String FIRSTNAME = "firstName";
-//	private static final String LASTNAME = "lastName";
+	private static final String USERNAME = "username";
 
 	@Autowired
 	private UserService userService;
@@ -45,11 +41,6 @@ public class SignupController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String registerAction(@Valid @ModelAttribute("signUpForm") SignupForm form, BindingResult results){
-//			@RequestParam(value=PASSWORD, required=true) String password,
-//								 @RequestParam(value=USERNAME, required=true) String username,
-//								 @RequestParam(value=FIRSTNAME, required=true) String firstName,
-//								 @RequestParam(value=LASTNAME, required=true) String lastName,
-//								 @RequestParam(value=EMAIL, required=true) String email) {
 
 		if (results.hasErrors()) {
 			return SIGNUP;
@@ -58,6 +49,10 @@ public class SignupController {
 		 
 			User user = userService.register(form.getUsername(), form.getPassword(), 
 					form.getEmail(), form.getFirstName(), form.getLastName());
+			if(user==null){
+				results.rejectValue(USERNAME, "form.username.exists");
+				return SIGNUP;
+			}
 			return REDIRECT + MAP_USER + user.getUsername();
 
 		}
