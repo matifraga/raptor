@@ -21,11 +21,11 @@ public interface UserService {
 	/**
 	 * Logs the user.
 	 *
-	 * @param username 
-	 * @param password
-	 * @return the newly logged user
+	 * @param username The user's username.
+	 * @param password The user's password.
+	 * @return the newly logged user.
 	 */
-	public User login(final String username, final String password);
+	public User logInUser(final String username, final String password);
 
 	/**
 	 * Get a user with a given ID.

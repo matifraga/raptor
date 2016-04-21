@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -42,8 +43,9 @@ public class UserJDBC implements UserDAO {
 	private static final int	USER_ID_LENGTH = 12;
 	
 	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
-	private static final String SQL_GET_BY_USERNAME = "SELECT * FROM " + USERS + " WHERE " + USERNAME + " = ? LIMIT 1";
+	private static final String SQL_GET_BY_USERNAME = "SELECT * FROM " + USERS + " WHERE " + USERNAME + " = ?";
 	private static final String SQL_GET_USERS_CONTAINING = "select * from " + USERS + " where " + USERNAME + " LIKE ('%' || ? || '%')";
+	private static final String SQL_LOG_IN = SQL_GET_BY_USERNAME + " AND " + PASSWORD + " = ?";
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
@@ -142,6 +144,18 @@ public class UserJDBC implements UserDAO {
 	public Boolean isUsernameAvailable(String username) {
 		return getByUsername(username)==null;
 	}
+	
+	@Override
+	public User logInUser(String username, String password) {
+		try{
+			final List<User> list = jdbcTemplate.query(SQL_LOG_IN, userRowMapper, username, password);
+	        if (list.isEmpty()) {
+	                return null; //TODO difference between no user found and DataAccessException pending
+	        }
+	        return list.get(0);
+		} catch(Exception e) { return null; } //SQLException or DataAccessException
+	}
+	
 	
 	private static class UserRowMapper implements RowMapper<User> {
 

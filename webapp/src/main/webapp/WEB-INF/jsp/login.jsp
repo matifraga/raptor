@@ -8,10 +8,10 @@
 <jsp:include page="fragments/navbar.jsp" />
 <div class="container">
     <div class="col-md-6 col-centered">
-        <h2><spring:message code="form.title.signup"/></h2>
+        <h2><spring:message code="form.title.login"/></h2>
         <br/>
         <form:form role="form" modelAttribute= "loginForm" action="/login" method="post">
-            <form:label path="username">*<spring:message code="form.username"/>:</form:label>
+            <form:label path="username"><spring:message code="form.username"/>:</form:label>
             <div class="form-group">
             	<div class="input-group">
 	                <strong class="input-group-addon" style="border-bottom-left-radius: 20px; border-top-left-radius: 20px;" id="usern">@</strong>
@@ -21,12 +21,12 @@
                 <form:errors path="username" cssClass="error"/>
             </div>
             <div class="form-group">
-                <form:label path="password">*<spring:message code="form.password"/>:</form:label>
+                <form:label path="password"><spring:message code="form.password"/>:</form:label>
                 <spring:message code="form.password" var="password_placeholder" />
                 <form:input type="password" path="password" placeholder='${password_placeholder}' class="form-control" id="password"/>
             	<form:errors path="password" cssClass="error"/>
             </div>
-            <button type="submit" class="btn btn-raptor pull-right">Log In</button>
+            <button type="submit" class="btn btn-raptor pull-right"><spring:message code="form.login"/></button>
         </form:form>
     </div>
 </div>

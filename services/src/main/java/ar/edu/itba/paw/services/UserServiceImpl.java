@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User login(final String username, final String password) {
-		return null;
+	public User logInUser(final String username, final String password) {
+		return userDao.logInUser(username, password);
 	}
 
 	@Override
@@ -49,4 +49,5 @@ public class UserServiceImpl implements UserService {
 	public User getUserWithUsername(final String username) {
 		return userDao.getByUsername(username);
 	}
+	
 }

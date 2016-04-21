@@ -44,4 +44,13 @@ public interface UserDAO {
      */
     
     Boolean isUsernameAvailable(final String username);
+    
+    /**
+     * Log in a user if the user exists and the password is correct.
+     * 
+     * @param username The user's username.
+     * @param password The user's password.
+     * @return The user in case the user can log in, if not null.
+     */
+    User logInUser(final String username, final String password); 
 }
