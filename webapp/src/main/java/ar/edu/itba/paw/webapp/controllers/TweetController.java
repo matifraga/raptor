@@ -11,7 +11,7 @@ import ar.edu.itba.paw.services.UserService;
 
 @Controller
 @RequestMapping("/tweetAction")
-public class TweetController {
+public class TweetController extends RaptorController{
 
 	private static final String USERNAME = "username";
 	private static final String MAP_USER = "/user/";

@@ -18,7 +18,7 @@ import ar.edu.itba.paw.webapp.forms.LoginForm;
 
 @Controller
 @RequestMapping(value = "/login")
-public class LoginController {
+public class LoginController extends RaptorController{
 
 	public static final String LOGIN = "login";
 	private final static String REDIRECT = "redirect:";
@@ -35,7 +35,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String loginAction(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult results, HttpSession session) {
+	public String loginAction(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult results) {
 		
 		if (results.hasErrors()) {
 			return LOGIN;
@@ -43,7 +43,7 @@ public class LoginController {
 			//User user = userService.getUserWithUsername(form.getUsername());
 			User user = userService.logInUser(form.getUsername(),form.getPassword());
 			if(user != null){
-				session.setAttribute("user", user);
+				session.setAttribute(USER, user);
 				return REDIRECT + FEED;
 			} else {
 				results.rejectValue("password", "login.error", null);

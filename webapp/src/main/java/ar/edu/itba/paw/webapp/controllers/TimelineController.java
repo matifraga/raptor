@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value="/user")
-public class TimelineController {
+public class TimelineController extends RaptorController{
 	
 	private static final String USERNAME = "username";
 	private static final String PAGE = "page";

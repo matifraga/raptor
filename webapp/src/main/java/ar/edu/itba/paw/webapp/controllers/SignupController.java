@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/signup")
-public class SignupController {
+public class SignupController extends RaptorController{
 
 	private final static String SIGNUP = "signup";
 
@@ -53,6 +53,7 @@ public class SignupController {
 				results.rejectValue(USERNAME, "form.username.exists");
 				return SIGNUP;
 			}
+			session.setAttribute(USER, user);
 			return REDIRECT + MAP_USER + user.getUsername();
 
 		}

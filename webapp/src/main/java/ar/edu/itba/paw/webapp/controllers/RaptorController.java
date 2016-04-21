@@ -9,12 +9,14 @@ import ar.edu.itba.paw.models.User;
 
 public abstract class RaptorController {
 
+	protected final static String USER = "user";
+	
 	@Autowired
-	private HttpSession session;
+	protected HttpSession session;
 	
 	@ModelAttribute("sessionUser")
 	public User sessionUser() {
-		return (User) session.getAttribute("user");
+		return (User) session.getAttribute(USER);
 	}
 
 }
