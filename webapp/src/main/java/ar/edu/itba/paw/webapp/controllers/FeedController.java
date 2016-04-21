@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value={"/", "/{page}"})
-public class FeedController {
-	
+@RequestMapping(value = { "/", "/{page}" })
+public class FeedController extends RaptorController {
+
 	private final static String FEED = "feed";
 
 	private static final String PAGE = "page";
-	
-	private static final int 	TIMELINE_SIZE = 10;
+
+	private static final int TIMELINE_SIZE = 10;
 
 	private static final String TWEET_LIST = "tweetList";
 	private static final String TRENDS_LIST = "trendsList";
@@ -39,12 +39,19 @@ public class FeedController {
 
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
 		final ModelAndView mav = new ModelAndView(FEED);
-
-		List<Tweet> tweetList = tweetService.globalFeed(TIMELINE_SIZE, page);
+		
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
+		mav.addObject(TRENDS_LIST, trendsList);
+		
+		List<Tweet> tweetList;
+		
+		if (sessionUser() == null) {
+			tweetList = tweetService.globalFeed(TIMELINE_SIZE, page);
+		} else {
+			tweetList = tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page);
+		}
 
 		mav.addObject(TWEET_LIST, tweetList);
-		mav.addObject(TRENDS_LIST, trendsList);
 
 		return mav;
 	}

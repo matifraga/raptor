@@ -10,8 +10,8 @@ import org.springframework.context.MessageSource;
 
 public class SignupForm {
 	
-	@Autowired
-	MessageSource messageSource;
+	@NotBlank @Email @Length(max=100)
+    private String email;
 
     @NotBlank @Length(max=100)
     private String firstName;
@@ -19,65 +19,65 @@ public class SignupForm {
     @NotBlank @Length(max=100)
     private String lastName;
 
-    @NotBlank @Length(max=100)
-    private String username;
+	@Autowired
+	MessageSource messageSource;
 
-    @NotBlank @Email @Length(max=100)
-    private String email;
-    
-	@NotBlank @Length(min=6,max=12)
+    @Length(min=6,max=12)
     private String password;
-	
+    
 	@AssertTrue()
 	private Boolean terms;
-
-    public Boolean getTerms() {
-		return terms;
-	}
-
-	public void setTerms(Boolean terms) {
-		this.terms = terms;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
+	@NotBlank @Length(max=100)
+    private String username;
 
     public String getEmail() {
         return email;
     }
 
-    public String getPassword() {
+	public String getFirstName() {
+        return firstName;
+    }
+
+	public String getLastName() {
+        return lastName;
+    }
+
+	public String getPassword() {
         return password;
     }
+
+	public Boolean getTerms() {
+		return terms;
+	}
+
+	public String getUsername() {
+        return username;
+    }
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+    public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+    public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+    public void setPassword(String password) {
+		this.password = password;
+	}
+
+    public void setTerms(Boolean terms) {
+		this.terms = terms;
+	}
+
+    public void setUsername(String username) {
+		this.username = username;
+	}
 
     @Override
     public String toString() {

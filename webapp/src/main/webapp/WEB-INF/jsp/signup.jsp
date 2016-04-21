@@ -30,11 +30,13 @@
                 </div>
             </div>
             <form:label path="username">*<spring:message code="form.username"/>:</form:label>
-            <div class="form-group input-group">
-                <strong class="input-group-addon" style="border-bottom-left-radius: 20px; border-top-left-radius: 20px;" id="usern">@</strong>
-                <spring:message code="form.username" var="username_placeholder" />
-                <form:input type="text" path="username" class="form-control" placeholder='${username_placeholder}' aria-describedby="usern" id="username"/>
-            	<form:errors path="username" cssClass="error"/>
+            <div class="form-group">
+            	<div class="input-group">
+	                <strong class="input-group-addon" style="border-bottom-left-radius: 20px; border-top-left-radius: 20px;" id="usern">@</strong>
+	                <spring:message code="form.username" var="username_placeholder" />
+	                <form:input type="text" path="username" class="form-control" placeholder='${username_placeholder}' aria-describedby="usern" id="username"/>
+            	</div>
+                <form:errors path="username" cssClass="error"/>
             </div>
             <div class="form-group">
                 <form:label path="email">*<spring:message code="form.email"/>:</form:label>
@@ -48,9 +50,11 @@
                 <form:input type="password" path="password" placeholder='${password_placeholder}' class="form-control" id="password"/>
             	<form:errors path="password" cssClass="error"/>
             </div>
-            <div class="checkbox">
-                <form:label path="terms"><form:checkbox path="terms"/> *<spring:message code="form.terms"/></form:label>
-            	<form:errors path="terms" cssClass="error"/>
+            <div class="form-group">
+	            <div class="checkbox">
+	                <form:label path="terms"><form:checkbox path="terms"/> *<spring:message code="form.terms"/></form:label>
+	            </div>
+				<form:errors path="terms" cssClass="error"/>
             </div>
             <button type="submit" class="btn btn-raptor pull-right"><spring:message code="form.submit"/></button>
         </form:form>
