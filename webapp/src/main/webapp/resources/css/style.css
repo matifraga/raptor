@@ -101,7 +101,7 @@ input[type="text"], input[type="password"] {
   background-color: transparent !important;
 }
 
-.section-navbar .mini-pic {
+.mini-pic {
   height: 34px;
   width: 34px;
   border-radius: 50%;
