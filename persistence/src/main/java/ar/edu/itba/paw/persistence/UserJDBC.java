@@ -47,6 +47,15 @@ public class UserJDBC implements UserDAO {
 	private static final String SQL_GET_USERS_CONTAINING = "select * from " + USERS + " where " + USERNAME + " LIKE ('%' || ? || '%')";
 	private static final String SQL_LOG_IN = SQL_GET_BY_USERNAME + " AND " + PASSWORD + " = ?";
 	
+	private static final String FOLLOWER_ID = "followerID";
+	private static final String FOLLOWING_ID = "followingID";
+	private static final String FOLLOWERS = "followers";
+	
+	private static final String SQL_GET_FOLLOWING_IDS = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
+	private static final String SQL_GET_FOLLOWER_IDS = "SELECT " + FOLLOWER_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
+	
+	private static final String SQL_GET_FOLLOWING_USERS = "SELECT * FROM " + USERS + " WHERE " + ID + " IN (" + SQL_GET_FOLLOWING_IDS + ")";
+	private static final String SQL_GET_FOLLOWER_USERS = "SELECT * FROM " + USERS + " WHERE " + ID + " IN (" + SQL_GET_FOLLOWER_IDS + ")";
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
 	private final UserRowMapper userRowMapper;
@@ -167,6 +176,21 @@ public class UserJDBC implements UserDAO {
                 		rs.getString(LASTNAME),
                 		rs.getString(ID));
         }
+	}
+
+
+	@Override
+	public List<User> getFollowers(final String userId, final int resultsPerPage, final int page) {
+		try{
+			return jdbcTemplate.query(SQL_GET_FOLLOWER_USERS + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, userRowMapper, userId);
+		} catch(Exception e) { return null; } //SQLException or DataAccessException
+	}
+
+	@Override
+	public List<User> getFollowing(final String userId, final int resultsPerPage, final int page) {
+		try{
+			return jdbcTemplate.query(SQL_GET_FOLLOWING_USERS + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, userRowMapper, userId);
+		} catch(Exception e) { return null; } //SQLException or DataAccessException
 	}
 
 }

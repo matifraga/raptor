@@ -58,7 +58,7 @@ public class HashtagJDBC implements HashtagDAO {
 		try {
 		jdbcTemplate.execute(SQL_CREATE_TABLE + HASHTAGS + " ("
 				+ HASHTAG +" varchar(256) NOT NULL, "
-				+ TWEET_ID +" varchar(256) NOT NULL, "
+				+ TWEET_ID +" varchar(12) NOT NULL, "
 				+ "PRIMARY KEY ("+ HASHTAG +" , " + TWEET_ID + "),"
 				+ "FOREIGN KEY ("+ TWEET_ID + ") REFERENCES " + TWEETS + " ON DELETE CASCADE ON UPDATE RESTRICT);");
 		} catch (DataAccessException e) {

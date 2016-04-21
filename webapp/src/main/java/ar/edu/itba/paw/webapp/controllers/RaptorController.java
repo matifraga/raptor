@@ -12,15 +12,17 @@ import ar.edu.itba.paw.models.User;
 
 public abstract class RaptorController {
 
-	@Autowired
-	private HttpSession session;
+	protected final static String USER = "user";
 
 	@Autowired
 	MessageSource messageSource;
+
+	@Autowired
+	protected HttpSession session;
 	
 	@ModelAttribute("sessionUser")
 	public User sessionUser() {
-		return (User) session.getAttribute("user");
+		return (User) session.getAttribute(USER);
 	}
 
 	@ModelAttribute("loginForm")
