@@ -53,4 +53,24 @@ public interface UserDAO {
      * @return The user in case the user can log in, if not null.
      */
     User logInUser(final String username, final String password); 
+    
+	/**
+	 * Get a list of followers for a user.
+	 * 
+	 * @param userId The user's id.
+	 * @param resultsPerPage Limit number of users per page.
+	 * @param page Number of page needed.
+	 * @return The recovered list.
+	 */
+	List<User> getFollowers(final String userId, final int resultsPerPage, final int page);
+	
+	/**
+	 * Get a list of users being followed by a user.
+	 * 
+	 * @param userId The user's id.
+	 * @param resultsPerPage Limit number of users per page.
+	 * @param page Number of page needed.
+	 * @return The recovered list.
+	 */
+	List<User> getFollowing(final String userId, final int resultsPerPage, final int page);
 }

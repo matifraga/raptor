@@ -49,5 +49,23 @@ public class UserServiceImpl implements UserService {
 	public User getUserWithUsername(final String username) {
 		return userDao.getByUsername(username);
 	}
+
+	@Override
+	public List<User> getFollowers(final String userId, final int resultsPerPage, final int page) {
+		List<User> ans = userDao.getFollowers(userId, resultsPerPage, page);
+		if (ans == null) {
+			//TODO handle null
+		}
+		return ans;
+	}
+
+	@Override
+	public List<User> getFollowing(final String userId, final int resultsPerPage, final int page) {
+		List<User> ans = userDao.getFollowing(userId, resultsPerPage, page);
+		if (ans == null) {
+			//TODO handle null
+		}
+		return ans;
+	}
 	
 }

@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,6 @@ public class LoginController extends RaptorController{
 		if (results.hasErrors()) {
 			return LOGIN;
 		} else {
-			//User user = userService.getUserWithUsername(form.getUsername());
 			User user = userService.logInUser(form.getUsername(),form.getPassword());
 			if(user != null){
 				session.setAttribute(USER, user);

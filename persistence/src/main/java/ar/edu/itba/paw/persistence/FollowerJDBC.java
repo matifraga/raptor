@@ -32,11 +32,11 @@ public class FollowerJDBC implements FollowerDAO {
 	private static final String SQL_UNFOLLOW = "DELETE FROM " + FOLLOWERS + 
 								" WHERE " + FOLLOWER_ID + " = ? AND " + FOLLOWING_ID + " = ?";
 	
-	private static final String SQL_GET_FOLLOWING = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
-	private static final String SQL_GET_FOLLOWERS = "SELECT " + FOLLOWER_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
+	private static final String SQL_GET_FOLLOWING_IDS = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
+	private static final String SQL_GET_FOLLOWER_IDS = "SELECT " + FOLLOWER_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
 	
-	private static final String SQL_COUNT_FOLLOWERS = "SELECT COUNT(" + FOLLOWER_ID + ") FROM (" + SQL_GET_FOLLOWERS + ") AS aux";
-	private static final String SQL_COUNT_FOLLOWING = "SELECT COUNT(" + FOLLOWING_ID + ") FROM (" + SQL_GET_FOLLOWING + ") AS aux";
+	private static final String SQL_COUNT_FOLLOWERS = "SELECT COUNT(" + FOLLOWER_ID + ") FROM (" + SQL_GET_FOLLOWER_IDS + ") AS aux";
+	private static final String SQL_COUNT_FOLLOWING = "SELECT COUNT(" + FOLLOWING_ID + ") FROM (" + SQL_GET_FOLLOWING_IDS + ") AS aux";
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
@@ -47,8 +47,8 @@ public class FollowerJDBC implements FollowerDAO {
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(FOLLOWERS);
 		try {
 		jdbcTemplate.execute(SQL_CREATE_TABLE + FOLLOWERS + " ("
-				+ FOLLOWER_ID +" varchar(256) NOT NULL, "
-				+ FOLLOWING_ID +" varchar(256) NOT NULL, "
+				+ FOLLOWER_ID +" varchar(12) NOT NULL, "
+				+ FOLLOWING_ID +" varchar(12) NOT NULL, "
 				+ "PRIMARY KEY ("+ FOLLOWER_ID +" , " + FOLLOWING_ID + "),"
 				+ "FOREIGN KEY ("+ FOLLOWER_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT,"
 				+ "FOREIGN KEY ("+ FOLLOWING_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT);");

@@ -1,14 +1,13 @@
 package ar.edu.itba.paw.webapp.forms;
 
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class LoginForm {
 
-    @Length(min=6,max=12)
+    @NotBlank
     private String password;
     
-	@NotBlank @Length(max=100)
+	@NotBlank
     private String username;
 	
 	public String getPassword() {

@@ -1,34 +1,31 @@
 package ar.edu.itba.paw.webapp.forms;
 
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import org.hibernate.validator.constraints.ScriptAssert;
 
 public class SignupForm {
 	
 	@NotBlank @Email @Length(max=100)
     private String email;
 
-    @NotBlank @Length(max=100)
+    @NotBlank @Length(max=100) @Pattern(regexp ="[a-zA-Z]*$")
     private String firstName;
 
-    @NotBlank @Length(max=100)
+    @NotBlank @Length(max=100) @Pattern(regexp ="[a-zA-Z]*$")
     private String lastName;
 
-	@Autowired
-	MessageSource messageSource;
-
-    @Length(min=6,max=12)
+    @Length(min=6,max=12) @Pattern(regexp = "[a-zA-Z0-9]*")
     private String password;
     
 	@AssertTrue()
 	private Boolean terms;
 	
-	@NotBlank @Length(max=100)
+	@NotBlank @Length(max=100) @Pattern(regexp = "[a-zA-Z0-9]*")
     private String username;
 
     public String getEmail() {

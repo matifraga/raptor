@@ -36,8 +36,8 @@ public class MentionJDBC implements MentionDAO {
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MENTIONS);
 		try {
 		jdbcTemplate.execute(SQL_CREATE_TABLE + MENTIONS + " ("
-				+ USER_ID +" varchar(256) NOT NULL, "
-				+ TWEET_ID +" varchar(256) NOT NULL, "
+				+ USER_ID +" varchar(12) NOT NULL, "
+				+ TWEET_ID +" varchar(12) NOT NULL, "
 				+ "PRIMARY KEY ("+ USER_ID +" , " + TWEET_ID + "),"
 				+ "FOREIGN KEY ("+ USER_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT,"
 				+ "FOREIGN KEY ("+ TWEET_ID + ") REFERENCES " + TWEETS + " ON DELETE CASCADE ON UPDATE RESTRICT);");
