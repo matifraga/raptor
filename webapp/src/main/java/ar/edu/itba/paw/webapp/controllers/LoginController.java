@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.UserService;
@@ -24,10 +26,13 @@ public class LoginController extends RaptorController{
 	UserService userService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String loginAction(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult results) {
+	public String loginAction(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult results, HttpServletRequest request, RedirectAttributes attr) {
+		
+	    attr.addFlashAttribute("loginForm", form);
 		
 		if (results.hasErrors()) {
-			return "feed";
+			attr.addFlashAttribute("org.springframework.validation.BindingResult.loginForm", results);
+			return getPreviousPageByRequest(request).orElse(FEED);
 		} else {
 			User user = userService.logInUser(form.getUsername(),form.getPassword());
 			if(user != null){
@@ -35,7 +40,8 @@ public class LoginController extends RaptorController{
 				return REDIRECT + FEED;
 			} else {
 				results.rejectValue("password", "login.error", null);
-				return "feed";
+				attr.addFlashAttribute("org.springframework.validation.BindingResult.loginForm", results);
+				return getPreviousPageByRequest(request).orElse(FEED);
 			}
 		}
 	}

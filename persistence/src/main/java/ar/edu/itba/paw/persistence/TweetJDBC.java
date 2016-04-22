@@ -88,7 +88,7 @@ public class TweetJDBC implements TweetDAO {
 	
 	private static final String SQL_GET_LOGED_IN_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
 			+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
-			+ " AND " + USERS + "." + USER_ID + " IN (" + SQL_GET_FOLLOWING + ")" 
+			+ " AND (" + USERS + "." + USER_ID + " IN (" + SQL_GET_FOLLOWING + ") OR " + USERS + "." + USER_ID + "= ?)" 
 			+ " ORDER BY " + TIMESTAMP + " DESC";
 	
 	private static final String SQL_COUNT_TWEETS = "SELECT COUNT(aux) FROM (" + SQL_GET_TWEETS + ") as aux";
@@ -199,7 +199,7 @@ public class TweetJDBC implements TweetDAO {
 	@Override
 	public List<Tweet> getLogedInFeed(String userID, int resultsPerPage, int page) {
 		try {
-			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_LOGED_IN_FEED + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, userID);
+			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_LOGED_IN_FEED + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, userID, userID);
 			return ans;
 		} catch (Exception e){
 					return null;
