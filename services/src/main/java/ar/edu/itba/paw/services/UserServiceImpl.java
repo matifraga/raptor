@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserWithId(final String userId) {
-		return null;
+		return null; //TODO
 	}
 
 	@Override

@@ -181,9 +181,7 @@ public class TweetJDBC implements TweetDAO {
 		try{
 			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_TWEETS_CONTAINING + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, text);
 			return ans;
-		} catch(Exception e){
-			return null;
-		}
+		} catch (Exception e){ return null; }
 	}
 
 	@Override
@@ -191,9 +189,7 @@ public class TweetJDBC implements TweetDAO {
 		try {
 			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_GLOBAL_FEED + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper);
 			return ans;
-		} catch (Exception e){
-			return null;
-		}
+		} catch (Exception e){ return null; }
 	}
 	
 	@Override
@@ -201,9 +197,7 @@ public class TweetJDBC implements TweetDAO {
 		try {
 			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_LOGED_IN_FEED + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, userID, userID);
 			return ans;
-		} catch (Exception e){
-					return null;
-		}
+		} catch (Exception e){ return null; }
 	}
 	
 	@Override

@@ -78,23 +78,21 @@ public class FollowerJDBC implements FollowerDAO {
 	@Override
 	public void unfollow(final String followerID, final String followingID) {
 		try{
-					jdbcTemplate.update(SQL_UNFOLLOW, followerID, followingID);
+			jdbcTemplate.update(SQL_UNFOLLOW, followerID, followingID);
 		} catch (DataAccessException e) { return;}
 	}
 
 	@Override
 	public Integer countFollowers(final String userID) {
 		try{
-			Integer ans = jdbcTemplate.queryForObject(SQL_COUNT_FOLLOWERS, Integer.class, userID);
-			return ans;
+			return jdbcTemplate.queryForObject(SQL_COUNT_FOLLOWERS, Integer.class, userID);
 		} catch(Exception e) { return null; } //SQLException or DataAccessException
 	}
 	
 	@Override
 	public Integer countFollowing(final String userID) {
 		try{
-			Integer ans = jdbcTemplate.queryForObject(SQL_COUNT_FOLLOWING, Integer.class, userID);
-			return ans;
+			return jdbcTemplate.queryForObject(SQL_COUNT_FOLLOWING, Integer.class, userID);
 		} catch(Exception e) { return null; } //SQLException or DataAccessException
 	}
 }

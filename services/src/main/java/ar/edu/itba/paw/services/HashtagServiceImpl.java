@@ -15,6 +15,7 @@ public class HashtagServiceImpl implements HashtagService {
 	@Autowired
 	private HashtagDAO hashtagDAO;
 	
+	//test
 	void setHashtagDAO(HashtagDAO hs) {
 		hashtagDAO = hs;
 	}

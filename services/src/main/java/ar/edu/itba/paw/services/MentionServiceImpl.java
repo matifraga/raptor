@@ -19,7 +19,6 @@ public class MentionServiceImpl implements MentionService {
 	@Autowired
 	private UserDAO userDAO;
 	
-	
 	//test
 	void setUserDAO(UserDAO userDAO) {
 		this.userDAO=userDAO;
