@@ -1,14 +1,9 @@
 package ar.edu.itba.persistence;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.hsqldb.jdbc.JDBCDriver;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,22 +18,21 @@ public class UserJDBCTest {
 
 	private UserJDBC userJDBC;
 
-	private static final String USERNAME = "@raptorTest", PASSWORD = "raptor", EMAIL= "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
+	private static final String USERNAME = "@raptorTest", PASSWORD = "raptor",
+			EMAIL = "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
 
 	private static final String USERNAME2 = "@rawr";
 
 	private static final String INVALIDUSERNAME = "";
 
-	private static final String UNAME1 = "@user1", UNAME2 = "@user2", UNAME3 = "@user3";
+	private static final String UNAME1 = "@user1", UNAME2 = "@user2",
+			UNAME3 = "@user3";
 
-	private static final String SEARCHALL = ""	;
+	private static final String SEARCHALL = "";
 	private static final int RESULTSPERPAGE = 3, PAGE = 1;
-
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-
-
 
 	}
 
@@ -56,42 +50,41 @@ public class UserJDBCTest {
 
 		userJDBC = new UserJDBC(sds);
 
-
-
 	}
 
 	@After
 	public void tearDown() throws Exception {
 
-
 	}
 
 	@Test
 	public void createTest() {
-		User u = userJDBC.create(USERNAME2, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+		User u = userJDBC.create(USERNAME2, PASSWORD, EMAIL, FIRSTNAME,
+				LASTNAME);
 		User other = userJDBC.getByUsername(USERNAME2);
 
 		System.out.println(u);
 		System.out.println(other);
 
-		assert(u.getUsername().equals(USERNAME));
-		assert(u.getEmail().equals(EMAIL));
-		assert(u.getFirstName().equals(FIRSTNAME));
-		assert(u.getLastName().equals(LASTNAME));
+		assert (u.getUsername().equals(USERNAME));
+		assert (u.getEmail().equals(EMAIL));
+		assert (u.getFirstName().equals(FIRSTNAME));
+		assert (u.getLastName().equals(LASTNAME));
 
-		assert(u.equals(other));
+		assert (u.equals(other));
 
 	}
 
 	@Test
 	public void createInvalidTest() {
-		User u = userJDBC.create(INVALIDUSERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
-		assert(u==null);
+		User u = userJDBC.create(INVALIDUSERNAME, PASSWORD, EMAIL, FIRSTNAME,
+				LASTNAME);
+		assert (u == null);
 
 		userJDBC.create(USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
 		u = userJDBC.create(USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
 
-		assert(u==null);
+		assert (u == null);
 
 	}
 
@@ -106,15 +99,15 @@ public class UserJDBCTest {
 		ls.add(u2);
 		ls.add(u3);
 
-		List<User> search = userJDBC.searchUsers(SEARCHALL, RESULTSPERPAGE, PAGE);
-		assert(ls.equals(search));
+		List<User> search = userJDBC.searchUsers(SEARCHALL, RESULTSPERPAGE,
+				PAGE);
+		assert (ls.equals(search));
 
 		ls.removeAll(ls);
 
 		ls.add(u1);
 
 		search = userJDBC.searchUsers(UNAME1, RESULTSPERPAGE, PAGE);
-
 
 	}
 

@@ -34,6 +34,8 @@ public class HashtagJDBC implements HashtagDAO {
 	private static final int INTERVAL = 20000; // in seconds
 		
 	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "; 
+	
+	@SuppressWarnings("unused") //For Mock DB testing
 	private static final String SQL_GET_TRENDINGS_HSQL = "SELECT " + HASHTAG + ", COUNT (" + HASHTAG + ") as hCount, MAX(" + TIMESTAMP + ") as maxTime" +
 													" FROM " + HASHTAGS + ", " + TWEETS + 
 													" WHERE " + TWEETS + "." + TWEET_ID + " = " + HASHTAGS + "." + TWEET_ID + 

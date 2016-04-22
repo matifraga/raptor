@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.services;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 

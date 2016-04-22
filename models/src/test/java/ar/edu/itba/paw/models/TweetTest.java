@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.models;
 
-import static org.junit.Assert.*;
-
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -61,7 +59,7 @@ public class TweetTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void invalidTweetTest() {
-		Tweet t = new Tweet(INVALIDMESSAGE,ID,owner,time);
+		new Tweet(INVALIDMESSAGE,ID,owner,time);
 	}
 
 	@Test

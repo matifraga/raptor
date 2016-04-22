@@ -1,6 +1,10 @@
 package ar.edu.itba.paw.services;
 
-import static org.junit.Assert.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.sql.Timestamp;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,11 +13,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
-import java.sql.Timestamp;
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;

@@ -1,7 +1,5 @@
 package ar.edu.itba.persistence;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,7 +26,7 @@ public class HashtagJDBCTest {
 
 	@Test
 	public void test() {
-		//fail("Not yet implemented");
+		// fail("Not yet implemented");
 	}
 
 }

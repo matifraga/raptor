@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.User;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +9,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.forms.SignupForm;
-
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/signup")
@@ -23,7 +21,6 @@ public class SignupController extends RaptorController{
 
 	private final static String SIGNUP = "signup";
 
-	private final static String MAP_SIGNUP = "/signup";
 	private final static String MAP_USER = "/user/";
 	private final static String REDIRECT = "redirect:";
 

@@ -13,7 +13,6 @@ import ar.edu.itba.paw.services.UserService;
 @RequestMapping("/tweetAction")
 public class TweetController extends RaptorController{
 
-	private static final String USERNAME = "username";
 	private static final String MAP_USER = "/user/";
 
 	private static final String REDIRECT = "redirect:";
