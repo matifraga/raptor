@@ -67,6 +67,7 @@
                             </li>
                         </c:when>
                         <c:otherwise>
+                        	<li><a href="/logout" style="color: #4A4A4A;">Log out</a></li>
                             <li><a href="/user/${sessionUser.username}" style="color: #4A4A4A;">${sessionUser.firstName}</a></li>
                             <li><img src="/resources/img/default-pic.png" class="mini-pic"/></li>
                         </c:otherwise>
