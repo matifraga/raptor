@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,7 +70,7 @@ public class TimelineController extends RaptorController{
 		if(u != null){
 			mav.addObject(USER, u);
 
-			List<Tweet> tweetList = tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page);
+			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page));
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
@@ -99,7 +100,7 @@ public class TimelineController extends RaptorController{
 		if(u != null){
 			mav.addObject(USER, u);
 
-			List<Tweet> mentionList = tweetService.getMentions(u.getId(), TIMELINE_SIZE, page);
+			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page));
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();

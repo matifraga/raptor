@@ -224,6 +224,10 @@ input[type="text"], input[type="password"] {
   color: black;
 }
 
+.panel-rawr .message a {
+  color: #3C8BED;
+}
+
 .panel-rawr .profile-picture {
   height: 60px;
   width: 60px;

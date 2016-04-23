@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controllers;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.services.HashtagService;
 import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,12 +44,12 @@ public class FeedController extends RaptorController {
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 		mav.addObject(TRENDS_LIST, trendsList);
 		
-		List<Tweet> tweetList;
+		List<TweetViewModel> tweetList;
 		
 		if (sessionUser() == null) {
-			tweetList = tweetService.globalFeed(TIMELINE_SIZE, page);
+			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page));
 		} else {
-			tweetList = tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page);
+			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page));
 		}
 
 		mav.addObject(TWEET_LIST, tweetList);

@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.User;
 
 import java.util.List;
 
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +52,7 @@ public class SearchController extends RaptorController{
         //TODO check no input stream
         switch(text.charAt(0)){
         	case '#':   mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<Tweet> hashtags = tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE,1);
+						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE,1));
 						mav.addObject(NUMBER_OF_RESULTS, hashtags.size());
 						mav.addObject(RESULT, hashtags);
 						break;
@@ -61,7 +62,7 @@ public class SearchController extends RaptorController{
         				mav.addObject(RESULT, users);
         				break;
         	default:	mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<Tweet> tweets = tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE,1);
+						List<TweetViewModel> tweets = TweetViewModel.transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE,1));
 						mav.addObject(NUMBER_OF_RESULTS, tweets.size());
 						mav.addObject(RESULT, tweets);
 						break;
