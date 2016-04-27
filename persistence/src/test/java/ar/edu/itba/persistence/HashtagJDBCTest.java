@@ -1,5 +1,7 @@
 package ar.edu.itba.persistence;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -84,8 +86,10 @@ public class HashtagJDBCTest {
 	@Test
 	public void createTest() {
 		hashtagJDBC.create(HASHTAG, tweet.getId());
+		assertEquals (1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
 		Tweet t2 = tweetJDBC.create(MESSAGE, user);
 		hashtagJDBC.create(HASHTAG, t2.getId());	
+		assertEquals (2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
 		List<Tweet> ls = tweetJDBC.getTweetsByHashtag(HASHTAG, RESULTSPERPAGE, PAGE);
 		assert(ls.contains(tweet));
 		assert(ls.contains(t2));
