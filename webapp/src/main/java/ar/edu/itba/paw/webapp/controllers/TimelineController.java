@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.paw.models.Tweet;
@@ -26,12 +27,17 @@ public class TimelineController extends RaptorController{
 	
 	private static final String USERNAME = "username";
 	private static final String PAGE = "page";
+	private static final String FOLLOW = "follow";
+	private static final String UNFOLLOW = "unfollow";
 	private static final String MENTIONS = "mentions";
 	private static final String MAP_USERS = "{" + USERNAME + "}";
 	private static final String MAP_USERS_WITH_PAGING = MAP_USERS + "/{" + PAGE + "}";
 
 	private static final String MAP_USER_MENTIONS = MAP_USERS +"/" + MENTIONS;
 	private static final String MAP_USER_MENTIONS_WITH_PAGING = MAP_USER_MENTIONS + "/{" + PAGE + "}";
+
+	private static final String MAP_USER_FOLLOW = MAP_USERS +"/" + FOLLOW;
+	private static final String MAP_USER_UNFOLLOW = MAP_USERS +"/" + UNFOLLOW;
 
 	private static final int 	TIMELINE_SIZE = 10;
 
@@ -43,6 +49,9 @@ public class TimelineController extends RaptorController{
 	private static final String TRENDS_LIST = "trendsList";
 	private static final String USER_INFO = "userInfo";
 	private static final String HEADER = "header";
+	private static final String FOLLOWING = "following";
+
+	private final static String REDIRECT = "redirect:";
 	
 	private static final int TRENDING_TOPIC_LIMIT = 5;
 	
@@ -57,6 +66,38 @@ public class TimelineController extends RaptorController{
 
 	@Autowired
 	private FollowerService followerService;
+
+	@RequestMapping(value={MAP_USER_FOLLOW}, method= RequestMethod.POST)
+	public String follow(@PathVariable Map<String, String> pathVariables) {
+		String currentProfileUsername = pathVariables.get(USERNAME);
+		User currentProfileUser = userService.getUserWithUsername(currentProfileUsername);
+
+		if(currentProfileUser != null) {
+			if(sessionUser() == null);
+			else if (sessionUser().getUsername().equals(currentProfileUsername));
+			else if (!(followerService.isFollower(sessionUser(), currentProfileUser))) {
+				followerService.follow(sessionUser(), currentProfileUser);
+			}
+		}
+
+		return REDIRECT + "/user/" + currentProfileUsername;
+	}
+
+	@RequestMapping(value={MAP_USER_UNFOLLOW}, method= RequestMethod.POST)
+	public String unfollow(@PathVariable Map<String, String> pathVariables) {
+		String currentProfileUsername = pathVariables.get(USERNAME);
+		User currentProfileUser = userService.getUserWithUsername(currentProfileUsername);
+
+		if(currentProfileUser != null) {
+			if(sessionUser() == null);
+			else if (sessionUser().getUsername().equals(currentProfileUsername));
+			else if (followerService.isFollower(sessionUser(), currentProfileUser)) {
+				followerService.unfollow(sessionUser(), currentProfileUser);
+			}
+		}
+
+		return REDIRECT + "/user/" + currentProfileUsername;
+	}
 	
 
 	@RequestMapping(value={MAP_USERS, MAP_USERS_WITH_PAGING}, method= RequestMethod.GET)
@@ -74,13 +115,21 @@ public class TimelineController extends RaptorController{
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
-			userInfo.put("followers", followerService.countFollowers(u));
-			userInfo.put("following", followerService.countFollowing(u));
-			userInfo.put("tweets", tweetService.countTweets(u));
+			userInfo.put("followers_count", followerService.countFollowers(u));
+			userInfo.put("following_count", followerService.countFollowing(u));
+			userInfo.put("tweets_count", tweetService.countTweets(u));
 
 			mav.addObject(TWEET_LIST, tweetList);
 			mav.addObject(TRENDS_LIST, trendsList);
 			mav.addObject(USER_INFO, userInfo);
+
+			if(sessionUser() == null) {
+				mav.addObject(FOLLOWING, -1);
+			} else if(sessionUser().getUsername().equals(username)) {
+				mav.addObject(FOLLOWING, 2);
+			} else {
+				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), u)? 1 : 0));
+			}
 
 			List<Map<String, Object>> header = createHeader(u, "timeline");
 
@@ -104,13 +153,21 @@ public class TimelineController extends RaptorController{
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
-			userInfo.put("followers", followerService.countFollowers(u));
-			userInfo.put("following", followerService.countFollowing(u));
-			userInfo.put("tweets", tweetService.countTweets(u));
+			userInfo.put("followers_count", followerService.countFollowers(u));
+			userInfo.put("following_count", followerService.countFollowing(u));
+			userInfo.put("tweets_count", tweetService.countTweets(u));
 
 			mav.addObject(TWEET_LIST, mentionList);
 			mav.addObject(TRENDS_LIST, trendsList);
 			mav.addObject(USER_INFO, userInfo);
+
+			if(sessionUser() == null) {
+				mav.addObject(FOLLOWING, -1);
+			} else if(sessionUser().getUsername().equals(username)) {
+				mav.addObject(FOLLOWING, 2);
+			} else {
+				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), u)? 1 : 0));
+			}
 
 			List<Map<String, Object>> header = createHeader(u, "mentions");
 

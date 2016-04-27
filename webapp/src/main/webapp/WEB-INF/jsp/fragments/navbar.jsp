@@ -67,8 +67,11 @@
                             </li>
                         </c:when>
                         <c:otherwise>
-                        	<li><a href="/logout" style="color: #4A4A4A;">Log out</a></li>
-                            <li><a href="/user/${sessionUser.username}" style="color: #4A4A4A;">${sessionUser.firstName}</a></li>
+                            <li class="dropdown"><a href="/user/${sessionUser.username}" style="color: #4A4A4A;">${sessionUser.firstName}<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/logout" style="color: #4A4A4A; text-align: center">Log out</a></li>
+                                </ul>
+                            </li>
                             <li><img src="/resources/img/default-pic.png" class="mini-pic"/></li>
                         </c:otherwise>
                     </c:choose>

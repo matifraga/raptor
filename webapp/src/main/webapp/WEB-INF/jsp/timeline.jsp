@@ -23,6 +23,7 @@
                     <div class="section-profile">
                         <c:set var="user" value="${user}" scope="request"/>
                         <c:set var="userInfo" value="${userInfo}" scope="request"/>
+                        <c:set var="following" value="${following}" scope="request"/>
                         <jsp:include page="fragments/profileBox.jsp"/>
                     </div>
                 </div>
