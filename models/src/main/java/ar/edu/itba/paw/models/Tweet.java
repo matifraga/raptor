@@ -77,7 +77,7 @@ public class Tweet {
 	 */
 	private Set<String> patternFilter(String msg, String pattern, String c) { 
 		 Set<String> ans = new HashSet<String>();
-	     Pattern pt = Pattern.compile(pattern);
+	     Pattern pt = Pattern.compile(pattern); //TODO pattern private, arg Pattern
 	     Matcher matcher = pt.matcher(msg);
 	     String result = "";
 	 
