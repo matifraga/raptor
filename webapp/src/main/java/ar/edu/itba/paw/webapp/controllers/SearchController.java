@@ -1,21 +1,18 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-
 import java.util.List;
 
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
-
-import org.springframework.web.servlet.ModelAndView;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 
 @Controller
 @RequestMapping("/search")
