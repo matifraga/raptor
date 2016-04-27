@@ -93,6 +93,12 @@
      <version>${mockito.version}</version>
      <scope>test</scope>
     </dependency>
+       <dependency>
+           <groupId>org.spring.framework</groupId>
+           <artifactId>spring-test</artifactId>
+           <version>${org.springframework.version}</version>
+           <scope>test</scope>
+       </dependency>
    </dependencies>
   </dependencyManagement>
 

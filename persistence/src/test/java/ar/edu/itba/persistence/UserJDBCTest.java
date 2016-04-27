@@ -9,14 +9,21 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.UserJDBC;
 
+import javax.activation.DataSource;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class UserJDBCTest {
 
-	private UserJDBC userJDBC;
 
 	private static final String USERNAME = "@raptorTest", PASSWORD = "raptor",
 			EMAIL = "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
@@ -31,6 +38,15 @@ public class UserJDBCTest {
 	private static final String SEARCHALL = "";
 	private static final int RESULTSPERPAGE = 3, PAGE = 1;
 
+
+
+	@Autowired
+	private DataSource ds;
+
+	@Autowired
+	private UserJDBC userJDBC;
+
+	private JdbcTemplate jdbcTemplate;
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 
@@ -42,13 +58,8 @@ public class UserJDBCTest {
 
 	@Before
 	public void setUp() throws Exception {
-		SimpleDriverDataSource sds = new SimpleDriverDataSource();
-		sds.setDriverClass(JDBCDriver.class);
-		sds.setUrl("jdbc:hsqldb:mem:paw");
-		sds.setUsername("hq");
-		sds.setPassword("");
-
-		userJDBC = new UserJDBC(sds);
+		jdbcTemplate = new JdbcTemplate(ds);
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
 
 	}
 
