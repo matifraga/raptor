@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.services.HashtagService;
-import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Map;
+import ar.edu.itba.paw.services.HashtagService;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 
 @Controller
 @RequestMapping(value = { "/", "/{page}" })

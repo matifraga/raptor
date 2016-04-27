@@ -1,16 +1,15 @@
 package ar.edu.itba.paw.webapp.viewmodels;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.List;
-import java.util.stream.Stream;
+
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
 
 /**
  * Created by Tomi on 4/22/16.
