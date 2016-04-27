@@ -3,6 +3,8 @@ package ar.edu.itba.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.hsqldb.jdbc.JDBCDriver;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,11 +15,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.UserJDBC;
 
-import javax.activation.DataSource;
+
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
