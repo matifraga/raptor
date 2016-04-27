@@ -1,22 +1,33 @@
 package ar.edu.itba.persistence;
 
+import javax.sql.DataSource;
+
 import org.hsqldb.jdbc.JDBCDriver;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.TweetJDBC;
 import ar.edu.itba.paw.persistence.UserJDBC;
 
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class TweetJDBCTest {
 
-	private TweetJDBC tweetJDBC;
-	private UserJDBC userJDBC;
+
+
 
 	private static final String UNAME = "user", PASSWORD = "password",
 			EMAIL = "email@email.com", FIRSTNAME = "user", LASTNAME = "user",
@@ -26,10 +37,20 @@ public class TweetJDBCTest {
 	private static final int RESULTSPERPAGE = 5, PAGE = 1;
 
 	private static User user;
+	
+
+	@Autowired
+	private DataSource ds;
+
+	@Autowired
+	private UserJDBC userJDBC;
+	@Autowired
+	private TweetJDBC tweetJDBC;
+
+	private JdbcTemplate jdbcTemplate;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-
 	}
 
 	@AfterClass
@@ -38,17 +59,10 @@ public class TweetJDBCTest {
 
 	@Before
 	public void setUp() throws Exception {
-
-		SimpleDriverDataSource sds = new SimpleDriverDataSource();
-		sds.setDriverClass(JDBCDriver.class);
-		sds.setUrl("jdbc:hsqldb:mem:paw");
-		sds.setUsername("hq");
-		sds.setPassword("");
-
-		userJDBC = new UserJDBC(sds);
-		tweetJDBC = new TweetJDBC(sds);
-
+		jdbcTemplate = new JdbcTemplate(ds);
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "tweets");
 		user = userJDBC.create(UNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+		
 	}
 
 	@After
@@ -57,7 +71,8 @@ public class TweetJDBCTest {
 
 	@Test
 	public void createTest() {
-
+		
+		
 		Tweet t = tweetJDBC.create(MESSAGE, user);
 
 		assert (t.getMsg().equals(MESSAGE));

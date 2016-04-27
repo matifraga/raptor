@@ -8,9 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
-/**
- * Created by alumno on 27/04/2016.
- */
+
 @ComponentScan({"ar.edu.itba.paw.persistence"})
 @Configuration
 public class TestConfig {

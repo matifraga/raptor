@@ -82,7 +82,7 @@ public class UserJDBCTest {
 		System.out.println(u);
 		System.out.println(other);
 
-		assert (u.getUsername().equals(USERNAME));
+		assert (u.getUsername().equals(USERNAME2));
 		assert (u.getEmail().equals(EMAIL));
 		assert (u.getFirstName().equals(FIRSTNAME));
 		assert (u.getLastName().equals(LASTNAME));
@@ -115,9 +115,16 @@ public class UserJDBCTest {
 		ls.add(u2);
 		ls.add(u3);
 
+		
 		List<User> search = userJDBC.searchUsers(SEARCHALL, RESULTSPERPAGE,
 				PAGE);
-		assert (ls.equals(search));
+		 
+
+
+				for (User user : ls) {
+					assert(search.contains(user));					
+				}
+
 
 		ls.removeAll(ls);
 
