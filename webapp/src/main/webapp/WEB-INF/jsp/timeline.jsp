@@ -4,8 +4,8 @@
 <html>
 <c:choose>
     <c:when test="${user != null}">
-    	<spring:message var = "greeting" code="timeline.greeting" arguments="${user.username};${user.firstName};${user.lastName}" htmlEscape="false" argumentSeparator=";"/>
-        <c:set var="pageTitle" value='${greeting}' scope="request"/>
+    	<spring:message var = "title" code="timeline.title" arguments="${user.username};${user.firstName};${user.lastName}" htmlEscape="false" argumentSeparator=";"/>
+        <c:set var="pageTitle" value='${title}' scope="request"/>
     </c:when>
     <c:otherwise>
         <c:set var="pageTitle" value=":(" scope="request"/>
