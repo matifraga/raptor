@@ -11,6 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import static ar.edu.itba.paw.persistence.UserJDBC.*;
+import static ar.edu.itba.paw.persistence.TweetJDBC.*;
+
 /**
  * 
  * Testing model
@@ -19,11 +22,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MentionJDBC implements MentionDAO {
 
-	private final static String MENTIONS = "mentions";
-	private final static String TWEETS = "tweets";
-	private final static String USERS = "users";
-	private static final String USER_ID = "userID";
-	private static final String TWEET_ID = "tweetID";
+	final static String MENTIONS = "mentions";
+	static final String USER_ID = "userID";
+	static final String TWEET_ID = "tweetID";
 	
 	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "; 
 	
@@ -36,8 +37,8 @@ public class MentionJDBC implements MentionDAO {
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MENTIONS);
 		try {
 		jdbcTemplate.execute(SQL_CREATE_TABLE + MENTIONS + " ("
-				+ USER_ID +" varchar(12) NOT NULL, "
-				+ TWEET_ID +" varchar(12) NOT NULL, "
+				+ USER_ID +" char(" + USER_ID_LENGTH + ") NOT NULL, "
+				+ TWEET_ID +" char(" + TWEET_ID_LENGTH + ") NOT NULL, "
 				+ "PRIMARY KEY ("+ USER_ID +" , " + TWEET_ID + "),"
 				+ "FOREIGN KEY ("+ USER_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT,"
 				+ "FOREIGN KEY ("+ TWEET_ID + ") REFERENCES " + TWEETS + " ON DELETE CASCADE ON UPDATE RESTRICT);");

@@ -17,6 +17,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import static ar.edu.itba.paw.persistence.TweetJDBC.*;
+
 /**
  * 
  * Testing model
@@ -25,11 +27,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class HashtagJDBC implements HashtagDAO {
 
-	private static final String HASHTAGS = "hashtags";
-	private static final String HASHTAG = "hashtag";
-	private static final String TWEET_ID = "tweetID";
-	private static final String TWEETS = "tweets";
-	private static final String TIMESTAMP = "timestamp";
+	static final String HASHTAGS = "hashtags";
+	static final String HASHTAG = "hashtag";
+	static final String TWEET_ID = "tweetID";
+	
+	private static final int HASHTAG_LENGTH = 256;
 	
 	private static final int INTERVAL = 20000; // in seconds
 		
@@ -59,8 +61,8 @@ public class HashtagJDBC implements HashtagDAO {
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(HASHTAGS);
 		try {
 		jdbcTemplate.execute(SQL_CREATE_TABLE + HASHTAGS + " ("
-				+ HASHTAG +" varchar(256) NOT NULL, "
-				+ TWEET_ID +" varchar(12) NOT NULL, "
+				+ HASHTAG +" varchar(" + HASHTAG_LENGTH + ") NOT NULL, "
+				+ TWEET_ID +" char(" + TWEET_ID_LENGTH + ") NOT NULL, "
 				+ "PRIMARY KEY ("+ HASHTAG +" , " + TWEET_ID + "),"
 				+ "FOREIGN KEY ("+ TWEET_ID + ") REFERENCES " + TWEETS + " ON DELETE CASCADE ON UPDATE RESTRICT);");
 		} catch (DataAccessException e) {

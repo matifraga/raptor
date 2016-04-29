@@ -22,6 +22,11 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 
+import static ar.edu.itba.paw.persistence.UserJDBC.*;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.*;
+import static ar.edu.itba.paw.persistence.MentionJDBC.*;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
+
 /**
  * 
  * Testing model
@@ -30,30 +35,16 @@ import ar.edu.itba.paw.models.User;
 @Repository
 public class TweetJDBC implements TweetDAO {
 	
-	private static final String ID = "tweetID";
-	private static final String MESSAGE = "message";
-	private static final String USER_ID = "userID";
-	private static final String TIMESTAMP = "timestamp";
-	private static final String TWEETS = "tweets";
-	
-	private static final String HASHTAG = "hashtag";
-	private static final String HASHTAGS = "hashtags";
-	private static final String MENTIONS = "mentions";
-	private static final String USERS = "users";
-	private static final String USERNAME = "username";
-	private static final String FIRST_NAME = "firstName";
-	private static final String LAST_NAME = "lastName";
-	private static final String EMAIL = "email";
-	
-	private static final String FOLLOWER_ID = "followerID";
-	private static final String FOLLOWING_ID = "followingID";
-	private static final String FOLLOWERS = "followers";
+	static final String TWEET_ID = "tweetID";
+	static final String MESSAGE = "message";
+	static final String USER_ID = "userID";
+	static final String TIMESTAMP = "timestamp";
+	static final String TWEETS = "tweets";
 	
 	private static final int	MESSAGE_MAX_LENGTH = 256;
-	private static final int	USER_ID_LENGTH = 12;
-	private static final int	TWEET_ID_LENGTH = 12;
+	static final int	TWEET_ID_LENGTH = 12;
 	
-	private static final String TWEET_SELECT = TWEETS + "." + ID + ", " + MESSAGE + ", " + TWEETS + "." + USER_ID
+	private static final String TWEET_SELECT = TWEETS + "." + TWEET_ID + ", " + MESSAGE + ", " + TWEETS + "." + USER_ID
 						+ " AS " + USER_ID + ", " + TIMESTAMP + ", " + USERNAME + ", " + FIRST_NAME 
 						+ ", " + LAST_NAME + ", " + EMAIL;
 	
@@ -65,12 +56,12 @@ public class TweetJDBC implements TweetDAO {
 						+ TIMESTAMP + " DESC";
 
 	private static final String SQL_GET_TWEETS_WITH_HASHTAG = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
-						+ HASHTAGS + ", " + USERS + " where " + HASHTAGS + "." + ID + " = " + TWEETS + "." + ID + 
+						+ HASHTAGS + ", " + USERS + " where " + HASHTAGS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + 
 						" AND " + TWEETS + "." + USER_ID + " = " + USERS + "." + USER_ID + " AND " + HASHTAG + " = ? ORDER BY " 
 						+ TIMESTAMP + " DESC";
 	
 	private static final String SQL_GET_TWEETS_WITH_MENTION = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
-						+ MENTIONS + ", " + USERS + " where " + MENTIONS + "." + ID + " = " + TWEETS + "." + ID + 
+						+ MENTIONS + ", " + USERS + " where " + MENTIONS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + 
 						" AND " + TWEETS + "." + USER_ID + " = " + USERS + "." + USER_ID + 
 						" AND " + MENTIONS + "." + USER_ID + " = ? ORDER BY " 
 						+ TIMESTAMP + " DESC";
@@ -83,12 +74,10 @@ public class TweetJDBC implements TweetDAO {
 	private static final String SQL_GET_GLOBAL_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
 						+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
 						+ " ORDER BY " + TIMESTAMP + " DESC";
-	
-	private static final String SQL_GET_FOLLOWING = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
-	
+		
 	private static final String SQL_GET_LOGED_IN_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
 			+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
-			+ " AND (" + USERS + "." + USER_ID + " IN (" + SQL_GET_FOLLOWING + ") OR " + USERS + "." + USER_ID + "= ?)" 
+			+ " AND (" + USERS + "." + USER_ID + " IN (" + SQL_GET_FOLLOWING_IDS + ") OR " + USERS + "." + USER_ID + "= ?)" 
 			+ " ORDER BY " + TIMESTAMP + " DESC";
 	
 	private static final String SQL_COUNT_TWEETS = "SELECT COUNT(aux) FROM (" + SQL_GET_TWEETS + ") as aux";
@@ -105,11 +94,11 @@ public class TweetJDBC implements TweetDAO {
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(TWEETS);
 		try{
 			jdbcTemplate.execute(SQL_CREATE_TABLE + TWEETS + " ("
-					+ ID +" char(" + TWEET_ID_LENGTH + ") NOT NULL,"
+					+ TWEET_ID +" char(" + TWEET_ID_LENGTH + ") NOT NULL,"
 					+ MESSAGE +" varchar(" + MESSAGE_MAX_LENGTH + ") NOT NULL,"
 					+ USER_ID +" char(" + USER_ID_LENGTH + ") NOT NULL,"
 					+ TIMESTAMP +" TIMESTAMP NOT NULL,"
-					+ "PRIMARY KEY ("+ ID +"),"
+					+ "PRIMARY KEY ("+ TWEET_ID +"),"
 					+ "FOREIGN KEY (" + USER_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT);");
 		} catch (DataAccessException e) {
 			//TODO db error
@@ -125,7 +114,7 @@ public class TweetJDBC implements TweetDAO {
 		try {
 			ans = new Tweet(msg, id, owner, thisMoment);
 		} catch (IllegalArgumentException e) { return null; }
-		args.put(ID, id);
+		args.put(TWEET_ID, id);
 		args.put(MESSAGE, msg);
 		args.put(USER_ID, owner.getId());
 		args.put(TIMESTAMP, thisMoment);
@@ -213,7 +202,7 @@ public class TweetJDBC implements TweetDAO {
 
 		@Override
 		public Tweet mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new Tweet(rs.getString(MESSAGE),rs.getString(ID),new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID)), rs.getTimestamp(TIMESTAMP));
+			return new Tweet(rs.getString(MESSAGE),rs.getString(TWEET_ID),new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID)), rs.getTimestamp(TIMESTAMP));
 		}
 
 	}

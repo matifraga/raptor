@@ -24,7 +24,6 @@ import ar.edu.itba.paw.persistence.HashtagJDBC;
 import ar.edu.itba.paw.persistence.TweetJDBC;
 import ar.edu.itba.paw.persistence.UserJDBC;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class HashtagJDBCTest {

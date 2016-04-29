@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.paw.models.User;
 
+import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
+
 /**
  * 
  * Testing model
@@ -26,20 +29,20 @@ import ar.edu.itba.paw.models.User;
 @Repository
 public class UserJDBC implements UserDAO {
 
-	private static final String USERNAME = "username";
-	private static final String PASSWORD = "password";
-	private static final String EMAIL = "email";
-	private static final String FIRSTNAME = "firstName";
-	private static final String LASTNAME = "lastName";
-	private static final String ID = "userID";
-	private static final String USERS = "users";
+	static final String USERNAME = "username";
+	static final String PASSWORD = "password";
+	static final String EMAIL = "email";
+	static final String FIRST_NAME = "firstName";
+	static final String LAST_NAME = "lastName";
+	static final String USER_ID = "userID";
+	static final String USERS = "users";
 
 	private static final int USERNAME_MAX_LENGTH = 100;
 	private static final int PASSWORD_MAX_LENGTH = 100;
 	private static final int EMAIL_MAX_LENGTH = 100;
 	private static final int FIRSTNAME_MAX_LENGTH = 100;
 	private static final int LASTNAME_MAX_LENGTH = 100;
-	private static final int USER_ID_LENGTH = 12;
+	static final int USER_ID_LENGTH = 12;
 
 	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
 	private static final String SQL_GET_BY_USERNAME = "SELECT * FROM " + USERS
@@ -49,20 +52,11 @@ public class UserJDBC implements UserDAO {
 	private static final String SQL_LOG_IN = SQL_GET_BY_USERNAME + " AND "
 			+ PASSWORD + " = ?";
 
-	private static final String FOLLOWER_ID = "followerID";
-	private static final String FOLLOWING_ID = "followingID";
-	private static final String FOLLOWERS = "followers";
-
-	private static final String SQL_GET_FOLLOWING_IDS = "SELECT "
-			+ FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID
-			+ " = ?";
-	private static final String SQL_GET_FOLLOWER_IDS = "SELECT " + FOLLOWER_ID
-			+ " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
-
 	private static final String SQL_GET_FOLLOWING_USERS = "SELECT * FROM "
-			+ USERS + " WHERE " + ID + " IN (" + SQL_GET_FOLLOWING_IDS + ")";
+			+ USERS + " WHERE " + USER_ID + " IN (" + SQL_GET_FOLLOWING_IDS + ")";
 	private static final String SQL_GET_FOLLOWER_USERS = "SELECT * FROM "
-			+ USERS + " WHERE " + ID + " IN (" + SQL_GET_FOLLOWER_IDS + ")";
+			+ USERS + " WHERE " + USER_ID + " IN (" + SQL_GET_FOLLOWER_IDS + ")";
+	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
 	private final UserRowMapper userRowMapper;
@@ -77,11 +71,11 @@ public class UserJDBC implements UserDAO {
 					+ " varchar(" + USERNAME_MAX_LENGTH + ") NOT NULL,"
 					+ PASSWORD + " varchar(" + PASSWORD_MAX_LENGTH
 					+ ") NOT NULL," + EMAIL + " varchar(" + EMAIL_MAX_LENGTH
-					+ ") NOT NULL," + FIRSTNAME + " varchar("
-					+ FIRSTNAME_MAX_LENGTH + ") NOT NULL," + LASTNAME
-					+ " varchar(" + LASTNAME_MAX_LENGTH + ") NOT NULL," + ID
+					+ ") NOT NULL," + FIRST_NAME + " varchar("
+					+ FIRSTNAME_MAX_LENGTH + ") NOT NULL," + LAST_NAME
+					+ " varchar(" + LASTNAME_MAX_LENGTH + ") NOT NULL," + USER_ID
 					+ " char(" + USER_ID_LENGTH + ") NOT NULL,"
-					+ "PRIMARY KEY (" + ID + "));");
+					+ "PRIMARY KEY (" + USER_ID + "));");
 		} catch (DataAccessException e) {
 			// TODO db error
 		}
@@ -120,10 +114,10 @@ public class UserJDBC implements UserDAO {
 		args.put(USERNAME, username);
 		args.put(PASSWORD, password);
 		args.put(EMAIL, email);
-		args.put(FIRSTNAME, firstName);
-		args.put(LASTNAME, lastName);
+		args.put(FIRST_NAME, firstName);
+		args.put(LAST_NAME, lastName);
 		String userId = randomUserId();
-		args.put(ID, userId);
+		args.put(USER_ID, userId);
 		try {
 			jdbcInsert.execute(args);
 		} catch (DataAccessException e) { return null; }
@@ -195,8 +189,8 @@ public class UserJDBC implements UserDAO {
 		public User mapRow(final ResultSet rs, final int rowNum)
 				throws SQLException {
 			return new User(rs.getString(USERNAME), rs.getString(EMAIL),
-					rs.getString(FIRSTNAME), rs.getString(LASTNAME),
-					rs.getString(ID));
+					rs.getString(FIRST_NAME), rs.getString(LAST_NAME),
+					rs.getString(USER_ID));
 		}
 	}
 

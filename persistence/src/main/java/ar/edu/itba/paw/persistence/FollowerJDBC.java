@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import static ar.edu.itba.paw.persistence.UserJDBC.*;
 /**
  * 
  * Testing model
@@ -19,10 +20,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class FollowerJDBC implements FollowerDAO {
 
-	private final static String FOLLOWERS = "followers";
-	private final static String USERS = "users";
-	private static final String FOLLOWER_ID = "followerID";
-	private static final String FOLLOWING_ID = "followingID";
+	static final String FOLLOWERS = "followers";
+	static final String FOLLOWER_ID = "followerID";
+	static final String FOLLOWING_ID = "followingID";
 	
 	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "; 
 	
@@ -32,8 +32,8 @@ public class FollowerJDBC implements FollowerDAO {
 	private static final String SQL_UNFOLLOW = "DELETE FROM " + FOLLOWERS + 
 								" WHERE " + FOLLOWER_ID + " = ? AND " + FOLLOWING_ID + " = ?";
 	
-	private static final String SQL_GET_FOLLOWING_IDS = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
-	private static final String SQL_GET_FOLLOWER_IDS = "SELECT " + FOLLOWER_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
+	static final String SQL_GET_FOLLOWING_IDS = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
+	static final String SQL_GET_FOLLOWER_IDS = "SELECT " + FOLLOWER_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
 	
 	private static final String SQL_COUNT_FOLLOWERS = "SELECT COUNT(" + FOLLOWER_ID + ") FROM (" + SQL_GET_FOLLOWER_IDS + ") AS aux";
 	private static final String SQL_COUNT_FOLLOWING = "SELECT COUNT(" + FOLLOWING_ID + ") FROM (" + SQL_GET_FOLLOWING_IDS + ") AS aux";
@@ -47,8 +47,8 @@ public class FollowerJDBC implements FollowerDAO {
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(FOLLOWERS);
 		try {
 		jdbcTemplate.execute(SQL_CREATE_TABLE + FOLLOWERS + " ("
-				+ FOLLOWER_ID +" varchar(12) NOT NULL, "
-				+ FOLLOWING_ID +" varchar(12) NOT NULL, "
+				+ FOLLOWER_ID +" char(" + USER_ID_LENGTH + ") NOT NULL, "
+				+ FOLLOWING_ID +" char(" + USER_ID_LENGTH + ") NOT NULL, "
 				+ "PRIMARY KEY ("+ FOLLOWER_ID +" , " + FOLLOWING_ID + "),"
 				+ "FOREIGN KEY ("+ FOLLOWER_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT,"
 				+ "FOREIGN KEY ("+ FOLLOWING_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT);");

@@ -61,8 +61,8 @@ public class TweetJDBCTest {
 	public void setUp() throws Exception {
 		jdbcTemplate = new JdbcTemplate(ds);
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, "tweets");
-		user = userJDBC.create(UNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
-		
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
+		user = userJDBC.create(UNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);		
 	}
 
 	@After
