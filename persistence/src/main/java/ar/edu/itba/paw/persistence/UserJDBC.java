@@ -45,12 +45,15 @@ public class UserJDBC implements UserDAO {
 	static final int USER_ID_LENGTH = 12;
 
 	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
+	
 	private static final String SQL_GET_BY_USERNAME = "SELECT * FROM " + USERS
-			+ " WHERE " + USERNAME + " = ?";
+			+ " WHERE UPPER(" + USERNAME + ") = ?";
+	
 	private static final String SQL_GET_USERS_CONTAINING = "select * from "
-			+ USERS + " where " + USERNAME + " LIKE ('%' || ? || '%')";
-	private static final String SQL_LOG_IN = SQL_GET_BY_USERNAME + " AND "
-			+ PASSWORD + " = ?";
+			+ USERS + " where UPPER(" + USERNAME + ") LIKE ('%' || ? || '%')";
+	
+	private static final String SQL_LOG_IN = "SELECT * FROM " + USERS
+			+ " WHERE " + USERNAME + " = ?" + " AND " + PASSWORD + " = ?";
 
 	private static final String SQL_GET_FOLLOWING_USERS = "SELECT * FROM "
 			+ USERS + " WHERE " + USER_ID + " IN (" + SQL_GET_FOLLOWING_IDS + ")";
@@ -145,7 +148,7 @@ public class UserJDBC implements UserDAO {
 
 		try {
 			final List<User> list = jdbcTemplate.query(SQL_GET_BY_USERNAME,
-					userRowMapper, username);
+					userRowMapper, username.toUpperCase());
 			if (list.isEmpty()) {
 				return null; // TODO difference between no user found and
 								// DataAccessException pending
@@ -161,13 +164,13 @@ public class UserJDBC implements UserDAO {
 			return jdbcTemplate.query(
 					SQL_GET_USERS_CONTAINING + " LIMIT " + resultsPerPage
 							+ " OFFSET " + (page - 1) * resultsPerPage,
-					userRowMapper, text);
+					userRowMapper, text.toUpperCase());
 		} catch (Exception e) { return null; } // SQLException or DataAccessException
 	}
 
 	@Override
 	public Boolean isUsernameAvailable(String username) {
-		return getByUsername(username) == null;
+		return getByUsername(username.toUpperCase()) == null;
 	}
 
 	@Override

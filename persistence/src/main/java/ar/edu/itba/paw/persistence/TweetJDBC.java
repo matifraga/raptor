@@ -57,7 +57,7 @@ public class TweetJDBC implements TweetDAO {
 
 	private static final String SQL_GET_TWEETS_WITH_HASHTAG = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
 						+ HASHTAGS + ", " + USERS + " where " + HASHTAGS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + 
-						" AND " + TWEETS + "." + USER_ID + " = " + USERS + "." + USER_ID + " AND " + HASHTAG + " = ? ORDER BY " 
+						" AND " + TWEETS + "." + USER_ID + " = " + USERS + "." + USER_ID + " AND UPPER(" + HASHTAG + ") = ? ORDER BY " 
 						+ TIMESTAMP + " DESC";
 	
 	private static final String SQL_GET_TWEETS_WITH_MENTION = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
@@ -69,7 +69,7 @@ public class TweetJDBC implements TweetDAO {
 	
 	private static final String SQL_GET_TWEETS_CONTAINING = "select " + TWEET_SELECT + " from " + TWEETS 
 						+ ", " + USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID + 
-						" AND " + MESSAGE + " LIKE ('%' || ? || '%') ORDER BY " + TIMESTAMP + " DESC";
+						" AND UPPER(" + MESSAGE + ") LIKE ('%' || ? || '%') ORDER BY " + TIMESTAMP + " DESC";
 
 	private static final String SQL_GET_GLOBAL_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
 						+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
@@ -152,7 +152,7 @@ public class TweetJDBC implements TweetDAO {
 	@Override
 	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page) {
 		try{
-			return jdbcTemplate.query(SQL_GET_TWEETS_WITH_HASHTAG + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, hashtag);
+			return jdbcTemplate.query(SQL_GET_TWEETS_WITH_HASHTAG + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, hashtag.toUpperCase());
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			return null; } //DataAccessException or SQLException
@@ -168,7 +168,7 @@ public class TweetJDBC implements TweetDAO {
 	@Override
 	public List<Tweet> searchTweets(String text, final int resultsPerPage, final int page) {
 		try{
-			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_TWEETS_CONTAINING + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, text);
+			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_TWEETS_CONTAINING + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, text.toUpperCase());
 			return ans;
 		} catch (Exception e){ return null; }
 	}

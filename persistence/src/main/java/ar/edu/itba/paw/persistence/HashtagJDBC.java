@@ -44,11 +44,11 @@ public class HashtagJDBC implements HashtagDAO {
 													" AND (UNIX_TIMESTAMP(CURRENT_TIMESTAMP)-UNIX_TIMESTAMP(" + TIMESTAMP + ")) <= "+ INTERVAL +
 													" GROUP BY " + HASHTAG + " ORDER BY hCount DESC, maxTime DESC LIMIT ?";
 	
-	private static final String SQL_GET_TRENDINGS =  "SELECT " + HASHTAG + ", COUNT (" + HASHTAG + ") as hCount, MAX(" + TIMESTAMP + ") as maxTime" +
+	private static final String SQL_GET_TRENDINGS =  "SELECT UPPER(" + HASHTAG + "), MAX(hashtag) as hashtag, COUNT (" + HASHTAG + ") as hCount, MAX(" + TIMESTAMP + ") as maxTime" +
 			" FROM " + HASHTAGS + ", " + TWEETS + 
 			" WHERE " + TWEETS + "." + TWEET_ID + " = " + HASHTAGS + "." + TWEET_ID + 
 			" AND age(?," +  TIMESTAMP + ") <= '1 hours'" +
-			" GROUP BY " + HASHTAG + " ORDER BY hCount DESC, maxTime DESC LIMIT ?";
+			" GROUP BY UPPER(" + HASHTAG + ") ORDER BY hCount DESC, maxTime DESC LIMIT ?"; 
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
