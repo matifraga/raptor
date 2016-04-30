@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.webapp.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,20 +17,20 @@ import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 
 @Controller
-@RequestMapping("/search")
+@RequestMapping(value = { "/search", "/search/{page:[1-9][0-9]*}" })
 public class SearchController extends RaptorController{
 	
-	private final static String SEARCH = "searchResults";
-	private final static String SEARCH_TYPE = "searchType";
-	private final static String USER_SEARCH = "userSearch";
-	private final static String TWEET_SEARCH = "tweetSearch";	
-	private final static String RESULT = "resultList";
-	private final static String NUMBER_OF_RESULTS = "number";
+	private static final String SEARCH = "searchResults";
+	private static final String SEARCH_TYPE = "searchType";
+	private static final String USER_SEARCH = "userSearch";
+	private static final String TWEET_SEARCH = "tweetSearch";	
+	private static final String RESULT = "resultList";
+	private static final String NUMBER_OF_RESULTS = "number";
 	
-	private final static int USER_RESULTS_PER_PAGE = 10;
-	private final static int TWEET_RESULTS_PER_PAGE = 10;
+	private static final int USER_RESULTS_PER_PAGE = 10;
+	private static final int TWEET_RESULTS_PER_PAGE = 10;
 	
-	private final static String SEARCH_TEXT = "searchText";
+	private static final String SEARCH_TEXT = "searchText";
 	
 	@Autowired
 	private UserService userService;

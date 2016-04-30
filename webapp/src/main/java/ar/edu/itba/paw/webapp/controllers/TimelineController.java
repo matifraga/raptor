@@ -29,10 +29,10 @@ public class TimelineController extends RaptorController{
 	private static final String UNFOLLOW = "unfollow";
 	private static final String MENTIONS = "mentions";
 	private static final String MAP_USERS = "{" + USERNAME + "}";
-	private static final String MAP_USERS_WITH_PAGING = MAP_USERS + "/{" + PAGE + "}";
+	private static final String MAP_USERS_WITH_PAGING = MAP_USERS + "/{" + PAGE + ":[1-9][0-9]*}";
 
 	private static final String MAP_USER_MENTIONS = MAP_USERS +"/" + MENTIONS;
-	private static final String MAP_USER_MENTIONS_WITH_PAGING = MAP_USER_MENTIONS + "/{" + PAGE + "}";
+	private static final String MAP_USER_MENTIONS_WITH_PAGING = MAP_USER_MENTIONS + "/{" + PAGE + ":[1-9][0-9]*}";
 
 	private static final String MAP_USER_FOLLOW = MAP_USERS +"/" + FOLLOW;
 	private static final String MAP_USER_UNFOLLOW = MAP_USERS +"/" + UNFOLLOW;

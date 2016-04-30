@@ -15,7 +15,7 @@ import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 
 @Controller
-@RequestMapping(value = { "/", "/{page}" })
+@RequestMapping(value = { "/", "/{page:[1-9][0-9]*}" })
 public class FeedController extends RaptorController {
 
 	private final static String FEED = "feed";
