@@ -9,8 +9,10 @@ import java.util.regex.Pattern;
 
 public class Tweet {
 	
-	private final static String HASHTAG_PATTERN = "(?:\\s|\\A)[##]+([A-Za-z0-9-_]+)";
-	private final static String MENTION_PATTERN = "(?:\\s|\\A)[@]+([A-Za-z0-9-_]+)";
+	private final static String HASHTAG_REGEX = "(?:\\s|\\A)[##]+([A-Za-z0-9-_]+)";
+	private final static String MENTION_REGEX = "(?:\\s|\\A)[@]+([A-Za-z0-9-_]+)";
+	private final static Pattern HASHTAG_PATTERN = Pattern.compile(HASHTAG_REGEX);
+	private final static Pattern MENTION_PATTERN = Pattern.compile(MENTION_REGEX);
 	
 	private final static int MAX_LENGTH=256;
 	
@@ -64,7 +66,7 @@ public class Tweet {
 	 * @return List of mentinos.
 	 */
 	public Set<String> getMentions(){
-		return patternFilter(msg, MENTION_PATTERN, "@");
+		return patternFilter(msg, MENTION_PATTERN ,"@");
 	}
 	
 	/**
@@ -75,9 +77,8 @@ public class Tweet {
 	 * @param c A Special character.
 	 * @return
 	 */
-	private Set<String> patternFilter(String msg, String pattern, String c) { 
+	private Set<String> patternFilter(String msg, Pattern pt, String c) { 
 		 Set<String> ans = new HashSet<String>();
-	     Pattern pt = Pattern.compile(pattern); //TODO pattern private, arg Pattern
 	     Matcher matcher = pt.matcher(msg);
 	     String result = "";
 	 
