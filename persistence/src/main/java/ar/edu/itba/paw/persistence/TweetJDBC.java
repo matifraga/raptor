@@ -1,19 +1,28 @@
 package ar.edu.itba.paw.persistence;
 
 
+import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
+import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
+import static ar.edu.itba.paw.persistence.UserJDBC.EMAIL;
+import static ar.edu.itba.paw.persistence.UserJDBC.FIRST_NAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.LAST_NAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.USERNAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.USERS;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.sql.Timestamp;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -21,11 +30,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
-
-import static ar.edu.itba.paw.persistence.UserJDBC.*;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.*;
-import static ar.edu.itba.paw.persistence.MentionJDBC.*;
-import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
 
 /**
  * 
@@ -40,16 +44,19 @@ public class TweetJDBC implements TweetDAO {
 	static final String USER_ID = "userID";
 	static final String TIMESTAMP = "timestamp";
 	static final String TWEETS = "tweets";
+	static final String RETWEET_FROM = "retweetFrom";
+	static final String REPLY_FROM = "replyFrom";	
+	static final String REPLY_TO = "replyTo";
+	static final String COUNT_FAVORITES = "countFavorites";
+	static final String COUNT_RETWEETS = "countRetweets";
 	
-	private static final int	MESSAGE_MAX_LENGTH = 256;
 	static final int	TWEET_ID_LENGTH = 12;
 	
 	private static final String TWEET_SELECT = TWEETS + "." + TWEET_ID + ", " + MESSAGE + ", " + TWEETS + "." + USER_ID
 						+ " AS " + USER_ID + ", " + TIMESTAMP + ", " + USERNAME + ", " + FIRST_NAME 
-						+ ", " + LAST_NAME + ", " + EMAIL;
-	
-	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "; 
-	
+						+ ", " + LAST_NAME + ", " + EMAIL + ", " + RETWEET_FROM + ", " + REPLY_TO + ", " + REPLY_FROM
+						+ ", " + COUNT_FAVORITES + ", " + COUNT_RETWEETS;
+		
 	private static final String SQL_GET_TWEETS = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
 						+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID + 
 						" AND " + USERS + "." + USER_ID + " = ? ORDER BY " 
@@ -92,17 +99,6 @@ public class TweetJDBC implements TweetDAO {
 		tweetRowMapper = new TweetRowMapper();
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(TWEETS);
-		try{
-			jdbcTemplate.execute(SQL_CREATE_TABLE + TWEETS + " ("
-					+ TWEET_ID +" char(" + TWEET_ID_LENGTH + ") NOT NULL,"
-					+ MESSAGE +" varchar(" + MESSAGE_MAX_LENGTH + ") NOT NULL,"
-					+ USER_ID +" char(" + USER_ID_LENGTH + ") NOT NULL,"
-					+ TIMESTAMP +" TIMESTAMP NOT NULL,"
-					+ "PRIMARY KEY ("+ TWEET_ID +"),"
-					+ "FOREIGN KEY (" + USER_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT);");
-		} catch (DataAccessException e) {
-			//TODO db error
-		}
 	}
 
 	@Override
@@ -112,12 +108,17 @@ public class TweetJDBC implements TweetDAO {
 		String id = randomTweetId();
 		Timestamp thisMoment = new Timestamp(new Date().getTime());
 		try {
-			ans = new Tweet(msg, id, owner, thisMoment);
+			ans = new Tweet(msg, id, owner, thisMoment, 0, 0);
 		} catch (IllegalArgumentException e) { return null; }
 		args.put(TWEET_ID, id);
 		args.put(MESSAGE, msg);
 		args.put(USER_ID, owner.getId());
 		args.put(TIMESTAMP, thisMoment);
+		args.put(COUNT_FAVORITES, 0);
+		args.put(COUNT_RETWEETS, 0);
+		args.put(REPLY_FROM, null);
+		args.put(REPLY_TO, null);
+		args.put(RETWEET_FROM, null);
 		jdbcInsert.execute(args);
 		return ans;
 	}
@@ -202,7 +203,9 @@ public class TweetJDBC implements TweetDAO {
 
 		@Override
 		public Tweet mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new Tweet(rs.getString(MESSAGE),rs.getString(TWEET_ID),new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID)), rs.getTimestamp(TIMESTAMP));
+			return new Tweet(rs.getString(MESSAGE), rs.getString(TWEET_ID),
+					new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID)),
+					rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES));
 		}
 
 	}

@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import static ar.edu.itba.paw.persistence.UserJDBC.*;
 /**
  * 
  * Testing model
@@ -23,9 +22,7 @@ public class FollowerJDBC implements FollowerDAO {
 	static final String FOLLOWERS = "followers";
 	static final String FOLLOWER_ID = "followerID";
 	static final String FOLLOWING_ID = "followingID";
-	
-	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "; 
-	
+		
 	private static final String SQL_IS_FOLLOWER = "SELECT EXISTS( SELECT * FROM " + FOLLOWERS + 
 								" WHERE " + FOLLOWER_ID + " = ? AND " +
 								FOLLOWING_ID + " = ?)";
@@ -45,16 +42,6 @@ public class FollowerJDBC implements FollowerDAO {
 	public FollowerJDBC(final DataSource ds) {
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(FOLLOWERS);
-		try {
-		jdbcTemplate.execute(SQL_CREATE_TABLE + FOLLOWERS + " ("
-				+ FOLLOWER_ID +" char(" + USER_ID_LENGTH + ") NOT NULL, "
-				+ FOLLOWING_ID +" char(" + USER_ID_LENGTH + ") NOT NULL, "
-				+ "PRIMARY KEY ("+ FOLLOWER_ID +" , " + FOLLOWING_ID + "),"
-				+ "FOREIGN KEY ("+ FOLLOWER_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT,"
-				+ "FOREIGN KEY ("+ FOLLOWING_ID + ") REFERENCES " + USERS + " ON DELETE CASCADE ON UPDATE RESTRICT);");
-		} catch (DataAccessException e) {
-			//TODO db error
-		}
 	}
 
 	@Override

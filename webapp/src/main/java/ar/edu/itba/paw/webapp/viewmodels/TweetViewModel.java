@@ -20,12 +20,16 @@ public class TweetViewModel {
     private final String id;
     private final User owner;
     private final String timestamp;
+	private final int countRetweets;
+	private	final int countFavorites;
 
     public TweetViewModel(Tweet tweet){
         this.msg = parseToHTMLString(tweet.getMsg());
         this.id = tweet.getId();
         this.owner = tweet.getOwner();
         this.timestamp = tweet.getTimestamp();
+        this.countRetweets = tweet.getCountRetweets();
+        this.countFavorites = tweet.getCountFavorites();
     }
 
     static public TweetViewModel transformTweet(Tweet tweet) {
@@ -53,10 +57,18 @@ public class TweetViewModel {
     public String getTimestamp() {
         return timestamp;
     }
+    
+    public int getCountRetweets() {
+		return countRetweets;
+	}
+
+	public int getCountFavorites() {
+		return countFavorites;
+	}
 
     // WE NEED TO MOVE ALL THIS SOMEPLACE ELSE
 
-    private String parseURL(String s) {
+	private String parseURL(String s) {
         String [] parts = s.split("\\s+");
 
         for(int i=0; i<parts.length; i++) try {

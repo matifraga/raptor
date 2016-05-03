@@ -26,15 +26,24 @@ public class Tweet {
 	private final String id;
 	private final User owner;
 	private final Timestamp timestamp;
+	private final int countRetweets;
+	private	final int countFavorites;
 	
-	/**
-	 * Create a tweet. 
-	 * 
-	 * @param msg The tweet's message.
-	 * @param id The tweet's ID.
-	 * @param userID The user's ID.
-	 * @throws IllegalArgumentException
-	 */
+	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp,
+			final int countRetweets, final int countFavorites) throws IllegalArgumentException {
+		if (!isValidLength(msg)) {
+			throw new IllegalArgumentException(ERROR_LENGTH);
+		}
+		this.msg = msg;
+		this.id = id;
+		this.owner = owner;
+		this.timestamp = timestamp;
+		this.countRetweets = countRetweets;
+		this.countFavorites = countFavorites;
+	}
+	
+	
+	//ASI NO LLORAN LOS TESTS POR AHORA.
 	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
 		if (!isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
@@ -43,28 +52,20 @@ public class Tweet {
 		this.id = id;
 		this.owner = owner;
 		this.timestamp = timestamp;
-	}
+		this.countRetweets = 0;
+		this.countFavorites = 0;
+	}     
+	
+	
 	
 	private boolean isValidLength(String msg) {
 		return (msg.length() <= MAX_LENGTH && msg.length() > 0); 
 	}
 	
-	/**
-	 * Get hashtags from a tweet.
-	 * 
-	 * @param msg The tweet's message.
-	 * @return List of hashtags.
-	 */
 	public Set<String> getHashtags(){
 		return patternFilter(msg, HASHTAG_PATTERN, "#");
 	}
 	
-	/**
-	 * Get  mentions from a tweet.
-	 * 
-	 * @param msg The tweet's message.
-	 * @return List of mentinos.
-	 */
 	public Set<String> getMentions(){
 		return patternFilter(msg, MENTION_PATTERN ,"@");
 	}
@@ -145,4 +146,11 @@ public class Tweet {
 		return sdf.format(timestamp);
 	}
 
+	public int getCountRetweets() {
+		return countRetweets;
+	}
+
+	public int getCountFavorites() {
+		return countFavorites;
+	}
 }

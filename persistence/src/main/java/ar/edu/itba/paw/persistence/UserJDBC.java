@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
-import java.sql.ResultSet;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWER_IDS;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +20,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.paw.models.User;
-
-import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
 
 /**
  * 
@@ -43,8 +43,6 @@ public class UserJDBC implements UserDAO {
 	private static final int FIRSTNAME_MAX_LENGTH = 100;
 	private static final int LASTNAME_MAX_LENGTH = 100;
 	static final int USER_ID_LENGTH = 12;
-
-	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
 	
 	private static final String SQL_GET_BY_USERNAME = "SELECT * FROM " + USERS
 			+ " WHERE UPPER(" + USERNAME + ") = ?";
@@ -69,19 +67,6 @@ public class UserJDBC implements UserDAO {
 		userRowMapper = new UserRowMapper();
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(USERS);
-		try {
-			jdbcTemplate.execute(SQL_CREATE_TABLE + USERS + " (" + USERNAME
-					+ " varchar(" + USERNAME_MAX_LENGTH + ") NOT NULL,"
-					+ PASSWORD + " varchar(" + PASSWORD_MAX_LENGTH
-					+ ") NOT NULL," + EMAIL + " varchar(" + EMAIL_MAX_LENGTH
-					+ ") NOT NULL," + FIRST_NAME + " varchar("
-					+ FIRSTNAME_MAX_LENGTH + ") NOT NULL," + LAST_NAME
-					+ " varchar(" + LASTNAME_MAX_LENGTH + ") NOT NULL," + USER_ID
-					+ " char(" + USER_ID_LENGTH + ") NOT NULL,"
-					+ "PRIMARY KEY (" + USER_ID + "));");
-		} catch (DataAccessException e) {
-			// TODO db error
-		}
 	}
 
 	/**
@@ -132,7 +117,7 @@ public class UserJDBC implements UserDAO {
 			final String email, final String firstName, final String lastName) {
 		boolean isLengthValid = (username.length() <= USERNAME_MAX_LENGTH
 				&& password.length() <= PASSWORD_MAX_LENGTH
-				&& email.length() <= PASSWORD_MAX_LENGTH
+				&& email.length() <= EMAIL_MAX_LENGTH
 				&& firstName.length() <= FIRSTNAME_MAX_LENGTH && lastName
 				.length() <= LASTNAME_MAX_LENGTH);
 		boolean noEmptyParameters = (username.length() > 0

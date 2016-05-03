@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
+import static ar.edu.itba.paw.persistence.TweetJDBC.TIMESTAMP;
+import static ar.edu.itba.paw.persistence.TweetJDBC.TWEETS;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -17,8 +20,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import static ar.edu.itba.paw.persistence.TweetJDBC.*;
-
 /**
  * 
  * Testing model
@@ -30,13 +31,9 @@ public class HashtagJDBC implements HashtagDAO {
 	static final String HASHTAGS = "hashtags";
 	static final String HASHTAG = "hashtag";
 	static final String TWEET_ID = "tweetID";
-	
-	private static final int HASHTAG_LENGTH = 256;
-	
-	private static final int INTERVAL = 20000; // in seconds
 		
-	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "; 
-	
+	private static final int INTERVAL = 20000; // in seconds
+			
 	@SuppressWarnings("unused") //For Mock DB testing
 	private static final String SQL_GET_TRENDINGS_HSQL = "SELECT " + HASHTAG + ", COUNT (" + HASHTAG + ") as hCount, MAX(" + TIMESTAMP + ") as maxTime" +
 													" FROM " + HASHTAGS + ", " + TWEETS + 
@@ -59,15 +56,6 @@ public class HashtagJDBC implements HashtagDAO {
 		hashtagRowMapper = new HashtagRowMapper();
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(HASHTAGS);
-		try {
-		jdbcTemplate.execute(SQL_CREATE_TABLE + HASHTAGS + " ("
-				+ HASHTAG +" varchar(" + HASHTAG_LENGTH + ") NOT NULL, "
-				+ TWEET_ID +" char(" + TWEET_ID_LENGTH + ") NOT NULL, "
-				+ "PRIMARY KEY ("+ HASHTAG +" , " + TWEET_ID + "),"
-				+ "FOREIGN KEY ("+ TWEET_ID + ") REFERENCES " + TWEETS + " ON DELETE CASCADE ON UPDATE RESTRICT);");
-		} catch (DataAccessException e) {
-			//TODO db error
-		}
 	}
 
 	@Override

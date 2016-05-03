@@ -27,7 +27,7 @@
 			</c:when>
 			<c:otherwise>
 				<spring:message var="searchResultsError" code="searchResults.error"/>
-				<c:set var="errorMessage" value= '${searchResultsError}'scope="request"/>
+				<c:set var="errorMessage" value= '${searchResultsError}' scope="request"/>
 				<jsp:include page="fragments/errorPage.jsp"/>
 			</c:otherwise>
 		</c:choose>
