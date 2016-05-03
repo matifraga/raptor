@@ -43,19 +43,6 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 		return viewResolver;
 	}
 
-
-	/*@Bean
-	public DataSource dataSource() {
-		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-		ds.setDriverClass(JDBCDriver.class);
-		ds.setUrl("jdbc:hsqldb:mem:paw");
-		ds.setUsername("hq");
-		ds.setPassword("");
-
-		return ds;
-	}*/
-	
-
 	@Bean
 	public DataSource dataSource() {
 		final DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -70,7 +57,7 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 	@Bean
 	public MessageSource messageSource(){
 		final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("/resources/i18n/messages");
+		messageSource.setBasename("classpath:i18n/messages");
 		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		return messageSource;
 	}

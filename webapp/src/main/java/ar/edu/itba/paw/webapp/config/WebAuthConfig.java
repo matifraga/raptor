@@ -1,5 +1,3 @@
-//@BEAN PROBLEM WITH USER DETAILS SERVICE.
-/*
 package ar.edu.itba.paw.webapp.config;
 
 import java.util.concurrent.TimeUnit;
@@ -16,7 +14,7 @@ import ar.edu.itba.paw.webapp.services.PawUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("ar.edu.itba.paw.webapp.auth")
+@ComponentScan("ar.edu.itba.paw.webapp.services")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADMIN_ROLE = "ADMIN";
@@ -73,4 +71,3 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(CSS, JS, IMG, FAVICON, FORBIDDEN);
     }
 }
-*/
