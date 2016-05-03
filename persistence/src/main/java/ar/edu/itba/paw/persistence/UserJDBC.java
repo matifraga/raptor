@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWER_IDS;
-import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +35,7 @@ public class UserJDBC implements UserDAO {
 	static final String LAST_NAME = "lastName";
 	static final String USER_ID = "userID";
 	static final String USERS = "users";
+	static final String VERIFIED = "verified";
 
 	private static final int USERNAME_MAX_LENGTH = 100;
 	private static final int PASSWORD_MAX_LENGTH = 100;
@@ -106,11 +106,12 @@ public class UserJDBC implements UserDAO {
 		args.put(LAST_NAME, lastName);
 		String userId = randomUserId();
 		args.put(USER_ID, userId);
+		args.put(VERIFIED, false);
 		try {
 			jdbcInsert.execute(args);
 		} catch (DataAccessException e) { return null; }
 
-		return new User(username, email, firstName, lastName, userId);
+		return new User(username, email, firstName, lastName, userId, false);
 	}
 
 	private boolean isValidUser(final String username, final String password,
@@ -178,7 +179,7 @@ public class UserJDBC implements UserDAO {
 				throws SQLException {
 			return new User(rs.getString(USERNAME), rs.getString(EMAIL),
 					rs.getString(FIRST_NAME), rs.getString(LAST_NAME),
-					rs.getString(USER_ID));
+					rs.getString(USER_ID), rs.getBoolean(VERIFIED));
 		}
 	}
 

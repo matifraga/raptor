@@ -9,7 +9,7 @@
                 <img class="profile-picture" src=${user.profilePicture}/>
             </li>
             <li style="font-size: 1.2em;"><a href="../user/${requestScope.user.username}">${requestScope.user.firstName} ${requestScope.user.lastName}</a></li>
-            <li><a href="../user/${requestScope.user.username}">@${requestScope.user.username}</a></li>
+            <li><a href="../user/${requestScope.user.username}">@${requestScope.user.username} <c:if test="${requestScope.user.verified == true}"><span class="glyphicon glyphicon-ok-sign" /></c:if></a></li>
             <c:choose>
                 <c:when test="${requestScope.following == 0}">
                     <form action="/user/${requestScope.user.username}/follow" method="post">

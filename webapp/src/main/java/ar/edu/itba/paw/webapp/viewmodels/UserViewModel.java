@@ -5,11 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.postgresql.jdbc2.ArrayAssistantRegistry;
-
-import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 
 public class UserViewModel {
@@ -22,6 +18,7 @@ public class UserViewModel {
 	private final String email;
 	private final String firstName;
 	private final String lastName;
+	private final Boolean verified;
 	
 	private final String profilePicture;
 
@@ -32,6 +29,7 @@ public class UserViewModel {
 		this.email = u.getEmail();
 		this.firstName = u.getFirstName();
 		this.lastName = u.getLastName();
+		this.verified = u.getVerified();
 		this.profilePicture = generateProfilePictureUrl(u, size);
 	}
 	
@@ -81,6 +79,10 @@ public class UserViewModel {
 
 	public String getLastName() {
 		return lastName;
+	}
+	
+	public Boolean getVerified() {
+		return verified;
 	}
 
 	public String getProfilePicture() {

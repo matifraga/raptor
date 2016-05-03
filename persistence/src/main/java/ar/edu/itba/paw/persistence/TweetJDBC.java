@@ -1,15 +1,10 @@
 package ar.edu.itba.paw.persistence;
 
 
-import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
-import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
-import static ar.edu.itba.paw.persistence.UserJDBC.EMAIL;
-import static ar.edu.itba.paw.persistence.UserJDBC.FIRST_NAME;
-import static ar.edu.itba.paw.persistence.UserJDBC.LAST_NAME;
-import static ar.edu.itba.paw.persistence.UserJDBC.USERNAME;
-import static ar.edu.itba.paw.persistence.UserJDBC.USERS;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.*;
+import static ar.edu.itba.paw.persistence.MentionJDBC.*;
+import static ar.edu.itba.paw.persistence.UserJDBC.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,7 +50,7 @@ public class TweetJDBC implements TweetDAO {
 	
 	private static final String TWEET_SELECT = TWEETS + "." + TWEET_ID + ", " + MESSAGE + ", " + TWEETS + "." + USER_ID
 						+ " AS " + USER_ID + ", " + TIMESTAMP + ", " + USERNAME + ", " + FIRST_NAME 
-						+ ", " + LAST_NAME + ", " + EMAIL + ", " + RETWEET_FROM + ", " + REPLY_TO + ", " + REPLY_FROM
+						+ ", " + LAST_NAME + ", " + EMAIL + ", " + VERIFIED + ", " + RETWEET_FROM + ", " + REPLY_TO + ", " + REPLY_FROM
 						+ ", " + COUNT_FAVORITES + ", " + COUNT_RETWEETS;
 		
 	private static final String SQL_GET_TWEETS = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
@@ -237,7 +232,7 @@ public class TweetJDBC implements TweetDAO {
 		@Override
 		public Tweet mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return new Tweet(rs.getString(MESSAGE), rs.getString(TWEET_ID),
-					new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID)),
+					new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID), rs.getBoolean(VERIFIED)),
 					rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES));
 		}
 

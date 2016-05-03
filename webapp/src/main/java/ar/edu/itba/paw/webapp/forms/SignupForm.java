@@ -13,10 +13,10 @@ public class SignupForm {
 	@NotBlank @Email @Length(max=100)
     private String email;
 
-    @NotBlank @Length(max=100) @Pattern(regexp ="[a-zA-Z]*$")
+    @NotBlank @Length(max=100) @Pattern(regexp ="[a-zA-Z ]*$")
     private String firstName;
 
-    @NotBlank @Length(max=100) @Pattern(regexp ="[a-zA-Z]*$")
+    @NotBlank @Length(max=100) @Pattern(regexp ="[a-zA-Z ]*$")
     private String lastName;
 
     @Length(min=6,max=12) @Pattern(regexp = "[a-zA-Z0-9]*")

@@ -67,7 +67,7 @@
                             </li>
                         </c:when>
                         <c:otherwise>
-                            <li class="dropdown"><a href="/user/${navbarViewUser.username}" style="color: #4A4A4A;">${navbarViewUser.firstName}<span class="caret"></span></a>
+                            <li class="dropdown"><a href="/user/${navbarViewUser.username}" style="color: #4A4A4A;">${navbarViewUser.firstName} <c:if test="${navbarViewUser.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if><span style="color: #4A4A4A;" class="caret"/></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/logout" style="color: #4A4A4A; text-align: center">Log out</a></li>
                                 </ul>

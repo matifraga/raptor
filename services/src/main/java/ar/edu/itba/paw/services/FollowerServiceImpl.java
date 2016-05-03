@@ -19,6 +19,7 @@ public class FollowerServiceImpl implements FollowerService {
 
 	@Override
 	public void follow(final User follower, final User following) {
+		if(follower.equals(following)) return;
 		followerDAO.follow(follower.getId(), following.getId());
 	}
 

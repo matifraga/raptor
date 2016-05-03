@@ -7,15 +7,18 @@ public class User {
 	private final String email;
 	private final String firstName;
 	private final String lastName;
+	private final Boolean verified;
+	
 	@SuppressWarnings("unused")	private final String miniBio = null; //TODO use!
 
 	public User(String username, String email,
-			String firstName, String lastName, String id) {
+			String firstName, String lastName, String id, Boolean verified) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.verified = verified;
 	}
 
 	@Override
@@ -64,5 +67,9 @@ public class User {
 
 	public String getLastName() {
 		return lastName;
+	}
+	
+	public Boolean getVerified() {
+		return verified;
 	}
 }

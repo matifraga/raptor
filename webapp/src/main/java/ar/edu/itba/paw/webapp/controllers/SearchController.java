@@ -13,6 +13,7 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 @Controller
 @RequestMapping(value = { "/search", "/search/{page:[1-9][0-9]*}" })
@@ -29,6 +30,7 @@ public class SearchController extends RaptorController{
 	private static final int TWEET_RESULTS_PER_PAGE = 10;
 	
 	private static final String SEARCH_TEXT = "searchText";
+	private static final int SEARCH_PIC_SIZE = 150;
 	
 	@Autowired
 	private UserService userService;
@@ -54,7 +56,7 @@ public class SearchController extends RaptorController{
 						mav.addObject(RESULT, hashtags);
 						break;
         	case '@':   mav.addObject(SEARCH_TYPE, USER_SEARCH);
-        				List<User> users = userService.searchUsers(text.substring(1),USER_RESULTS_PER_PAGE,1);
+        				List<UserViewModel> users = UserViewModel.transform(userService.searchUsers(text.substring(1),USER_RESULTS_PER_PAGE,1), SEARCH_PIC_SIZE);
         				mav.addObject(NUMBER_OF_RESULTS, users.size());
         				mav.addObject(RESULT, users);
         				break;

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
 	firstName 	varchar(100) 	NOT NULL,
 	lastName 	varchar(100) 	NOT NULL,
 	userID 		char(12) 		NOT NULL,
+	verified	boolean			NOT NULL,
 
 	PRIMARY KEY (userID)
 );

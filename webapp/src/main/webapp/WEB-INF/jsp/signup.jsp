@@ -52,7 +52,7 @@
             </div>
             <div class="form-group">
 	            <div class="checkbox">
-	                <form:label path="terms"><form:checkbox path="terms"/> *<spring:message code="form.terms"/></form:label>
+	                <label for="terms"><form:checkbox id="terms" path="terms"/> *<spring:message code="form.terms" /></label>
 	            </div>
 				<form:errors path="terms" cssClass="error"/>
             </div>
