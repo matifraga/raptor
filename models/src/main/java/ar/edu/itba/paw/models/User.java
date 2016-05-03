@@ -9,8 +9,7 @@ public class User {
 	private final String lastName;
 	@SuppressWarnings("unused")	private final String miniBio = null; //TODO use!
 
-	public User(String username, String email,
-			String firstName, String lastName, String id) {
+	public User(String username, String email, String firstName, String lastName, String id) {
 		this.id = id;
 		this.username = username;
 		this.email = email;

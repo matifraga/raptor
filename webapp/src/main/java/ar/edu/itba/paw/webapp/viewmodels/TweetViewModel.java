@@ -17,6 +17,9 @@ public class TweetViewModel {
 	
 	private static final int PIC_SIZE = 150;
 	
+	private static final String tweetPattern = "(?:\\s|\\A)[##]+([A-Za-z0-9-_]+)";
+    private static final Pattern pattern = Pattern.compile(tweetPattern);
+	
     private final String msg;
     private final String id;
     private final UserViewModel owner;
@@ -33,7 +36,7 @@ public class TweetViewModel {
         this.countFavorites = tweet.getCountFavorites();
     }
 
-	static public TweetViewModel transformTweet(Tweet tweet) {
+	public static TweetViewModel transformTweet(Tweet tweet) {
         return new TweetViewModel(tweet);
     }
 
@@ -72,7 +75,7 @@ public class TweetViewModel {
 
         for(int i=0; i<parts.length; i++) try {
             URL url = new URL(parts[i]);
-            parts[i] = "<a href=\"" + url + "\">"+ url + "</a> ";
+            parts[i] = new StringBuilder("<a href=\"").append(url).append("\">").append(url).append("</a> ").toString();
         } catch (MalformedURLException e) {
             // Ignore
         }
@@ -81,8 +84,6 @@ public class TweetViewModel {
     }
 
     private String parseHashtags(String s) {
-        String patternStr = "(?:\\s|\\A)[##]+([A-Za-z0-9-_]+)";
-        Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(s);
         String result = "";
 
@@ -90,8 +91,9 @@ public class TweetViewModel {
             result = matcher.group();
             result = result.replace(" ", "");
             String search = result.replace("#", "");
-            String searchHTML="<a href='/search?searchText=%23" + search + "'>" + result + "</a>";
-            s = s.replace(result,searchHTML);
+            StringBuilder searchHTML = new StringBuilder("<a href='/search?searchText=%23").append(search).
+            		append("'>").append(result).append("</a>");
+            s = s.replace(result,searchHTML.toString());
         }
 
         return s;
