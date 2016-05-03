@@ -78,11 +78,8 @@ public class SignupForm {
 
     @Override
     public String toString() {
-        return "SignupForm{" +
-                "email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                '}';
+        return new StringBuffer("SignupForm{").append("email='").append(email).append('\'').append(", firstName='").append(firstName)
+        		.append('\'').append(", lastName='").append(lastName).append('\'')
+        		.append(", username='").append(username).append('\'').append('}').toString();
     }
 }
