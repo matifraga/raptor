@@ -10,15 +10,14 @@ import java.util.stream.Collectors;
 
 import ar.edu.itba.paw.models.Tweet;
 
-/**
- * Created by Tomi on 4/22/16.
- */
 public class TweetViewModel {
 	
 	private static final int PIC_SIZE = 150;
 	
-	private static final String tweetPattern = "(?:\\s|\\A)[##]+([A-Za-z0-9-_]+)";
-    private static final Pattern pattern = Pattern.compile(tweetPattern);
+	private static final String hashtagPattern = "(?:\\s|\\A)[##]+([A-Za-z0-9-_]+)";
+    private static final Pattern Hpattern = Pattern.compile(hashtagPattern);
+    private static final String mentionPattern = "(?:\\s|\\A)[@]+([A-Za-z0-9-_]+)";
+    private static final Pattern Mpattern = Pattern.compile(mentionPattern);
 	
     private final String msg;
     private final String id;
@@ -84,7 +83,7 @@ public class TweetViewModel {
     }
 
     private String parseHashtags(String s) {
-        Matcher matcher = pattern.matcher(s);
+        Matcher matcher = Hpattern.matcher(s);
         String result = "";
 
         while (matcher.find()) {
@@ -100,17 +99,15 @@ public class TweetViewModel {
     }
 
     private String parseUsers(String s) {
-        String patternStr = "(?:\\s|\\A)[@]+([A-Za-z0-9-_]+)";
-        Pattern pattern = Pattern.compile(patternStr);
-        Matcher matcher = pattern.matcher(s);
+        Matcher matcher = Mpattern.matcher(s);
         String result = "";
 
         while (matcher.find()) {
             result = matcher.group();
             result = result.replace(" ", "");
             String rawName = result.replace("@", "");
-            String userHTML="<a href='/user/" + rawName + "'>" + result + "</a>";
-            s = s.replace(result,userHTML);
+            StringBuilder userHTML=new StringBuilder("<a href='/user/").append(rawName).append("'>").append(result).append("</a>");
+            s = s.replace(result,userHTML.toString());
         }
 
         return s;

@@ -51,7 +51,8 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 		return viewResolver;
 	}
 
-	/*@Bean					//BASE DE DATOS DE HEROKU LA DEJO POR LAS DUDAS
+	//BASE DE DATOS DE HEROKU (old)
+	/*@Bean					
 	public DataSource dataSource() {
 		final DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("org.postgresql.Driver");
@@ -62,7 +63,9 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 		return ds;
 	}*/
 	
-	@Bean					//NUEVA BASE DE DATOS PARA TESTEO      NO BORRAR
+	//DO NOT DELETE
+	//NUEVA BASE DE DATOS PARA TESTEO      
+	@Bean					
 	public DataSource dataSource() {
 		final DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("org.postgresql.Driver");
