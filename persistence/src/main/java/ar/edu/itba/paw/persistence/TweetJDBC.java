@@ -1,10 +1,16 @@
 package ar.edu.itba.paw.persistence;
 
 
-import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.*;
-import static ar.edu.itba.paw.persistence.MentionJDBC.*;
-import static ar.edu.itba.paw.persistence.UserJDBC.*;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
+import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
+import static ar.edu.itba.paw.persistence.UserJDBC.EMAIL;
+import static ar.edu.itba.paw.persistence.UserJDBC.FIRST_NAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.LAST_NAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.USERNAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.USERS;
+import static ar.edu.itba.paw.persistence.UserJDBC.VERIFIED;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

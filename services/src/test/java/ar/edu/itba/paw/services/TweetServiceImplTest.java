@@ -49,7 +49,7 @@ public class TweetServiceImplTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		timestamp = new Timestamp(System.currentTimeMillis());
-		owner = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID);
+		owner = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID,false);
 		tweet = new Tweet(ID,MESSAGE,owner,timestamp);
 	}
 

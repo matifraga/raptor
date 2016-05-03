@@ -28,7 +28,7 @@ public class UserTest {
 
 	@Test
 	public void userTest() {
-		User u = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID);
+		User u = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID,false);
 		assert(u.getUsername().equals(USERNAME));
 		assert(u.getEmail().equals(EMAIL));
 		assert(u.getFirstName().equals(FIRSTNAME));

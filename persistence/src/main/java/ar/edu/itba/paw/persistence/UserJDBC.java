@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
-import static ar.edu.itba.paw.persistence.FollowerJDBC.*;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWER_IDS;
+import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -44,7 +44,7 @@ public class MentionServiceImplTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		timestamp = new Timestamp(System.currentTimeMillis());
-		u = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID);
+		u = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID,false);
 		t = new Tweet(MESSAGE,ID, u, timestamp);
 	}
 

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
-import static ar.edu.itba.paw.persistence.TweetJDBC.*;
+import static ar.edu.itba.paw.persistence.TweetJDBC.TIMESTAMP;
+import static ar.edu.itba.paw.persistence.TweetJDBC.TWEETS;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

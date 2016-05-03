@@ -29,7 +29,7 @@ public class TweetTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		owner = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID);
+		owner = new User(USERNAME,EMAIL,FIRSTNAME,LASTNAME,UID, false);
 		time = new Timestamp(System.currentTimeMillis());
 	}
 
