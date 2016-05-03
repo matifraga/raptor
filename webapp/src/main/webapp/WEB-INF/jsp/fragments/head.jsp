@@ -1,7 +1,7 @@
 <%-- Params needed: pageTitle: String --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>${requestScope.pageTitle}</title>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/img/favicon-32x32.png">
