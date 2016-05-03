@@ -23,6 +23,7 @@ import java.util.Random;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -88,6 +89,11 @@ public class TweetJDBC implements TweetDAO {
 			+ " ORDER BY " + TIMESTAMP + " DESC";
 	
 	private static final String SQL_COUNT_TWEETS = "SELECT COUNT(aux) FROM (" + SQL_GET_TWEETS + ") as aux";
+	private static final String SQL_INCREASE_FAVORITES = "UPDATE " + TWEETS + "SET " + COUNT_FAVORITES + " = " + COUNT_FAVORITES + "+1 WHERE " + TWEET_ID + "=?";
+	private static final String SQL_DECREASE_FAVORITES = "UPDATE " + TWEETS + "SET " + COUNT_FAVORITES + " = " + COUNT_FAVORITES + "-1 WHERE " + TWEET_ID + "=?";
+	private static final String SQL_INCREASE_RETWEETS = "UPDATE " + TWEETS + "SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "+1 WHERE " + TWEET_ID + "=?";
+	private static final String SQL_DECREASE_RETWEETS = "UPDATE " + TWEETS + "SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "-1 WHERE " + TWEET_ID + "=?";
+	
 
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -198,6 +204,33 @@ public class TweetJDBC implements TweetDAO {
 		} catch(Exception e) { return null; } //SQLException or DataAccessException
 	}
 	
+	@Override
+	public void increaseFavoriteCount(final String tweetID) {
+		try{
+			jdbcTemplate.update(SQL_INCREASE_FAVORITES, tweetID);
+		} catch (DataAccessException e) { return;}
+	}
+
+	@Override
+	public void decreaseFavoriteCount(final String tweetID) {
+		try{
+			jdbcTemplate.update(SQL_DECREASE_FAVORITES, tweetID);
+		} catch (DataAccessException e) { return;}
+	}
+
+	@Override
+	public void increaseRetweetCount(final String tweetID) {
+		try{
+			jdbcTemplate.update(SQL_INCREASE_RETWEETS, tweetID);
+		} catch (DataAccessException e) { return;}
+	}
+
+	@Override
+	public void decreaseRetweetCount(final String tweetID) {
+		try{
+			jdbcTemplate.update(SQL_DECREASE_RETWEETS, tweetID);
+		} catch (DataAccessException e) { return;}
+	}
 
 	private static class TweetRowMapper implements RowMapper<Tweet>{
 

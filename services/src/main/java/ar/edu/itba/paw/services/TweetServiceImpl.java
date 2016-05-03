@@ -124,4 +124,24 @@ public class TweetServiceImpl implements TweetService {
 		}
 		return ans;
 	}
+	
+	@Override
+	public void increaseFavoriteCount(final Tweet tweet) {
+		tweetDAO.increaseFavoriteCount(tweet.getId());	
+	}
+	
+	@Override
+	public void decreaseFavoriteCount(final Tweet tweet) {
+		tweetDAO.decreaseFavoriteCount(tweet.getId());	
+	}
+	
+	@Override
+	public void increaseRetweetCount(final Tweet tweet) {
+		tweetDAO.increaseRetweetCount(tweet.getId());
+	}
+	
+	@Override
+	public void decreaseRetweetCount(final Tweet tweet) {
+		tweetDAO.decreaseRetweetCount(tweet.getId());
+	}
 }

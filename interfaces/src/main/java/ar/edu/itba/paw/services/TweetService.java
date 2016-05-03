@@ -112,4 +112,32 @@ public interface TweetService {
 	 * @return the amount of tweets the user has.
 	 */
 	public Integer countTweets(final User user);
+	
+	/**
+	 * Reflect favorite action on the tweet's favorite counter.
+	 * 
+	 * @param tweet
+	 */
+	public void increaseFavoriteCount(final Tweet tweet);
+	
+	/**
+	 * Reflect unfavorite action on the tweet's favorite counter.
+	 * 
+	 * @param tweet
+	 */
+	public void decreaseFavoriteCount(final Tweet tweet);
+	
+	/**
+	 * Reflect retweet action on the tweet's retweet counter.
+	 * 
+	 * @param tweet
+	 */
+	public void increaseRetweetCount(final Tweet tweet);
+	
+	/**
+	 * Reflect unretweet action on the tweet's retweet counter.
+	 * 
+	 * @param tweet
+	 */
+	public void decreaseRetweetCount(final Tweet tweet);
 }

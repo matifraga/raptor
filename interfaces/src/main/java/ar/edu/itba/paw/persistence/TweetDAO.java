@@ -82,4 +82,32 @@ public interface TweetDAO {
 	 * @return the amount of tweets the user has.
 	 */
 	public Integer countTweets(final String userID);
+	
+	/**
+	 * Reflect favorite action on the tweet's favorite counter.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 */
+	public void increaseFavoriteCount(final String tweetID);
+	
+	/**
+	 * Reflect unfavorite action on the tweet's favorite counter.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 */
+	public void decreaseFavoriteCount(final String tweetID);
+	
+	/**
+	 * Reflect retweet action on the tweet's retweet counter.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 */
+	public void increaseRetweetCount(final String tweetID);
+	
+	/**
+	 * Reflect unretweet action on the tweet's retweet counter.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 */
+	public void decreaseRetweetCount(final String tweetID);
 }

@@ -13,6 +13,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Autowired
 	private FavoriteDAO favoriteDAO;
 	
+	@Autowired
+	private TweetService tweetService;
+	
 	//test
 	void setFavoriteDAO(FavoriteDAO favoriteDAO) {
 		this.favoriteDAO=favoriteDAO;
@@ -20,6 +23,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Override
 	public void favorite(final Tweet tweet, final User user) {
+		tweetService.increaseFavoriteCount(tweet);
 		favoriteDAO.favorite(tweet.getId(), user.getId());
 	}
 
@@ -34,6 +38,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Override
 	public void unfavorite(final Tweet tweet, final User user) {
+		tweetService.decreaseFavoriteCount(tweet);
 		favoriteDAO.unfavorite(tweet.getId(), user.getId());	
 	}
 
