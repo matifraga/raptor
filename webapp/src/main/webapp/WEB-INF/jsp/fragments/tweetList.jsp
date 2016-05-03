@@ -30,7 +30,7 @@
                 <div class="panel panel-rawr">
                     <div class="row">
                         <div class="col-xs-4 col-sm-2 col-md-2">
-                            <img class="profile-picture center-block" src="/resources/img/default-pic.png"/>
+                            <img class="profile-picture center-block" src="${tweet.owner.profilePicture}"/>
                         </div>
                         <div class="col-xs-8 col-sm-10 col-md-10">
                             <a href="/user/${tweet.owner.username}">${tweet.owner.firstName} ${tweet.owner.lastName}</></a>

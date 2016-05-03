@@ -40,7 +40,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right" style="margin-right: 6px;">
                     <c:choose>
-                        <c:when test="${sessionUser == null}">
+                        <c:when test="${navbarViewUser == null}">
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><spring:message code="navbar.login"/><span class="caret"></span></a>
                                 <div class="dropdown-menu">
@@ -67,12 +67,12 @@
                             </li>
                         </c:when>
                         <c:otherwise>
-                            <li class="dropdown"><a href="/user/${sessionUser.username}" style="color: #4A4A4A;">${sessionUser.firstName}<span class="caret"></span></a>
+                            <li class="dropdown"><a href="/user/${navbarViewUser.username}" style="color: #4A4A4A;">${navbarViewUser.firstName}<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/logout" style="color: #4A4A4A; text-align: center">Log out</a></li>
                                 </ul>
                             </li>
-                            <li><img src="/resources/img/default-pic.png" class="mini-pic"/></li>
+                            <li><img src=${navbarViewUser.profilePicture} class="mini-pic"/></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

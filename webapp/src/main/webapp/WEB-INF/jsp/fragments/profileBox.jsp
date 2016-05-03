@@ -6,7 +6,7 @@
     <div class="panel panel-raptor panel-profile-info">
         <ul>
             <li>
-                <img class="profile-picture" src="/resources/img/default-pic.png"/>
+                <img class="profile-picture" src=${user.profilePicture}/>
             </li>
             <li style="font-size: 1.2em;"><a href="../user/${requestScope.user.username}">${requestScope.user.firstName} ${requestScope.user.lastName}</a></li>
             <li><a href="../user/${requestScope.user.username}">@${requestScope.user.username}</a></li>

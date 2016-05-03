@@ -9,16 +9,17 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
 
 /**
  * Created by Tomi on 4/22/16.
  */
 public class TweetViewModel {
-
+	
+	private static final int PIC_SIZE = 150;
+	
     private final String msg;
     private final String id;
-    private final User owner;
+    private final UserViewModel owner;
     private final String timestamp;
 	private final int countRetweets;
 	private	final int countFavorites;
@@ -26,13 +27,13 @@ public class TweetViewModel {
     public TweetViewModel(Tweet tweet){
         this.msg = parseToHTMLString(tweet.getMsg());
         this.id = tweet.getId();
-        this.owner = tweet.getOwner();
+        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
         this.timestamp = tweet.getTimestamp();
         this.countRetweets = tweet.getCountRetweets();
         this.countFavorites = tweet.getCountFavorites();
     }
 
-    static public TweetViewModel transformTweet(Tweet tweet) {
+	static public TweetViewModel transformTweet(Tweet tweet) {
         return new TweetViewModel(tweet);
     }
 
@@ -50,7 +51,7 @@ public class TweetViewModel {
         return id;
     }
 
-    public User getOwner() {
+    public UserViewModel getOwner() {
         return owner;
     }
 
@@ -65,8 +66,6 @@ public class TweetViewModel {
 	public int getCountFavorites() {
 		return countFavorites;
 	}
-
-    // WE NEED TO MOVE ALL THIS SOMEPLACE ELSE
 
 	private String parseURL(String s) {
         String [] parts = s.split("\\s+");

@@ -18,11 +18,13 @@ import ar.edu.itba.paw.services.HashtagService;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 @Controller
 @RequestMapping(value="/user")
 public class TimelineController extends RaptorController{
 	
+	private static final int TIMELINE_PIC_SIZE = 200;
 	private static final String USERNAME = "username";
 	private static final String PAGE = "page";
 	private static final String FOLLOW = "follow";
@@ -107,7 +109,7 @@ public class TimelineController extends RaptorController{
 		User u = userService.getUserWithUsername(username);
 
 		if(u != null){
-			mav.addObject(USER, u);
+			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
 			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page));
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
@@ -145,7 +147,7 @@ public class TimelineController extends RaptorController{
 		User u = userService.getUserWithUsername(username);
 
 		if(u != null){
-			mav.addObject(USER, u);
+			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
 			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page));
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);

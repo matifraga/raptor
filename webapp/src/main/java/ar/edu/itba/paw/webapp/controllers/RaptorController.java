@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.forms.LoginForm;
+import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 public abstract class RaptorController {
 
@@ -26,6 +27,16 @@ public abstract class RaptorController {
 	@ModelAttribute("sessionUser")
 	public User sessionUser() {
 		return (User) session.getAttribute(USER);
+	}
+	
+	@ModelAttribute("navbarViewUser")
+	public UserViewModel navbarUser() {
+		
+		User u = sessionUser();
+		
+		if(u == null) return null;
+		
+		return new UserViewModel(u, 50);
 	}
 
 	@ModelAttribute("loginForm")
