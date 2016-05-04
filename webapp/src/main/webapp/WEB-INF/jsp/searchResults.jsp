@@ -3,7 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
-<c:set var="pageTitle" value="Search Results" scope="request"/>
+<spring:message var="searchResultsTitle" code="searchResults.title"/>
+<c:set var="pageTitle" value='${searchResultsTitle}' scope="request"/>
 <jsp:include page="fragments/head.jsp"/>
 <body>
 <jsp:include page="fragments/navbar.jsp" />
