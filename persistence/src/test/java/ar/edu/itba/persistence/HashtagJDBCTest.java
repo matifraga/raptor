@@ -30,18 +30,13 @@ import ar.edu.itba.paw.persistence.UserJDBC;
 @ContextConfiguration(classes = TestConfig.class)
 public class HashtagJDBCTest {
 
-
 	private static final String MESSAGE = "hola soy un tweet";
-
 
 	private static final String USERNAME = "@raptorTest", PASSWORD = "raptor",
 			EMAIL = "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
 
-
-	private static final String SEARCHALL = "";
 	private static final int RESULTSPERPAGE = 3, PAGE = 1;
-	
-	
+
 	private static final String HASHTAG = "RAWR";
 
 	@Autowired
@@ -54,14 +49,11 @@ public class HashtagJDBCTest {
 
 	@Autowired
 	private HashtagJDBC hashtagJDBC;
-	
+
 	private JdbcTemplate jdbcTemplate;
 	private User user;
 	private Tweet tweet;
-	
-	
-	private static int COUNT = 5;
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -87,23 +79,23 @@ public class HashtagJDBCTest {
 	@Test
 	public void createTest() {
 		hashtagJDBC.create(HASHTAG, tweet.getId());
-		assertEquals (1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
+		assertEquals(1,
+				JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
 		Tweet t2 = tweetJDBC.create(MESSAGE, user);
-		hashtagJDBC.create(HASHTAG, t2.getId());	
-		assertEquals (2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
-		List<Tweet> ls = tweetJDBC.getTweetsByHashtag(HASHTAG, RESULTSPERPAGE, PAGE);
-		assert(ls.contains(tweet));
-		assert(ls.contains(t2));
+		hashtagJDBC.create(HASHTAG, t2.getId());
+		assertEquals(2,
+				JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
+		List<Tweet> ls = tweetJDBC.getTweetsByHashtag(HASHTAG, RESULTSPERPAGE,
+				PAGE);
+		assert (ls.contains(tweet));
+		assert (ls.contains(t2));
 	}
 
 	/*
-	@Test
-	public void getTrendingTopicsTest() {
-		hashtagJDBC.create(HASHTAG, tweet.getId());
-		
-		List<String> trending = hashtagJDBC.getTrendingTopics(COUNT);
-		System.out.println(trending);
-		assert(trending.contains(HASHTAG));
-	}
-	*/
+	 * @Test public void getTrendingTopicsTest() { hashtagJDBC.create(HASHTAG,
+	 * tweet.getId());
+	 * 
+	 * List<String> trending = hashtagJDBC.getTrendingTopics(5);
+	 * System.out.println(trending); assert(trending.contains(HASHTAG)); }
+	 */
 }

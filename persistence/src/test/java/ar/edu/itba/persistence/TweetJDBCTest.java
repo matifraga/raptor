@@ -29,11 +29,8 @@ public class TweetJDBCTest {
 
 
 	private static final String UNAME = "user", PASSWORD = "password",
-			EMAIL = "email@email.com", FIRSTNAME = "user", LASTNAME = "user",
-			ID = "12345";
+			EMAIL = "email@email.com", FIRSTNAME = "user", LASTNAME = "user";
 	private static final String MESSAGE = "hola soy un tweet";
-
-	private static final int RESULTSPERPAGE = 5, PAGE = 1;
 
 	private static User user;
 	
