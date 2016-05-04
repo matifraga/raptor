@@ -16,7 +16,7 @@ import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 public abstract class RaptorController {
 
-	protected final static String USER = "user";
+	protected final static String USER = "sUser"; //NO NOMBRAR USER
 
 	@Autowired
 	MessageSource messageSource;
