@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS tweets (
 	tweetID 		char(12) 		NOT NULL,
-	message 		varchar(256) 	NOT NULL,
+	message 		varchar(256),
 	userID 			char(12) 		NOT NULL,
 	timestamp 		TIMESTAMP 		NOT NULL,
 	retweetFrom		char(12),
