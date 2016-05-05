@@ -145,4 +145,15 @@ public interface TweetDAO {
 	 * @param userID the user's ID.
 	 */
 	void unretweet(final String tweetID, final String userID);
+	
+	/**
+	 * Get a user's favorites.
+	 * 
+	 * @param id The user's ID.
+	 * @param resultsPerPage Limit number of tweets per page.
+	 * @param page Number of page needed.
+	 * @return The recovered favorites.
+	 */
+	public List<Tweet> getFavorites(final String id, final int resultsPerPage, final int page);
+	
 }

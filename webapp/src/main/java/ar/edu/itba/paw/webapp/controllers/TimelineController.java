@@ -27,12 +27,16 @@ public class TimelineController extends RaptorController{
 	private static final String FOLLOW = "follow";
 	private static final String UNFOLLOW = "unfollow";
 	private static final String MENTIONS = "mentions";
+	private static final String FAVORITES = "favorites";
 	private static final String MAP_USERS = "{" + USERNAME + "}";
 	private static final String MAP_USERS_WITH_PAGING = MAP_USERS + "/{" + PAGE + ":[1-9][0-9]*}";
 
 	private static final String MAP_USER_MENTIONS = MAP_USERS +"/" + MENTIONS;
 	private static final String MAP_USER_MENTIONS_WITH_PAGING = MAP_USER_MENTIONS + "/{" + PAGE + ":[1-9][0-9]*}";
 
+	private static final String MAP_USER_FAVORITES = MAP_USERS + "/" + FAVORITES;
+	private static final String MAP_USER_FAVORITES_WITH_PAGING = MAP_USER_FAVORITES + "/{" + PAGE + ":[1-9][0-9]*}";
+	
 	private static final String MAP_USER_FOLLOW = MAP_USERS +"/" + FOLLOW;
 	private static final String MAP_USER_UNFOLLOW = MAP_USERS +"/" + UNFOLLOW;
 
@@ -150,7 +154,7 @@ public class TimelineController extends RaptorController{
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page),
+			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page),
 					tweetService, favoriteService, sessionUser());
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
@@ -177,6 +181,45 @@ public class TimelineController extends RaptorController{
 		}
 		return mav;
 	}
+	
+	@RequestMapping(value={MAP_USER_FAVORITES, MAP_USER_FAVORITES_WITH_PAGING}, method= RequestMethod.GET)
+	public ModelAndView favorites(@PathVariable Map<String, String> pathVariables){
+		//(value=USERNAME) String username) {
+		String username = pathVariables.get(USERNAME);
+		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
+		final ModelAndView mav = new ModelAndView(TIMELINE);
+		User u = userService.getUserWithUsername(username);
+
+		if(u != null){
+			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
+
+			List<TweetViewModel> favoritesList = TweetViewModel.transform(tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page),
+					tweetService, favoriteService, sessionUser());
+			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
+
+			Map<String, Integer> userInfo = new HashMap<String, Integer>();
+			userInfo.put("followers_count", followerService.countFollowers(u));
+			userInfo.put("following_count", followerService.countFollowing(u));
+			userInfo.put("tweets_count", tweetService.countTweets(u));
+
+			mav.addObject(TWEET_LIST, favoritesList);
+			mav.addObject(TRENDS_LIST, trendsList);
+			mav.addObject(USER_INFO, userInfo);
+
+			if(sessionUser() == null) {
+				mav.addObject(FOLLOWING, -1);
+			} else if(sessionUser().getUsername().equals(username)) {
+				mav.addObject(FOLLOWING, 2);
+			} else {
+				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), u)? 1 : 0));
+			}
+
+			List<Map<String, Object>> header = createHeader(u, "favorites");
+
+			mav.addObject(HEADER, header);
+		}
+		return mav;
+	}
 
 	private List<Map<String, Object>> createHeader(User u, String active) {
 
@@ -191,9 +234,15 @@ public class TimelineController extends RaptorController{
 		mentions.put("title", messageSource.getMessage("timeline.mentionsListTitle", null, null, null));
 		mentions.put("link", "/user/" + u.getUsername() + "/mentions");
 		mentions.put("active", (active.equals("mentions")?Boolean.TRUE:Boolean.FALSE));
+		
+		HashMap<String, Object> favorites = new HashMap<String, Object>();
+		favorites.put("title", messageSource.getMessage("timeline.favoritesListTitle", null, null, null));
+		favorites.put("link", "/user/" + u.getUsername() + "/favorites");
+		favorites.put("active", (active.equals("favorites")?Boolean.TRUE:Boolean.FALSE));
 
 		header.add(timeline);
 		header.add(mentions);
+		header.add(favorites);
 
 		return header;
 	}

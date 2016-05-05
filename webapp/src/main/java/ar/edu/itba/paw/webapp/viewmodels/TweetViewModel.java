@@ -34,28 +34,6 @@ public class TweetViewModel {
     private Boolean isFavorited; // is favorited by the logged user
 
 
-    /*public TweetViewModel(Tweet tweet, TweetService ts) {
-
-    	if(!tweet.isRetweet()){
-            this.id = tweet.getId();
-	        this.msg = parseToHTMLString(tweet.getMsg());
-	        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
-	        this.timestamp = tweet.getTimestamp();
-	        this.countRetweets = tweet.getCountRetweets();
-	        this.countFavorites = tweet.getCountFavorites();
-	        this.retweetedBy = null;
-    	} else {
-    		Tweet originalTweet = ts.getTweet(tweet.getRetweet());
-            this.id = originalTweet.getId();
-    		this.msg = parseToHTMLString(originalTweet.getMsg());
-    		this.retweetedBy = new StringBuilder(tweet.getOwner().getFirstName()).append(" ").append(tweet.getOwner().getLastName()).toString();
-    		this.owner = new UserViewModel(originalTweet.getOwner(), PIC_SIZE);
-    		this.timestamp = originalTweet.getTimestamp();
-    		this.countRetweets = originalTweet.getCountRetweets();
-    		this.countFavorites = originalTweet.getCountFavorites();
-    	}
-    }*/
-
     public TweetViewModel(Tweet tweet) {
         this.id = tweet.getId();
         this.msg = parseToHTMLString(tweet.getMsg());
@@ -76,10 +54,6 @@ public class TweetViewModel {
         this.countFavorites = retweeted.getCountFavorites();
     }
 
-	/*public static TweetViewModel transformTweet(Tweet tweet, final TweetService ts) {
-        return new TweetViewModel(tweet, ts);
-    }*/
-
     public static TweetViewModel transformTweet(Tweet tweet) {
         return new TweetViewModel(tweet);
     }
@@ -87,15 +61,7 @@ public class TweetViewModel {
     public static TweetViewModel transformTweet(Tweet tweet, Tweet retweeted) {
         return new TweetViewModel(tweet, retweeted);
     }
-
-    /*public static List<TweetViewModel> transform(List<Tweet> tweetList, final TweetService ts) {
-    	List<TweetViewModel> tweetMList = new ArrayList<>(tweetList.size());
-    	for (Tweet tweet : tweetList) {
-			tweetMList.add(transformTweet(tweet, ts));
-		}
-        return tweetMList;
-    }*/
-
+    
     public static List<TweetViewModel> transform(List<Tweet> tweetList, final TweetService ts,
                                                  final FavoriteService fs, final User loggedUser) {
 

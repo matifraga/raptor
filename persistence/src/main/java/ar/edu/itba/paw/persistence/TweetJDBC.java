@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 
+import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITES;
+import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITE_ID;
 import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
 import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
 import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
@@ -103,6 +105,10 @@ public class TweetJDBC implements TweetDAO {
 	
 	private static final String SQL_UNRETWEET = "DELETE FROM " + TWEETS + " WHERE " + RETWEET_FROM + " = ? AND "
 			+ USER_ID + " = ?";
+	
+	private static final String SQL_GET_FAVORITES = "SELECT " + TWEET_SELECT + " FROM " + TWEETS + ", " + USERS + ", " + FAVORITES 
+			+ " WHERE " + FAVORITE_ID + " = ?" + " AND " + TWEETS + "." + TWEET_ID + " = " + FAVORITES + "." + TWEET_ID 
+			+ " AND " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID;
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
@@ -267,7 +273,6 @@ public class TweetJDBC implements TweetDAO {
 		if(tweetID == null)
 			return null;
 		try {
-			System.out.println(SQL_GET_BY_ID);
 			final List<Tweet> list = jdbcTemplate.query(SQL_GET_BY_ID, tweetRowMapper, tweetID);
 			if (list.isEmpty()) {
 				return null; // TODO difference between no tweet found and
@@ -295,6 +300,14 @@ public class TweetJDBC implements TweetDAO {
 		
 	}
 
+	@Override
+	public List<Tweet> getFavorites(String id, int resultsPerPage, int page) {
+		try {
+			final List<Tweet> ans = jdbcTemplate.query(SQL_GET_FAVORITES + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, id);
+			return ans;
+		} catch (Exception e){ return null; }		
+	}
+	
 	private static class TweetRowMapper implements RowMapper<Tweet>{
 
 		@Override
@@ -305,6 +318,4 @@ public class TweetJDBC implements TweetDAO {
 		}
 
 	}
-
-
 }

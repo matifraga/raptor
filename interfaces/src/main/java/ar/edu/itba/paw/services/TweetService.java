@@ -46,14 +46,14 @@ public interface TweetService {
 	public List<Tweet> getMentions(final String id, final int resultsPerPage, final int page);
 	
 	/**
-	 * Get a user's favourites.
+	 * Get a user's favorites.
 	 * 
 	 * @param id The user's ID.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page Number of page needed.
-	 * @return The recovered favourites.
+	 * @return The recovered favorites.
 	 */
-	public List<Tweet> getFavourites(final String id, final int resultsPerPage, final int page);
+	public List<Tweet> getFavorites(final String id, final int resultsPerPage, final int page);
 	
 	/**
 	 * Get a list of tweets with a hashtag.

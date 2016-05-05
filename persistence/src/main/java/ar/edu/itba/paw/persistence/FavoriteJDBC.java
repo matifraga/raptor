@@ -21,7 +21,7 @@ public class FavoriteJDBC implements FavoriteDAO {
 
 	static final String FAVORITE_ID = "favoriteID";
 	static final String TWEET_ID = "tweetID";
-	private static final String FAVORITES = "favorites";
+	static final String FAVORITES = "favorites";
 	
 	private static final String SQL_IS_FAVORITE = "SELECT EXISTS( SELECT * FROM " + FAVORITES + " WHERE " + TWEET_ID
 			+ " = ? AND " + FAVORITE_ID + " = ?)";

@@ -87,9 +87,12 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	@Override
-	public List<Tweet> getFavourites(final String id, final int resultsPerPage, final int page) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Tweet> getFavorites(final String id, final int resultsPerPage, final int page) {
+		List<Tweet> ans = tweetDAO.getFavorites(id, resultsPerPage, page);
+		if (ans == null) {
+			//TODO handle null (db error)
+		}
+		return ans;
 	}
 
 	@Override
