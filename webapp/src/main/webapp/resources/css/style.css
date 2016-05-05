@@ -207,6 +207,47 @@ input[type="text"], input[type="password"] {
   border-bottom-width: 2px;
 }
 
+.rawr-top-bar {
+  margin-bottom: 15px;
+}
+
+.rawr-action-bar {
+  padding: 15px 0px 0px 0px;
+  margin-bottom: 0px;
+}
+
+.rawr-action-bar a {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.rawr-action-bar-img {
+  background-color: transparent;
+  background-repeat: no-repeat;
+}
+
+.img-fav {
+  width: 18px;
+  height: 17px;
+  background-size: 18px 17px;
+  background-image: url(../img/favorite-icon.png);
+}
+
+.img-fav-selected {
+  background-image: url(../img/favorite-icon-filled.png) !important;
+}
+
+.img-rerawr {
+  width: 26px;
+  height: 18px;
+  background-size: 25px 17px;
+  background-image: url(../img/retweet-icon.png);
+}
+
+.img-rerawr-selected {
+  background-image: url(../img/retweet-icon-filled.png) !important;
+}
+
 .panel-rawr {
   border-radius: 0px;
   box-shadow: none;

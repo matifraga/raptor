@@ -8,15 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ar.edu.itba.paw.services.UserService;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/tweetAction")
 public class TweetController extends RaptorController{
 
 	private static final String MAP_USER = "/user/";
 
 	private static final String REDIRECT = "redirect:";
 	private static final String MESSAGE = "message";
+	private static final String TWEETID = "tweetId";
+
+	private static final String ACTIONS = "/actions/";
+	private static final String POST = "post";
+	private static final String RETWEET = "retweet";
+	private static final String FAVORITE = "favorite";
 
 	@Autowired
 	private UserService userService;
@@ -24,8 +30,8 @@ public class TweetController extends RaptorController{
 	@Autowired
 	private TweetService tweetService;
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String registerAction(
+	@RequestMapping(value =  {ACTIONS + POST}, method = RequestMethod.POST)
+	public String postTweetAction(
 			@RequestParam(value = MESSAGE, required = true) String message) {
 
 		if(sessionUser() == null) {
@@ -37,4 +43,24 @@ public class TweetController extends RaptorController{
 
 		return REDIRECT + MAP_USER + sessionUser().getUsername();
 	}
+
+	@RequestMapping(value = {ACTIONS + RETWEET}, method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String retweetAction(@RequestParam(value = TWEETID, required = true) String tweetId) {
+
+		// WE NEED TO RETWEET THE TWEET HERE
+
+		return "{\"success\":1}";
+	}
+
+	@RequestMapping(value = {ACTIONS + FAVORITE}, method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String favoriteTweetAction(@RequestParam(value = TWEETID, required = true) String tweetId) {
+
+		// WE NEED TO LIKE THE TWEET HERE
+
+		return "{\"success\":1}";
+	}
+
+
 }
