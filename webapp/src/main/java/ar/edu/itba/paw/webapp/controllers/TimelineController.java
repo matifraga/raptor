@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ar.edu.itba.paw.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.FollowerService;
-import ar.edu.itba.paw.services.HashtagService;
-import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
@@ -67,6 +64,9 @@ public class TimelineController extends RaptorController{
 	@Autowired
 	private FollowerService followerService;
 
+	@Autowired
+	private FavoriteService favoriteService;
+
 	@RequestMapping(value={MAP_USER_FOLLOW}, method= RequestMethod.POST)
 	public String follow(@PathVariable Map<String, String> pathVariables) {
 		String currentProfileUsername = pathVariables.get(USERNAME);
@@ -111,7 +111,8 @@ public class TimelineController extends RaptorController{
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page), tweetService);
+			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page),
+					tweetService, favoriteService, sessionUser());
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
@@ -149,7 +150,8 @@ public class TimelineController extends RaptorController{
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page), tweetService);
+			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page),
+					tweetService, favoriteService, sessionUser());
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();

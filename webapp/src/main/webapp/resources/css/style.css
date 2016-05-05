@@ -226,6 +226,12 @@ input[type="text"], input[type="password"] {
   background-repeat: no-repeat;
 }
 
+.rerawr-info-bar {
+  padding-right: 5px;
+  padding-bottom: 10px;
+  color: #3C8BED !important;
+}
+
 .img-fav {
   width: 18px;
   height: 17px;

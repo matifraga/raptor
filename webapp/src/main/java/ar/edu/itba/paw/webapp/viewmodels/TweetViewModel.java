@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.FavoriteService;
 import ar.edu.itba.paw.services.TweetService;
 
 public class TweetViewModel {
@@ -28,11 +30,14 @@ public class TweetViewModel {
 	private final int countRetweets;
 	private	final int countFavorites;
 	private final String retweetedBy;
+    private Boolean isRetweeted; // is retweeted by the logged user
+    private Boolean isFavorited; // is favorited by the logged user
 
-    public TweetViewModel(Tweet tweet, TweetService ts){
-    	this.id = tweet.getId();
-    	
+
+    /*public TweetViewModel(Tweet tweet, TweetService ts) {
+
     	if(!tweet.isRetweet()){
+            this.id = tweet.getId();
 	        this.msg = parseToHTMLString(tweet.getMsg());
 	        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
 	        this.timestamp = tweet.getTimestamp();
@@ -41,6 +46,7 @@ public class TweetViewModel {
 	        this.retweetedBy = null;
     	} else {
     		Tweet originalTweet = ts.getTweet(tweet.getRetweet());
+            this.id = originalTweet.getId();
     		this.msg = parseToHTMLString(originalTweet.getMsg());
     		this.retweetedBy = new StringBuilder(tweet.getOwner().getFirstName()).append(" ").append(tweet.getOwner().getLastName()).toString();
     		this.owner = new UserViewModel(originalTweet.getOwner(), PIC_SIZE);
@@ -48,17 +54,76 @@ public class TweetViewModel {
     		this.countRetweets = originalTweet.getCountRetweets();
     		this.countFavorites = originalTweet.getCountFavorites();
     	}
+    }*/
+
+    public TweetViewModel(Tweet tweet) {
+        this.id = tweet.getId();
+        this.msg = parseToHTMLString(tweet.getMsg());
+        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
+        this.timestamp = tweet.getTimestamp();
+        this.countRetweets = tweet.getCountRetweets();
+        this.countFavorites = tweet.getCountFavorites();
+        this.retweetedBy = null;
     }
 
-	public static TweetViewModel transformTweet(Tweet tweet, final TweetService ts) {
+    public TweetViewModel(Tweet tweet, Tweet retweeted) {
+        this.id = retweeted.getId();
+        this.msg = parseToHTMLString(retweeted.getMsg());
+        this.retweetedBy = new StringBuilder(tweet.getOwner().getFirstName()).append(" ").append(tweet.getOwner().getLastName()).toString();
+        this.owner = new UserViewModel(retweeted.getOwner(), PIC_SIZE);
+        this.timestamp = retweeted.getTimestamp();
+        this.countRetweets = retweeted.getCountRetweets();
+        this.countFavorites = retweeted.getCountFavorites();
+    }
+
+	/*public static TweetViewModel transformTweet(Tweet tweet, final TweetService ts) {
         return new TweetViewModel(tweet, ts);
+    }*/
+
+    public static TweetViewModel transformTweet(Tweet tweet) {
+        return new TweetViewModel(tweet);
     }
 
-    public static List<TweetViewModel> transform(List<Tweet> tweetList, final TweetService ts) {
+    public static TweetViewModel transformTweet(Tweet tweet, Tweet retweeted) {
+        return new TweetViewModel(tweet, retweeted);
+    }
+
+    /*public static List<TweetViewModel> transform(List<Tweet> tweetList, final TweetService ts) {
     	List<TweetViewModel> tweetMList = new ArrayList<>(tweetList.size());
     	for (Tweet tweet : tweetList) {
 			tweetMList.add(transformTweet(tweet, ts));
 		}
+        return tweetMList;
+    }*/
+
+    public static List<TweetViewModel> transform(List<Tweet> tweetList, final TweetService ts,
+                                                 final FavoriteService fs, final User loggedUser) {
+
+        List<TweetViewModel> tweetMList = new ArrayList<>(tweetList.size());
+        for (Tweet tweet : tweetList) {
+
+            TweetViewModel tweetView;
+
+            if (tweet.isRetweet()) {
+                Tweet retweet = ts.getTweet(tweet.getRetweet());
+                tweetView = transformTweet(tweet, retweet);
+                if (loggedUser != null) {
+                    tweetView.isFavorited = fs.isFavorited(retweet.getId(), loggedUser); // Comentar estos dos
+                    tweetView.isRetweeted = ts.isRetweeted(retweet.getId(), loggedUser); //
+                }
+            } else {
+                tweetView = transformTweet(tweet);
+                if (loggedUser != null) {
+                    tweetView.isFavorited = fs.isFavorited(tweet.getId(), loggedUser); // Y estos dos
+                    tweetView.isRetweeted = ts.isRetweeted(tweet.getId(), loggedUser); //
+                }
+            }
+
+            //tweetView.isFavorited = Boolean.FALSE; // Descomentar estos dos
+            //tweetView.isRetweeted = Boolean.FALSE;
+
+            tweetMList.add(tweetView);
+        }
         return tweetMList;
     }
 
@@ -90,7 +155,11 @@ public class TweetViewModel {
 		return retweetedBy;
 	}
 
-	private String parseURL(String s) {
+    public Boolean getFavorited() { return isFavorited; }
+
+    public Boolean getRetweeted() { return isRetweeted; }
+
+    private String parseURL(String s) {
         String [] parts = s.split("\\s+");
 
         for(int i=0; i<parts.length; i++) try {

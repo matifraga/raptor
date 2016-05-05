@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controllers;
 import java.util.List;
 import java.util.Map;
 
+import ar.edu.itba.paw.services.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,9 @@ public class FeedController extends RaptorController {
 	@Autowired
 	private HashtagService hashtagService;
 
+	@Autowired
+	private FavoriteService favoriteService;
+
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView feed(@PathVariable Map<String, String> pathVariables) {
 
@@ -47,9 +51,10 @@ public class FeedController extends RaptorController {
 		List<TweetViewModel> tweetList;
 		
 		if (sessionUser() == null) {
-			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page),tweetService);
+			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page), tweetService, favoriteService, sessionUser());
 		} else {
-			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page), tweetService);
+			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page),
+					tweetService, favoriteService, sessionUser());
 		}
 
 		mav.addObject(TWEET_LIST, tweetList);

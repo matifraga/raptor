@@ -29,6 +29,14 @@
         <c:otherwise>
             <c:forEach items="${requestScope.tweetList}" var="tweet">
                 <div class="panel panel-rawr">
+                    <c:if test="${tweet.retweetedBy != null}">
+                        <div class="col-md-offset-2 col-sm-offset-2">
+                            <div class="rerawr-info-bar">
+                                <div class="rawr-action-bar-img img-rerawr img-rerawr-selected" style="float: left;"></div>
+                                <span style="padding-left: 5px;"><spring:message code="tweetView.retweetedBy"/> ${tweet.retweetedBy}</span>
+                            </div>
+                        </div>
+                    </c:if>
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-xs-4 col-sm-2 col-md-2">
                             <img class="profile-picture center-block" src="${tweet.owner.profilePicture}"/>
@@ -44,9 +52,13 @@
                             <c:if test="${sessionUser != null}">
                                 <div class="rawr-action-bar">
                                     <c:if test="${tweet.owner.id != sessionUser.id}">
-                                        <a id="re${tweet.id}" href="#" onclick="return retweet('${tweet.id}')" class="rawr-action-bar-img img-rerawr" data-toggle="tooltip" data-placement="bottom" title="Rerawr"></a>
+                                        <a id="re${tweet.id}" href="#" onclick="return retweet('${tweet.id}')" class="rawr-action-bar-img img-rerawr
+                                        <c:if test="${tweet.retweeted}"> img-rerawr-selected</c:if>
+                                        " data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tweetView.retweet"/>"></a>
                                     </c:if>
-                                    <a id="fav${tweet.id}" href="#" onclick="return favorite('${tweet.id}')" class="rawr-action-bar-img img-fav" data-toggle="tooltip" data-placement="bottom" title="Like"></a>
+                                    <a id="fav${tweet.id}" href="#" onclick="return favorite('${tweet.id}')" class="rawr-action-bar-img img-fav
+                                    <c:if test="${tweet.favorited}">img-fav-selected</c:if>
+                                    " data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tweetView.favorite"/>"></a>
                                 </div>
                             </c:if>
                         </div>
@@ -62,7 +74,8 @@
         var contents = $('#fav' + tweetId);
         contents.tooltip('hide');
         $.post("/actions/favorite",
-                {'tweetId': tweetId},
+                {'tweetId': tweetId,
+                 'favorite': !contents.hasClass('img-fav-selected')},
                 function (data) {
                     if(data.success == false) toggleClass(contents, 'img-fav-selected');
                 });
@@ -73,7 +86,8 @@
         var contents = $('#re' + tweetId);
         contents.tooltip('hide');
         $.post("/actions/retweet",
-                {'tweetId': tweetId},
+                {'tweetId': tweetId,
+                    'retweet': !contents.hasClass('img-rerawr-selected')},
                 function (data) {
                     if(data.success == false) toggleClass(contents, 'img-rerawr-selected');
                 });
