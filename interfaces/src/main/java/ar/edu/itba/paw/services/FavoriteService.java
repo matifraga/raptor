@@ -11,7 +11,7 @@ public interface FavoriteService {
 	 * @param user
 	 */
 	void favorite(final String tweetID, final User user);
-	
+
 	/**
 	 * Returns whether a user favorited a tweet or not.
 	 * 
@@ -19,9 +19,9 @@ public interface FavoriteService {
 	 * @param user
 	 * @return true if the user favorited the tweet, false if not.
 	 */
-	
-	Boolean isFavorite (final String tweetID, final User user); 
-	
+
+	Boolean isFavorited(final String tweetID, final User user);
+
 	/**
 	 * Stop a favorite action.
 	 * 
@@ -29,12 +29,4 @@ public interface FavoriteService {
 	 * @param user
 	 */
 	void unfavorite(final String tweetID, final User user);
-	
-	/**
-	 * Get the amount of favorites for a tweet.
-	 * 
-	 * @param tweetID 
-	 * @return The amount of favorites the tweet has.
-	 */
-	Integer countFavorites(final String tweetID);
 }

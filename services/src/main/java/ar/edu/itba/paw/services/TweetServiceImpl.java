@@ -50,7 +50,6 @@ public class TweetServiceImpl implements TweetService {
 	public Tweet getTweet(String tweetID) {
 		if(tweetID==null)
 			return null;
-		
 		Tweet t = tweetDAO.getTweet(tweetID);
 		if(t == null) {
 			//TODO handle null
@@ -155,9 +154,19 @@ public class TweetServiceImpl implements TweetService {
 	public void decreaseRetweetCount(final String tweetID) {
 		tweetDAO.decreaseRetweetCount(tweetID);
 	}
+	
 	@Override
-	public boolean isRetweeted(String tweetID, User user) {
-		// TODO Auto-generated method stub
-		return false;
+	public Boolean isRetweeted(final String tweetID, final User user) {
+		Boolean ans = tweetDAO.isRetweeted(tweetID, user.getId());
+		if(ans == null){
+			//TODO handle DB error
+		}
+		return ans;
+	}
+	
+	@Override
+	public void unretweet(final String tweetID, final User user) {
+		tweetDAO.unretweet(tweetID, user.getId());
+		decreaseRetweetCount(tweetID);		
 	}
 }

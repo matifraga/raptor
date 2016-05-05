@@ -95,15 +95,22 @@ public class TweetJDBC implements TweetDAO {
 	private static final String SQL_INCREASE_RETWEETS = "UPDATE " + TWEETS + "SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "+1 WHERE " + TWEET_ID + "=?";
 	private static final String SQL_DECREASE_RETWEETS = "UPDATE " + TWEETS + "SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "-1 WHERE " + TWEET_ID + "=?";
 	
-	private static final String SQL_GET_BY_ID = "SELECT " +" FROM " + TWEETS
-			+ " WHERE " + TWEET_ID + " = ?";
+	private static final String SQL_GET_BY_ID = "SELECT "+ TWEET_SELECT +" FROM " + TWEETS + ", " + USERS
+			+ " WHERE " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID + " AND " + TWEET_ID + " = ?";
+	
+	private static final String SQL_IS_RETWEETED = "SELECT EXISTS( SELECT * FROM " + TWEETS + " WHERE " + RETWEET_FROM
+			+ " = ? AND " + USER_ID + " = ?)";
+	
+	private static final String SQL_UNRETWEET = "DELETE FROM " + TWEETS + " WHERE " + RETWEET_FROM + " = ? AND "
+			+ USER_ID + " = ?";
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
-	private final static TweetRowMapper tweetRowMapper = new TweetRowMapper();
+	private final TweetRowMapper tweetRowMapper;
 
 	@Autowired
 	public TweetJDBC(final DataSource ds) {
+		tweetRowMapper = new TweetRowMapper();
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(TWEETS);
 	}
@@ -255,21 +262,39 @@ public class TweetJDBC implements TweetDAO {
 		return ans;
 	}
 	
+	@Override
 	public Tweet getTweet(final String tweetID) {
 		if(tweetID == null)
 			return null;
-		
 		try {
-			final List<Tweet> list = jdbcTemplate.query(SQL_GET_BY_ID,
-					tweetRowMapper, tweetID);
+			System.out.println(SQL_GET_BY_ID);
+			final List<Tweet> list = jdbcTemplate.query(SQL_GET_BY_ID, tweetRowMapper, tweetID);
 			if (list.isEmpty()) {
 				return null; // TODO difference between no tweet found and
 								// DataAccessException pending
 			}
 			return list.get(0);
-		} catch (Exception e) {	return null; } // SQLException or DataAccessException
+		} catch (Exception e) {	
+			System.out.println("hola");
+			return null; } // SQLException or DataAccessException
 	}
 	
+	@Override
+	public Boolean isRetweeted(final String tweetID, final String userID) {
+		try{
+			Boolean ans = jdbcTemplate.queryForObject(SQL_IS_RETWEETED, Boolean.class, tweetID, userID);
+			return ans;
+		} catch(Exception e) { return null; } //SQLException or DataAccessException
+	}
+	
+	@Override
+	public void unretweet(final String tweetID, final String userID) {
+		try{
+			jdbcTemplate.update(SQL_UNRETWEET, tweetID, userID);
+		} catch (DataAccessException e) { return;}
+		
+	}
+
 	private static class TweetRowMapper implements RowMapper<Tweet>{
 
 		@Override
@@ -280,5 +305,6 @@ public class TweetJDBC implements TweetDAO {
 		}
 
 	}
+
 
 }

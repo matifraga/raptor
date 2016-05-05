@@ -139,11 +139,20 @@ public interface TweetService {
 	public Tweet getTweet(final String tweetID);
 	
 	/**
+	 * Returns whether a user retweeted a tweet or not.
 	 * 
+	 * @param tweet
+	 * @param user
+	 * @return true if the user retweeted the tweet, false if not.
+	 */
+
+	Boolean isRetweeted(final String tweetID, final User user);
+	
+	/**
+	 * Stop a retweet action.
 	 * 
 	 * @param tweetID
 	 * @param user
-	 * @return
 	 */
-	public boolean isRetweeted(final String tweetID, final User user);
+	void unretweet(final String tweetID, final User user);
 }

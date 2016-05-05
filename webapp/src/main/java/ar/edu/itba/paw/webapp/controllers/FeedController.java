@@ -47,9 +47,9 @@ public class FeedController extends RaptorController {
 		List<TweetViewModel> tweetList;
 		
 		if (sessionUser() == null) {
-			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page));
+			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page),tweetService);
 		} else {
-			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page));
+			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page), tweetService);
 		}
 
 		mav.addObject(TWEET_LIST, tweetList);

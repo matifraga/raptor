@@ -127,6 +127,10 @@ public class Tweet {
 	 * Getters
 	 * 
 	 * */
+	
+	public Boolean isRetweet(){
+		return !(retweetID==null);		
+	}
 
 	public static int getMaxLength() {
 		return MAX_LENGTH;

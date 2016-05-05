@@ -128,4 +128,21 @@ public interface TweetDAO {
 	 */
 	public Tweet getTweet(final String tweetID);
 
+	/**
+	 * Returns whether a user retweeted a tweet or not.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 * @param userID the user's ID.
+	 * @return true if the user retweeted the tweet, false if not.
+	 */
+
+	Boolean isRetweeted(final String tweetID, final String userID);
+	
+	/**
+	 * Stop a retweet action.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 * @param userID the user's ID.
+	 */
+	void unretweet(final String tweetID, final String userID);
 }

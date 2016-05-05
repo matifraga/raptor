@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.viewmodels;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -9,6 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.services.TweetService;
 
 public class TweetViewModel {
 	
@@ -25,24 +27,39 @@ public class TweetViewModel {
     private final String timestamp;
 	private final int countRetweets;
 	private	final int countFavorites;
+	private final String retweetedBy;
 
-    public TweetViewModel(Tweet tweet){
-        this.msg = parseToHTMLString(tweet.getMsg());
-        this.id = tweet.getId();
-        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
-        this.timestamp = tweet.getTimestamp();
-        this.countRetweets = tweet.getCountRetweets();
-        this.countFavorites = tweet.getCountFavorites();
+    public TweetViewModel(Tweet tweet, TweetService ts){
+    	this.id = tweet.getId();
+    	
+    	if(!tweet.isRetweet()){
+	        this.msg = parseToHTMLString(tweet.getMsg());
+	        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
+	        this.timestamp = tweet.getTimestamp();
+	        this.countRetweets = tweet.getCountRetweets();
+	        this.countFavorites = tweet.getCountFavorites();
+	        this.retweetedBy = null;
+    	} else {
+    		Tweet originalTweet = ts.getTweet(tweet.getRetweet());
+    		this.msg = originalTweet.getMsg();
+    		this.retweetedBy = new StringBuilder(tweet.getOwner().getFirstName()).append(" ").append(tweet.getOwner().getLastName()).toString();
+    		this.owner = new UserViewModel(originalTweet.getOwner(), PIC_SIZE);
+    		this.timestamp = originalTweet.getTimestamp();
+    		this.countRetweets = originalTweet.getCountRetweets();
+    		this.countFavorites = originalTweet.getCountFavorites();
+    	}
     }
 
-	public static TweetViewModel transformTweet(Tweet tweet) {
-        return new TweetViewModel(tweet);
+	public static TweetViewModel transformTweet(Tweet tweet, final TweetService ts) {
+        return new TweetViewModel(tweet, ts);
     }
 
-    public static List<TweetViewModel> transform(List<Tweet> tweetList) {
-        return tweetList.stream()
-                .map(TweetViewModel::transformTweet)
-                .collect(Collectors.toList());
+    public static List<TweetViewModel> transform(List<Tweet> tweetList, final TweetService ts) {
+    	List<TweetViewModel> tweetMList = new ArrayList<>(tweetList.size());
+    	for (Tweet tweet : tweetList) {
+			tweetMList.add(transformTweet(tweet, ts));
+		}
+        return tweetMList;
     }
 
     public String getMsg() {
@@ -67,6 +84,10 @@ public class TweetViewModel {
 
 	public int getCountFavorites() {
 		return countFavorites;
+	}
+
+	public String getRetweetedBy() {
+		return retweetedBy;
 	}
 
 	private String parseURL(String s) {

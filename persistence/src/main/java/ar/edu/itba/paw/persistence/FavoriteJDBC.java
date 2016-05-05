@@ -31,9 +31,6 @@ public class FavoriteJDBC implements FavoriteDAO {
 	static final String SQL_GET_FAVORITE_IDS = "SELECT " + FAVORITE_ID + " FROM " + FAVORITES + " WHERE "
 			+ FAVORITE_ID + " = ?";
 	
-	private static final String SQL_COUNT_FAVORITES = "SELECT COUNT(" + FAVORITE_ID + ") FROM (" + SQL_GET_FAVORITE_IDS
-			+ ") AS aux";
-	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
 	
@@ -54,7 +51,7 @@ public class FavoriteJDBC implements FavoriteDAO {
 	}
 
 	@Override
-	public Boolean isFavorite(final String tweetID, final String userID) {
+	public Boolean isFavorited(final String tweetID, final String userID) {
 		try{
 			Boolean ans = jdbcTemplate.queryForObject(SQL_IS_FAVORITE, Boolean.class, tweetID, userID);
 			return ans;
@@ -66,12 +63,5 @@ public class FavoriteJDBC implements FavoriteDAO {
 		try{
 			jdbcTemplate.update(SQL_UNFAVORITE, tweetID, userID);
 		} catch (DataAccessException e) { return;}
-	}
-
-	@Override
-	public Integer countFavorites(final String tweetID) {
-		try{
-			return jdbcTemplate.queryForObject(SQL_COUNT_FAVORITES, Integer.class, tweetID);
-		} catch(Exception e) { return null; } //SQLException or DataAccessException
 	}
 }

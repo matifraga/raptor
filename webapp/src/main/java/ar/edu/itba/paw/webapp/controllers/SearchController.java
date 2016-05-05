@@ -49,7 +49,7 @@ public class SearchController extends RaptorController{
 
         switch(text.charAt(0)){
         	case '#':   mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE,1));
+						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE,1), tweetService);
 						mav.addObject(NUMBER_OF_RESULTS, hashtags.size());
 						mav.addObject(RESULT, hashtags);
 						break;
@@ -59,7 +59,7 @@ public class SearchController extends RaptorController{
         				mav.addObject(RESULT, users);
         				break;
         	default:	mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<TweetViewModel> tweets = TweetViewModel.transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE,1));
+						List<TweetViewModel> tweets = TweetViewModel.transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE,1), tweetService);
 						mav.addObject(NUMBER_OF_RESULTS, tweets.size());
 						mav.addObject(RESULT, tweets);
 						break;

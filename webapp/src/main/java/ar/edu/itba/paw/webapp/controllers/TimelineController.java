@@ -111,7 +111,7 @@ public class TimelineController extends RaptorController{
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page));
+			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page), tweetService);
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
@@ -149,7 +149,7 @@ public class TimelineController extends RaptorController{
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page));
+			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page), tweetService);
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
