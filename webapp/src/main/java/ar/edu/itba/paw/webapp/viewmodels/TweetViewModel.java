@@ -41,7 +41,7 @@ public class TweetViewModel {
 	        this.retweetedBy = null;
     	} else {
     		Tweet originalTweet = ts.getTweet(tweet.getRetweet());
-    		this.msg = originalTweet.getMsg();
+    		this.msg = parseToHTMLString(originalTweet.getMsg());
     		this.retweetedBy = new StringBuilder(tweet.getOwner().getFirstName()).append(" ").append(tweet.getOwner().getLastName()).toString();
     		this.owner = new UserViewModel(originalTweet.getOwner(), PIC_SIZE);
     		this.timestamp = originalTweet.getTimestamp();
