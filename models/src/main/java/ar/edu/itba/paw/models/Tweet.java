@@ -28,10 +28,11 @@ public class Tweet {
 	private final Timestamp timestamp;
 	private final int countRetweets;
 	private	final int countFavorites;
+	private final String retweetID;
 	
 	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp,
-			final int countRetweets, final int countFavorites) throws IllegalArgumentException {
-		if (!isValidLength(msg)) {
+			final int countRetweets, final int countFavorites, final String retweetID) throws IllegalArgumentException {
+		if (msg!=null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
 		}
 		this.msg = msg;
@@ -40,8 +41,8 @@ public class Tweet {
 		this.timestamp = timestamp;
 		this.countRetweets = countRetweets;
 		this.countFavorites = countFavorites;
-	}
-	
+		this.retweetID = retweetID;
+	}	
 	
 	//ASI NO LLORAN LOS TESTS POR AHORA.
 	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
@@ -54,6 +55,7 @@ public class Tweet {
 		this.timestamp = timestamp;
 		this.countRetweets = 0;
 		this.countFavorites = 0;
+		this.retweetID = null;
 	}     
 	
 	
@@ -152,5 +154,9 @@ public class Tweet {
 
 	public int getCountFavorites() {
 		return countFavorites;
+	}
+	
+	public String getRetweet() {
+		return retweetID;
 	}
 }

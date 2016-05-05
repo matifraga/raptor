@@ -19,12 +19,11 @@ public interface TweetService {
 	/**
 	 * Reweets a previous tweet.
 	 * 
-	 * @param tweetID The old tweet's id.
-	 * @param owner The user wrote this tweet.
+	 * @param tweetID The old tweet's ID.
+	 * @param owner The user who retweeted.
 	 * @return The new tweet.
 	 */
 	public Tweet retweet(final String tweetID, final User owner);
-	
 	
 	/**
 	 * Get a user's list of tweets.
@@ -35,17 +34,7 @@ public interface TweetService {
 	 * @return The recovered tweets.
 	 */
 	public List<Tweet> getTimeline(final String id, final int resultsPerPage, final int page);
-	
-	/**
-	 * Get a user's feed tweets.
-	 * 
-	 * @param id The user's ID.
-	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page Number of page needed.
-	 * @return The recovered feed.
-	 */
-	public List<Tweet> getFeed(final String id, final int resultsPerPage, final int page);
-	
+
 	/**
 	 * Get a user's mentions.
 	 * 
@@ -118,26 +107,43 @@ public interface TweetService {
 	 * 
 	 * @param tweet
 	 */
-	public void increaseFavoriteCount(final Tweet tweet);
+	public void increaseFavoriteCount(final String tweetID);
 	
 	/**
 	 * Reflect unfavorite action on the tweet's favorite counter.
 	 * 
 	 * @param tweet
 	 */
-	public void decreaseFavoriteCount(final Tweet tweet);
+	public void decreaseFavoriteCount(final String tweetID);
 	
 	/**
 	 * Reflect retweet action on the tweet's retweet counter.
 	 * 
 	 * @param tweet
 	 */
-	public void increaseRetweetCount(final Tweet tweet);
+	public void increaseRetweetCount(final String tweetID);
 	
 	/**
 	 * Reflect unretweet action on the tweet's retweet counter.
 	 * 
 	 * @param tweet
 	 */
-	public void decreaseRetweetCount(final Tweet tweet);
+	public void decreaseRetweetCount(final String tweetID);
+	
+	/**
+	 * Get a tweet.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 * @return the tweet.
+	 */
+	public Tweet getTweet(final String tweetID);
+	
+	/**
+	 * 
+	 * 
+	 * @param tweetID
+	 * @param user
+	 * @return
+	 */
+	public boolean isRetweeted(final String tweetID, final User user);
 }

@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 
 public interface FavoriteService {
@@ -11,7 +10,7 @@ public interface FavoriteService {
 	 * @param tweet
 	 * @param user
 	 */
-	void favorite(final Tweet tweet, final User user);
+	void favorite(final String tweetID, final User user);
 	
 	/**
 	 * Returns whether a user favorited a tweet or not.
@@ -21,21 +20,21 @@ public interface FavoriteService {
 	 * @return true if the user favorited the tweet, false if not.
 	 */
 	
-	Boolean isFavorite (final Tweet tweet, final User user); //no se si va a hacer falta despues
+	Boolean isFavorite (final String tweetID, final User user); 
 	
 	/**
 	 * Stop a favorite action.
 	 * 
-	 * @param tweet
+	 * @param tweetID
 	 * @param user
 	 */
-	void unfavorite(final Tweet tweet, final User user);
+	void unfavorite(final String tweetID, final User user);
 	
 	/**
 	 * Get the amount of favorites for a tweet.
 	 * 
-	 * @param tweet
+	 * @param tweetID 
 	 * @return The amount of favorites the tweet has.
 	 */
-	Integer countFavorites(final Tweet tweet);
+	Integer countFavorites(final String tweetID);
 }

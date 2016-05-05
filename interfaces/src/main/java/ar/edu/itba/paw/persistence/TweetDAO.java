@@ -15,6 +15,15 @@ public interface TweetDAO {
 	 * @return The registered tweet.
 	 */
 	Tweet create(final String msg, final User owner);
+
+	/**
+	 * Retweet a previous tweet.
+	 * 
+	 * @param tweet the previous tweet.
+	 * @param user the owner of the reTweet.
+	 * @return
+	 */
+	Tweet retweet(final String tweetID, final User user);
 	
 	/**
 	 * Get a list of user's tweets.
@@ -110,4 +119,13 @@ public interface TweetDAO {
 	 * @param tweetID the tweet's ID.
 	 */
 	public void decreaseRetweetCount(final String tweetID);
+	
+	/**
+	 * Get a tweet.
+	 * 
+	 * @param tweetID the tweet's ID.
+	 * @return the tweet.
+	 */
+	public Tweet getTweet(final String tweetID);
+
 }

@@ -22,9 +22,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 
 	@Override
-	public void favorite(final Tweet tweet, final User user) {
+	public void favorite(final String tweetID, final User user) {
 		tweetService.increaseFavoriteCount(tweet);
-		favoriteDAO.favorite(tweet.getId(), user.getId());
+		favoriteDAO.favorite(tweetID, user.getId());
 	}
 
 	@Override
@@ -37,9 +37,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 
 	@Override
-	public void unfavorite(final Tweet tweet, final User user) {
-		tweetService.decreaseFavoriteCount(tweet);
-		favoriteDAO.unfavorite(tweet.getId(), user.getId());	
+	public void unfavorite(final String tweetID, final User user) {
+		tweetService.decreaseFavoriteCount(tweetID);
+		favoriteDAO.unfavorite(tweetID, user.getId());	
 	}
 
 	@Override

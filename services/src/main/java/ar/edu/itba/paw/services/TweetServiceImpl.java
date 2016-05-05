@@ -47,6 +47,18 @@ public class TweetServiceImpl implements TweetService {
 	}
 	
 	@Override
+	public Tweet getTweet(String tweetID) {
+		if(tweetID==null)
+			return null;
+		
+		Tweet t = tweetDAO.getTweet(tweetID);
+		if(t == null) {
+			//TODO handle null
+		}
+		return t;
+	}
+	
+	@Override
 	public List<Tweet> getTimeline(final String id, final int resultsPerPage, final int page) {
 		List<Tweet> ans = tweetDAO.getTweetsByUserID(id, resultsPerPage, page);
 		if (ans == null) {
@@ -57,14 +69,13 @@ public class TweetServiceImpl implements TweetService {
 
 	@Override
 	public Tweet retweet(final String tweetID, final User owner) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Tweet> getFeed(final String id, final int resultsPerPage, final int page) {
-		// TODO Auto-generated method stub
-		return null;
+		Tweet t = tweetDAO.retweet(tweetID, owner);
+		if(t==null) {
+			//TODO handle null
+		} else {
+			increaseRetweetCount(tweetID);
+		}
+		return t;
 	}
 
 	@Override
@@ -126,22 +137,27 @@ public class TweetServiceImpl implements TweetService {
 	}
 	
 	@Override
-	public void increaseFavoriteCount(final Tweet tweet) {
-		tweetDAO.increaseFavoriteCount(tweet.getId());	
+	public void increaseFavoriteCount(final String tweetID) {
+		tweetDAO.increaseFavoriteCount(tweetID);	
 	}
 	
 	@Override
-	public void decreaseFavoriteCount(final Tweet tweet) {
-		tweetDAO.decreaseFavoriteCount(tweet.getId());	
+	public void decreaseFavoriteCount(final String tweetID) {
+		tweetDAO.decreaseFavoriteCount(tweetID);	
 	}
 	
 	@Override
-	public void increaseRetweetCount(final Tweet tweet) {
-		tweetDAO.increaseRetweetCount(tweet.getId());
+	public void increaseRetweetCount(final String tweetID) {
+		tweetDAO.increaseRetweetCount(tweetID);
 	}
 	
 	@Override
-	public void decreaseRetweetCount(final Tweet tweet) {
-		tweetDAO.decreaseRetweetCount(tweet.getId());
+	public void decreaseRetweetCount(final String tweetID) {
+		tweetDAO.decreaseRetweetCount(tweetID);
+	}
+	@Override
+	public boolean isRetweeted(String tweetID, User user) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

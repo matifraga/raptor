@@ -47,7 +47,6 @@ public class SearchController extends RaptorController{
         if(text.length()==0)
         	return mav;
 
-        //TODO check no input stream
         switch(text.charAt(0)){
         	case '#':   mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
 						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE,1));
