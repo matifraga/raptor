@@ -48,10 +48,6 @@ public class MentionJDBCTest {
 
 	private static final String USERNAME = "@raptorTest", PASSWORD = "raptor",
 			EMAIL = "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
-
-
-	private static final String SEARCHALL = "";
-	private static final int RESULTSPERPAGE = 3, PAGE = 1;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
