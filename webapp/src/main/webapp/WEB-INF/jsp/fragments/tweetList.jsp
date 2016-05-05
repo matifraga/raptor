@@ -10,8 +10,9 @@
             </c:when>
             <c:otherwise>
                 <c:forEach items="${requestScope.header}" var="item">
+                	<spring:message code="${item['titleCode']}" var="headerTitle" />
                     <a <c:if test="${item['active']}">class="active"</c:if> href="${item['link']}">
-                            ${item['title']}</a>
+                            ${headerTitle}</a>
                 </c:forEach>
             </c:otherwise>
         </c:choose>

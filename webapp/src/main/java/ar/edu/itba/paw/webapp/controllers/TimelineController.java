@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ar.edu.itba.paw.services.*;
@@ -226,17 +227,17 @@ public class TimelineController extends RaptorController{
 		List<Map<String, Object>> header = new ArrayList<Map<String, Object>>();
 
 		HashMap<String, Object> timeline = new HashMap<String, Object>();
-		timeline.put("title", messageSource.getMessage("timeline.timelineListTitle", null, null, null));
+		timeline.put("titleCode", "timeline.timelineListTitle");
 		timeline.put("link", "/user/" + u.getUsername());
 		timeline.put("active", (active.equals("timeline")?Boolean.TRUE:Boolean.FALSE));
 
 		HashMap<String, Object> mentions = new HashMap<String, Object>();
-		mentions.put("title", messageSource.getMessage("timeline.mentionsListTitle", null, null, null));
+		mentions.put("titleCode", "timeline.mentionsListTitle");
 		mentions.put("link", "/user/" + u.getUsername() + "/mentions");
 		mentions.put("active", (active.equals("mentions")?Boolean.TRUE:Boolean.FALSE));
 		
 		HashMap<String, Object> favorites = new HashMap<String, Object>();
-		favorites.put("title", messageSource.getMessage("timeline.favoritesListTitle", null, null, null));
+		favorites.put("titleCode", "timeline.favoritesListTitle");
 		favorites.put("link", "/user/" + u.getUsername() + "/favorites");
 		favorites.put("active", (active.equals("favorites")?Boolean.TRUE:Boolean.FALSE));
 
