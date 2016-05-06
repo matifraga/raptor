@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserViewModel {
 
@@ -39,9 +40,7 @@ public class UserViewModel {
 
     public static List<UserViewModel> transform(List<User> userList,final int size) {
         List<UserViewModel> userMList = new ArrayList<>(userList.size());
-    	for (User user : userList) {
-			userMList.add(transformUser(user, size));
-		}
+        userMList.addAll(userList.stream().map(user -> transformUser(user, size)).collect(Collectors.toList()));
         return userMList;
     }
 	

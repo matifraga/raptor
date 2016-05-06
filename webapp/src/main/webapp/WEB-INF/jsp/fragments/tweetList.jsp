@@ -40,7 +40,7 @@
                     </c:if>
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-xs-4 col-sm-2 col-md-2">
-                            <img class="profile-picture center-block" src="${tweet.owner.profilePicture}"/>
+                           <a href="/user/${tweet.owner.username}"><img class="profile-picture center-block" src="${tweet.owner.profilePicture}"/></a>
                         </div>
                         <div class="col-xs-8 col-sm-10 col-md-10">
                             <div class="rawr-top-bar">

@@ -37,9 +37,9 @@ public class FeedController extends TweetListController {
 	private HashtagService hashtagService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView feed(@PathVariable Map<String, String> pathVariables) {
+	public ModelAndView feed(@PathVariable Map<Object, String> pathVariables) {
 
-		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
+		int page = Integer.parseInt(pathVariables.getOrDefault(PAGE, "1"));
 		final ModelAndView mav = new ModelAndView(FEED);
 		
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
@@ -68,7 +68,7 @@ public class FeedController extends TweetListController {
 	@RequestMapping(value={GLOBAL_FEED}, method = RequestMethod.GET)
 	public ModelAndView globalFeed(@PathVariable Map<String, String> pathVariables) {
 
-		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
+		int page = Integer.parseInt(pathVariables.getOrDefault(PAGE, "1"));
 		final ModelAndView mav = new ModelAndView(FEED);
 
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
