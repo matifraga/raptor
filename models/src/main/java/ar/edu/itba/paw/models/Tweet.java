@@ -139,9 +139,9 @@ public class Tweet {
 	}
 
 	/*
-	 * 
+	 *
 	 * Getters
-	 * 
+	 *
 	 * */
 
 	@Override
@@ -164,9 +164,9 @@ public class Tweet {
 	public User getOwner() {
 		return owner;
 	}
-
-	public String getTimestamp() {
-		return sdf.format(timestamp); //TODO fix
+	
+	public String getTimestamp(){
+		return sdf.format(timestamp); //TODO unsafe for multithread
 	}
 
 	public int getCountRetweets() {
