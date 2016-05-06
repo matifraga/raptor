@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ar.edu.itba.paw.models.Tweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 @Controller
 @RequestMapping(value="/user")
-public class TimelineController extends RaptorController{
+public class TimelineController extends TweetListController {
 	
 	private static final int TIMELINE_PIC_SIZE = 200;
 	private static final String USERNAME = "username";
@@ -59,21 +60,15 @@ public class TimelineController extends RaptorController{
 	private final static String REDIRECT = "redirect:";
 	
 	private static final int TRENDING_TOPIC_LIMIT = 5;
-	
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private TweetService tweetService;
-
-	@Autowired
-	private HashtagService hashtagService;
 
 	@Autowired
 	private FollowerService followerService;
 
 	@Autowired
-	private FavoriteService favoriteService;
+	private HashtagService hashtagService;
+
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(value={MAP_USER_FOLLOW}, method= RequestMethod.POST)
 	public String follow(@PathVariable Map<String, String> pathVariables) {
@@ -110,118 +105,73 @@ public class TimelineController extends RaptorController{
 
 	@RequestMapping(value={MAP_USERS, MAP_USERS_WITH_PAGING}, method= RequestMethod.GET)
 	public ModelAndView timeline(@PathVariable Map<String, String> pathVariables){
-	//(value=USERNAME) String username) {
+
 		String username = pathVariables.get(USERNAME);
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
-		final ModelAndView mav = new ModelAndView(TIMELINE);
+
 		User u = userService.getUserWithUsername(username);
-		User sessionUser = sessionUser();
 
-		if(u != null){
-			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
+		final ModelAndView mav = buildMav(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId()),
+				u, page, "timeline");
 
-			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page, (sessionUser==null)?null:sessionUser.getId()),
-					tweetService, favoriteService, sessionUser());
-			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
-
-			Map<String, Integer> userInfo = new HashMap<String, Integer>();
-			userInfo.put("followers_count", followerService.countFollowers(u));
-			userInfo.put("following_count", followerService.countFollowing(u));
-			userInfo.put("tweets_count", tweetService.countTweets(u));
-
-			mav.addObject(TWEET_LIST, tweetList);
-			mav.addObject(TRENDS_LIST, trendsList);
-			mav.addObject(USER_INFO, userInfo);
-
-			if(sessionUser() == null) {
-				mav.addObject(FOLLOWING, -1);
-			} else if(sessionUser().getUsername().equals(username)) {
-				mav.addObject(FOLLOWING, 2);
-			} else {
-				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), u)? 1 : 0));
-			}
-
-			List<Map<String, Object>> header = createHeader(u, "timeline");
-
-			mav.addObject(HEADER, header);
-		}
 		return mav;
 	}
 
 	@RequestMapping(value={MAP_USER_MENTIONS, MAP_USER_MENTIONS_WITH_PAGING}, method= RequestMethod.GET)
 	public ModelAndView mentions(@PathVariable Map<String, String> pathVariables){
-		//(value=USERNAME) String username) {
+
 		String username = pathVariables.get(USERNAME);
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
-		final ModelAndView mav = new ModelAndView(TIMELINE);
+
 		User u = userService.getUserWithUsername(username);
-		User sessionUser = sessionUser();
 
-		if(u != null){
-			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
+		final ModelAndView mav = buildMav(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId()),
+				u, page, "mentions");
 
-			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page, (sessionUser==null)?null:sessionUser.getId()),
-					tweetService, favoriteService, sessionUser());
-			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
-
-			Map<String, Integer> userInfo = new HashMap<String, Integer>();
-			userInfo.put("followers_count", followerService.countFollowers(u));
-			userInfo.put("following_count", followerService.countFollowing(u));
-			userInfo.put("tweets_count", tweetService.countTweets(u));
-
-			mav.addObject(TWEET_LIST, mentionList);
-			mav.addObject(TRENDS_LIST, trendsList);
-			mav.addObject(USER_INFO, userInfo);
-
-			if(sessionUser() == null) {
-				mav.addObject(FOLLOWING, -1);
-			} else if(sessionUser().getUsername().equals(username)) {
-				mav.addObject(FOLLOWING, 2);
-			} else {
-				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), u)? 1 : 0));
-			}
-
-			List<Map<String, Object>> header = createHeader(u, "mentions");
-
-			mav.addObject(HEADER, header);
-		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value={MAP_USER_FAVORITES, MAP_USER_FAVORITES_WITH_PAGING}, method= RequestMethod.GET)
 	public ModelAndView favorites(@PathVariable Map<String, String> pathVariables){
-		//(value=USERNAME) String username) {
+
 		String username = pathVariables.get(USERNAME);
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
-		final ModelAndView mav = new ModelAndView(TIMELINE);
+
 		User u = userService.getUserWithUsername(username);
-		User sessionUser = sessionUser();
 
-		if(u != null){
-			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
+		final ModelAndView mav = buildMav(tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId()),
+				u, page, "favorites");
 
-			List<TweetViewModel> favoritesList = TweetViewModel.transform(tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page, (sessionUser==null)?null:sessionUser.getId()),
-					tweetService, favoriteService, sessionUser());
+		return mav;
+	}
+
+	private ModelAndView buildMav(List<Tweet> tweetList, User user, Integer page, String headerType) {
+		final ModelAndView mav = new ModelAndView(TIMELINE);
+
+		if(user != null){
+			mav.addObject(USER, new UserViewModel(user, TIMELINE_PIC_SIZE));
+
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
+			List<TweetViewModel> tweetViewList = transform(tweetList);
 
 			Map<String, Integer> userInfo = new HashMap<String, Integer>();
-			userInfo.put("followers_count", followerService.countFollowers(u));
-			userInfo.put("following_count", followerService.countFollowing(u));
-			userInfo.put("tweets_count", tweetService.countTweets(u));
+			userInfo.put("followers_count", followerService.countFollowers(user));
+			userInfo.put("following_count", followerService.countFollowing(user));
+			userInfo.put("tweets_count", tweetService.countTweets(user));
 
-			mav.addObject(TWEET_LIST, favoritesList);
+			mav.addObject(TWEET_LIST, tweetViewList);
 			mav.addObject(TRENDS_LIST, trendsList);
 			mav.addObject(USER_INFO, userInfo);
 
 			if(sessionUser() == null) {
 				mav.addObject(FOLLOWING, -1);
-			} else if(sessionUser().getUsername().equals(username)) {
+			} else if(sessionUser().getUsername().equals(user.getUsername())) {
 				mav.addObject(FOLLOWING, 2);
 			} else {
-				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), u)? 1 : 0));
+				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), user)? 1 : 0));
 			}
 
-			List<Map<String, Object>> header = createHeader(u, "favorites");
+			List<Map<String, Object>> header = createHeader(user, headerType);
 
 			mav.addObject(HEADER, header);
 		}

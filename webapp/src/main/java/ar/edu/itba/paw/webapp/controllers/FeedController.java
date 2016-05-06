@@ -18,7 +18,7 @@ import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 
 @Controller
 @RequestMapping(value = { "/", "/{page:[1-9][0-9]*}" })
-public class FeedController extends RaptorController {
+public class FeedController extends TweetListController {
 
 	private final static String FEED = "feed";
 
@@ -32,13 +32,7 @@ public class FeedController extends RaptorController {
 	private static final int TRENDING_TOPIC_LIMIT = 5;
 
 	@Autowired
-	private TweetService tweetService;
-
-	@Autowired
 	private HashtagService hashtagService;
-
-	@Autowired
-	private FavoriteService favoriteService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView feed(@PathVariable Map<String, String> pathVariables) {
@@ -52,10 +46,9 @@ public class FeedController extends RaptorController {
 		List<TweetViewModel> tweetList;
 		User sessionUser = sessionUser();
 		if (sessionUser == null) {
-			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page, null), tweetService, favoriteService, sessionUser());
+			tweetList = transform(tweetService.globalFeed(TIMELINE_SIZE, page, null));
 		} else {
-			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser.getId(), TIMELINE_SIZE, page),
-					tweetService, favoriteService, sessionUser());
+			tweetList = transform(tweetService.currentSessionFeed(sessionUser.getId(), TIMELINE_SIZE, page));
 		}
 
 		mav.addObject(TWEET_LIST, tweetList);

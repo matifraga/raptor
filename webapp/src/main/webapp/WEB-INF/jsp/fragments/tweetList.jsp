@@ -34,7 +34,7 @@
                         <div class="col-md-offset-2 col-sm-offset-2">
                             <div class="rerawr-info-bar">
                                 <div class="rawr-action-bar-img img-rerawr img-rerawr-selected" style="float: left;"></div>
-                                <span style="padding-left: 5px;"><spring:message code="tweetView.retweetedBy"/> ${tweet.retweetedBy}</span>
+                                <span><spring:message code="tweetView.retweetedBy"/> ${tweet.retweetedBy}</span>
                             </div>
                         </div>
                     </c:if>
@@ -55,11 +55,15 @@
                                     <c:if test="${tweet.owner.id != sessionUser.id}">
                                         <a id="re${tweet.id}" href="#" onclick="return retweet('${tweet.id}')" class="rawr-action-bar-img img-rerawr
                                         <c:if test="${tweet.retweeted}"> img-rerawr-selected</c:if>
-                                        " data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tweetView.retweet"/>"></a>
+                                        "   <c:if test="${tweet.countRetweets >= 0}"> data-count="${tweet.countRetweets}"</c:if>>
+                                            <c:if test="${tweet.countRetweets > 0}">${tweet.countRetweets}</c:if>
+                                        </a>
                                     </c:if>
                                     <a id="fav${tweet.id}" href="#" onclick="return favorite('${tweet.id}')" class="rawr-action-bar-img img-fav
                                     <c:if test="${tweet.favorited}">img-fav-selected</c:if>
-                                    " data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tweetView.favorite"/>"></a>
+                                    "   <c:if test="${tweet.countFavorites >= 0}"> data-count="${tweet.countFavorites}"</c:if>>
+                                        <c:if test="${tweet.countFavorites > 0}">${tweet.countFavorites}</c:if>
+                                    </a>
                                 </div>
                             </c:if>
                         </div>
@@ -70,10 +74,8 @@
     </c:choose>
 </div>
 <script>
-    $('a').tooltip();
     function favorite(tweetId) {
         var contents = $('#fav' + tweetId);
-        contents.tooltip('hide');
         $.post("/actions/favorite",
                 {'tweetId': tweetId,
                  'favorite': !contents.hasClass('img-fav-selected')},
@@ -85,7 +87,6 @@
     }
     function retweet(tweetId) {
         var contents = $('#re' + tweetId);
-        contents.tooltip('hide');
         $.post("/actions/retweet",
                 {'tweetId': tweetId,
                     'retweet': !contents.hasClass('img-rerawr-selected')},
@@ -96,10 +97,17 @@
         return false;
     }
     function toggleClass(object, className) {
+        var count = object.data("count");
+        console.log(object);
         if(object.hasClass(className)){
             object.removeClass(className);
+            object.data("count", count-1);
+            if(count-1>0) object.text(count-1);
+            else object.text("");
         } else {
             object.addClass(className);
+            object.data("count", count+1);
+            object.text(count+1);
         }
     }
 </script>

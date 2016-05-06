@@ -2,17 +2,12 @@ package ar.edu.itba.paw.webapp.viewmodels;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.FavoriteService;
-import ar.edu.itba.paw.services.TweetService;
 
 public class TweetViewModel {
 	
@@ -64,37 +59,6 @@ public class TweetViewModel {
 
     public static TweetViewModel transformTweet(Tweet tweet, Tweet retweeted) {
         return new TweetViewModel(tweet, retweeted);
-    }
-    
-    public static List<TweetViewModel> transform(List<Tweet> tweetList, final TweetService ts,
-                                                 final FavoriteService fs, final User loggedUser) {
-
-        List<TweetViewModel> tweetMList = new ArrayList<>(tweetList.size());
-        for (Tweet tweet : tweetList) {
-
-            TweetViewModel tweetView;
-
-            if (tweet.isRetweet()) {
-                Tweet retweet = ts.getTweet(tweet.getRetweet(), (loggedUser==null)? null : loggedUser.getId());
-                tweetView = transformTweet(tweet, retweet);
-//                if (loggedUser != null) {
-//                    tweetView.isFavorited = fs.isFavorited(retweet.getId(), loggedUser); // Comentar estos dos
-//                    tweetView.isRetweeted = ts.isRetweeted(retweet.getId(), loggedUser); //
-//                }
-            } else {
-                tweetView = transformTweet(tweet);
-//                if (loggedUser != null) {
-//                    tweetView.isFavorited = fs.isFavorited(tweet.getId(), loggedUser); // Y estos dos
-//                    tweetView.isRetweeted = ts.isRetweeted(tweet.getId(), loggedUser); //
-//                }
-            }
-
-            //tweetView.isFavorited = Boolean.FALSE; // Descomentar estos dos
-            //tweetView.isRetweeted = Boolean.FALSE;
-
-            tweetMList.add(tweetView);
-        }
-        return tweetMList;
     }
 
     public String getMsg() {
