@@ -41,7 +41,7 @@ public class Tweet {
 		this.msg = msg;
 		this.id = id;
 		this.owner = owner;
-		this.timestamp = timestamp;
+		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = countRetweets;
 		this.countFavorites = countFavorites;
 		this.retweetID = retweetID;
@@ -53,7 +53,7 @@ public class Tweet {
 		this.msg = null;
 		this.id = id;
 		this.owner = owner;
-		this.timestamp = timestamp;
+		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = 0;
 		this.countFavorites = 0;
 		this.retweetID = retweetID;
@@ -69,7 +69,7 @@ public class Tweet {
 		this.msg = msg;
 		this.id = id;
 		this.owner = owner;
-		this.timestamp = timestamp;
+		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = 0;
 		this.countFavorites = 0;
 		this.retweetID = null;
@@ -168,7 +168,7 @@ public class Tweet {
 	}
 	
 	public String getTimestamp(){
-		return sdf.format(timestamp);
+		return sdf.format(timestamp); //TODO fix
 	}
 
 	public int getCountRetweets() {

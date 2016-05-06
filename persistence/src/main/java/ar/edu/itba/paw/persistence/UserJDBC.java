@@ -77,9 +77,7 @@ public class UserJDBC implements UserDAO {
 	 */
 
 	private String randomUserId() {
-		String charactersString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-				+ "abcdefghijklmnopqrstuvwxyz" + "0123456789";
-		char[] characterArray = charactersString.toCharArray();
+		char[] characterArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
 		char[] userId = new char[USER_ID_LENGTH];
 		Random rand = new Random();
 
