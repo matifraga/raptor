@@ -191,16 +191,16 @@ public class TweetJDBC implements TweetDAO {
 	private String randomTweetId() {
 		String charactersString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz" + "0123456789";
 		char[] characterArray = charactersString.toCharArray();
-		String id = "";
+		char[] id = new char[TWEET_ID_LENGTH];
 		Random rand = new Random();
 
-		int i = TWEET_ID_LENGTH;
-		while(i>0){
-			id += characterArray[rand.nextInt(characterArray.length)];
+		int i = TWEET_ID_LENGTH-1;
+		while(i>=0){
+			id[i] = characterArray[rand.nextInt(characterArray.length)];
 			i--;
 		}
 
-		return id;
+		return new String(id);
 	}
 	
 	@Override

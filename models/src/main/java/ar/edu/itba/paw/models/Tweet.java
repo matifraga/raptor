@@ -61,7 +61,7 @@ public class Tweet {
 		this.isRetweeted = false;
 	}
 	
-	//ASI NO LLORAN LOS TESTS POR AHORA.
+	//TODO ASI NO LLORAN LOS TESTS POR AHORA.
 	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
 		if (!isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);

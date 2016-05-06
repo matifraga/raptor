@@ -80,16 +80,16 @@ public class UserJDBC implements UserDAO {
 		String charactersString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 				+ "abcdefghijklmnopqrstuvwxyz" + "0123456789";
 		char[] characterArray = charactersString.toCharArray();
-		String userId = "";
+		char[] userId = new char[USER_ID_LENGTH];
 		Random rand = new Random();
 
-		int i = USER_ID_LENGTH;
-		while (i > 0) {
-			userId += characterArray[rand.nextInt(characterArray.length)];
+		int i = USER_ID_LENGTH-1;
+		while (i >= 0) {
+			userId[i] = characterArray[rand.nextInt(characterArray.length)];
 			i--;
 		}
 
-		return userId;
+		return new String(userId);
 	}
 
 	@Override

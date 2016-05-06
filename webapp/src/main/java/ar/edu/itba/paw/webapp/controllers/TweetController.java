@@ -1,22 +1,20 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.services.FavoriteService;
-import ar.edu.itba.paw.services.TweetService;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ar.edu.itba.paw.services.UserService;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import ar.edu.itba.paw.services.FavoriteService;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.services.UserService;
 
 @Controller
 public class TweetController extends RaptorController{
-
-	private static final String MAP_USER = "/user/";
 
 	private static final String REDIRECT = "redirect:";
 	private static final String MESSAGE = "message";
@@ -51,7 +49,7 @@ public class TweetController extends RaptorController{
 
 		return REDIRECT + referer;
 
-		//return REDIRECT + MAP_USER + sessionUser().getUsername();
+		//return REDIRECT +  "/user/" + sessionUser().getUsername();
 	}
 
 	@RequestMapping(value = {ACTIONS + RETWEET}, method = RequestMethod.POST, produces = "application/json")

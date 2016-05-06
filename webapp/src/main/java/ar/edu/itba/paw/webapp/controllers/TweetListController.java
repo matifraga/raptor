@@ -1,16 +1,16 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.*;
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import static ar.edu.itba.paw.webapp.viewmodels.TweetViewModel.transformTweet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static ar.edu.itba.paw.webapp.viewmodels.TweetViewModel.transformTweet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 
 @Controller
 public abstract class TweetListController extends RaptorController {
