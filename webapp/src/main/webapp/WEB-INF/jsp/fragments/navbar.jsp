@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Tomi
-  Date: 4/7/16
-  Time: 02:21
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -83,7 +76,7 @@
                                     <li><a href="/logout" style="color: #4A4A4A; text-align: center">Log out</a></li>
                                 </ul>
                             </li>
-                            <li><img src=${navbarViewUser.profilePicture} class="mini-pic"/></li>
+                            <li><a href="/user/${tweet.owner.username}"><img src=${navbarViewUser.profilePicture} class="mini-pic"/></a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

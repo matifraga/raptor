@@ -6,7 +6,7 @@
     <div class="panel panel-raptor panel-profile-info">
         <ul>
             <li>
-                <img class="profile-picture" src=${user.profilePicture}/>
+                <a href="/user/${tweet.owner.username}"><img class="profile-picture" src=${user.profilePicture}/></a>
             </li>
             <li style="font-size: 1.2em;"><a href="../user/${requestScope.user.username}">${requestScope.user.firstName} ${requestScope.user.lastName}</a></li>
             <li><a href="../user/${requestScope.user.username}">@${requestScope.user.username} <c:if test="${requestScope.user.verified == true}"><span class="glyphicon glyphicon-ok-sign" /></c:if></a></li>
