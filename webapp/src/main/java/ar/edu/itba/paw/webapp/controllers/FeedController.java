@@ -1,10 +1,8 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.HashtagService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.HashtagService;
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = { "/", "/{page:[1-9][0-9]*}" })
@@ -89,15 +88,15 @@ public class FeedController extends TweetListController {
 
 	private List<Map<String, Object>> createHeader(User u, String active) {
 
-		List<Map<String, Object>> header = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> header = new ArrayList<>();
 
-		HashMap<String, Object> global = new HashMap<String, Object>();
+		HashMap<String, Object> global = new HashMap<>();
 		global.put("titleCode", "feed.title.globalFeed");
 		global.put("link", "/globalfeed");
 		global.put("active", (active.equals("global")?Boolean.TRUE:Boolean.FALSE));
 
 		if(u != null) {
-			HashMap<String, Object> custom = new HashMap<String, Object>();
+			HashMap<String, Object> custom = new HashMap<>();
 			custom.put("titleCode", "feed.title.customFeed");
 			custom.put("link", "/");
 			custom.put("active", (active.equals("custom")?Boolean.TRUE:Boolean.FALSE));

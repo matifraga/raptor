@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import javax.servlet.http.HttpServletRequest;
-
+import ar.edu.itba.paw.services.FavoriteService;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ar.edu.itba.paw.services.FavoriteService;
-import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.services.UserService;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class TweetController extends RaptorController{
@@ -36,7 +35,7 @@ public class TweetController extends RaptorController{
 
 	@RequestMapping(value =  {ACTIONS + POST}, method = RequestMethod.POST)
 	public String postTweetAction(
-			@RequestParam(value = MESSAGE, required = true) String message, HttpServletRequest request) {
+			@RequestParam(value = MESSAGE) String message, HttpServletRequest request) {
 
 		if(sessionUser() == null) {
 			return REDIRECT + "/";
@@ -54,8 +53,8 @@ public class TweetController extends RaptorController{
 
 	@RequestMapping(value = {ACTIONS + RETWEET}, method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String retweetAction(@RequestParam(value = TWEETID, required = true) String tweetId,
-								@RequestParam(value = RETWEET, required = true) Boolean retweet) {
+	public String retweetAction(@RequestParam(value = TWEETID) String tweetId,
+								@RequestParam(value = RETWEET) Boolean retweet) {
 
 		if(sessionUser() != null) {
 			if (retweet) {
@@ -71,8 +70,8 @@ public class TweetController extends RaptorController{
 
 	@RequestMapping(value = {ACTIONS + FAVORITE}, method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String favoriteTweetAction(@RequestParam(value = TWEETID, required = true) String tweetId,
-									  @RequestParam(value = FAVORITE, required = true) Boolean favorite) {
+	public String favoriteTweetAction(@RequestParam(value = TWEETID) String tweetId,
+									  @RequestParam(value = FAVORITE) Boolean favorite) {
 
 		if(sessionUser() != null) {
 			if (favorite) {

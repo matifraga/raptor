@@ -1,17 +1,5 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FollowerService;
@@ -19,6 +7,17 @@ import ar.edu.itba.paw.services.HashtagService;
 import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value="/user")
@@ -114,9 +113,7 @@ public class TimelineController extends TweetListController {
 			tweetList = tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
 		}
 
-		final ModelAndView mav = buildMav(tweetList,u, page, "timeline");
-
-		return mav;
+		return buildMav(tweetList, u, page, "timeline");
 	}
 
 	@RequestMapping(value={MAP_USER_MENTIONS, MAP_USER_MENTIONS_WITH_PAGING}, method= RequestMethod.GET)
@@ -132,9 +129,7 @@ public class TimelineController extends TweetListController {
 			tweetList = tweetService.getMentions(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
 		}
 
-		final ModelAndView mav = buildMav(tweetList,u, page, "mentions");
-
-		return mav;
+		return buildMav(tweetList, u, page, "mentions");
 	}
 
 	@RequestMapping(value={MAP_USER_FAVORITES, MAP_USER_FAVORITES_WITH_PAGING}, method= RequestMethod.GET)
@@ -150,9 +145,7 @@ public class TimelineController extends TweetListController {
 			tweetList = tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
 		}
 
-		final ModelAndView mav = buildMav(tweetList,u, page, "favorites");
-
-		return mav;
+		return buildMav(tweetList, u, page, "favorites");
 	}
 
 	private ModelAndView buildMav(List<Tweet> tweetList, User user, Integer page, String headerType) {
@@ -164,7 +157,7 @@ public class TimelineController extends TweetListController {
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 			List<TweetViewModel> tweetViewList = transform(tweetList);
 
-			Map<String, Integer> userInfo = new HashMap<String, Integer>();
+			Map<String, Integer> userInfo = new HashMap<>();
 			userInfo.put("followers_count", followerService.countFollowers(user));
 			userInfo.put("following_count", followerService.countFollowing(user));
 			userInfo.put("tweets_count", tweetService.countTweets(user));
@@ -190,19 +183,19 @@ public class TimelineController extends TweetListController {
 
 	private List<Map<String, Object>> createHeader(User u, String active) {
 
-		List<Map<String, Object>> header = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> header = new ArrayList<>();
 
-		HashMap<String, Object> timeline = new HashMap<String, Object>();
+		HashMap<String, Object> timeline = new HashMap<>();
 		timeline.put("titleCode", "timeline.timelineListTitle");
 		timeline.put("link", "/user/" + u.getUsername());
 		timeline.put("active", (active.equals("timeline")?Boolean.TRUE:Boolean.FALSE));
 
-		HashMap<String, Object> mentions = new HashMap<String, Object>();
+		HashMap<String, Object> mentions = new HashMap<>();
 		mentions.put("titleCode", "timeline.mentionsListTitle");
 		mentions.put("link", "/user/" + u.getUsername() + "/mentions");
 		mentions.put("active", (active.equals("mentions")?Boolean.TRUE:Boolean.FALSE));
-		
-		HashMap<String, Object> favorites = new HashMap<String, Object>();
+
+		HashMap<String, Object> favorites = new HashMap<>();
 		favorites.put("titleCode", "timeline.favoritesListTitle");
 		favorites.put("link", "/user/" + u.getUsername() + "/favorites");
 		favorites.put("active", (active.equals("favorites")?Boolean.TRUE:Boolean.FALSE));

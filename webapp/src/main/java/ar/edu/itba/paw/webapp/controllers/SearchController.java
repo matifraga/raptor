@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import java.util.List;
-
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.UserService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
-import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = { "/search", "/search/{page:[1-9][0-9]*}" })
@@ -35,7 +34,7 @@ public class SearchController extends TweetListController {
 	private UserService userService;
 	
 	@RequestMapping(method= RequestMethod.GET)
-    public ModelAndView search(@RequestParam(value=SEARCH_TEXT, required=true) String text) {
+	public ModelAndView search(@RequestParam(value = SEARCH_TEXT) String text) {
 		
         final ModelAndView mav = new ModelAndView(SEARCH);
         

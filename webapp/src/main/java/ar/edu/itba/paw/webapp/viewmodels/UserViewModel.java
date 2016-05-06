@@ -1,12 +1,12 @@
 package ar.edu.itba.paw.webapp.viewmodels;
 
+import ar.edu.itba.paw.models.User;
+
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-
-import ar.edu.itba.paw.models.User;
 
 public class UserViewModel {
 
@@ -53,9 +53,8 @@ public class UserViewModel {
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			md5.update(StandardCharsets.UTF_8.encode(s));
-			String md5hash = String.format("%032x", new BigInteger(1, md5.digest()));
-			return md5hash;	
-		} catch (Exception e) {
+            return String.format("%032x", new BigInteger(1, md5.digest()));
+        } catch (Exception e) {
 			// TODO: handle exception
 		}
 		return null;

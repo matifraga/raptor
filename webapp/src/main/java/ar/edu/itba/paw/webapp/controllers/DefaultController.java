@@ -14,7 +14,6 @@ public class DefaultController extends RaptorController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView pageNotFound() {
 
-		final ModelAndView mav = new ModelAndView(PAGE_NOT_FOUND);
-		return mav;
+		return new ModelAndView(PAGE_NOT_FOUND);
 	}
 }
