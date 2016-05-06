@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controllers;
 
 import java.util.List;
 
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,10 +52,11 @@ public class SearchController extends RaptorController{
         if(text.length()==0)
         	return mav;
 
+        User sessionUser = sessionUser();
         switch(text.charAt(0)){
         	case '#':   mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE,1),
-								tweetService, favoriteService, sessionUser());
+						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE,1, (sessionUser==null)?null:sessionUser.getId()),
+								tweetService, favoriteService, sessionUser);
 						mav.addObject(NUMBER_OF_RESULTS, hashtags.size());
 						mav.addObject(RESULT, hashtags);
 						break;
@@ -64,8 +66,8 @@ public class SearchController extends RaptorController{
         				mav.addObject(RESULT, users);
         				break;
         	default:	mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<TweetViewModel> tweets = TweetViewModel.transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE,1),
-								tweetService, favoriteService, sessionUser());
+						List<TweetViewModel> tweets = TweetViewModel.transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE,1, (sessionUser==null)?null:sessionUser.getId()),
+								tweetService, favoriteService, sessionUser);
 						mav.addObject(NUMBER_OF_RESULTS, tweets.size());
 						mav.addObject(RESULT, tweets);
 						break;

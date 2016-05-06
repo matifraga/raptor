@@ -3,10 +3,8 @@ package ar.edu.itba.paw.webapp.controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import ar.edu.itba.paw.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.FavoriteService;
+import ar.edu.itba.paw.services.FollowerService;
+import ar.edu.itba.paw.services.HashtagService;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
@@ -112,11 +115,12 @@ public class TimelineController extends RaptorController{
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
 		final ModelAndView mav = new ModelAndView(TIMELINE);
 		User u = userService.getUserWithUsername(username);
+		User sessionUser = sessionUser();
 
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page),
+			List<TweetViewModel> tweetList = TweetViewModel.transform(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page, (sessionUser==null)?null:sessionUser.getId()),
 					tweetService, favoriteService, sessionUser());
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
@@ -151,11 +155,12 @@ public class TimelineController extends RaptorController{
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
 		final ModelAndView mav = new ModelAndView(TIMELINE);
 		User u = userService.getUserWithUsername(username);
+		User sessionUser = sessionUser();
 
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page),
+			List<TweetViewModel> mentionList = TweetViewModel.transform(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page, (sessionUser==null)?null:sessionUser.getId()),
 					tweetService, favoriteService, sessionUser());
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 
@@ -190,11 +195,12 @@ public class TimelineController extends RaptorController{
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
 		final ModelAndView mav = new ModelAndView(TIMELINE);
 		User u = userService.getUserWithUsername(username);
+		User sessionUser = sessionUser();
 
 		if(u != null){
 			mav.addObject(USER, new UserViewModel(u, TIMELINE_PIC_SIZE));
 
-			List<TweetViewModel> favoritesList = TweetViewModel.transform(tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page),
+			List<TweetViewModel> favoritesList = TweetViewModel.transform(tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page, (sessionUser==null)?null:sessionUser.getId()),
 					tweetService, favoriteService, sessionUser());
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 

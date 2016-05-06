@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controllers;
 import java.util.List;
 import java.util.Map;
 
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,11 +50,11 @@ public class FeedController extends RaptorController {
 		mav.addObject(TRENDS_LIST, trendsList);
 		
 		List<TweetViewModel> tweetList;
-		
-		if (sessionUser() == null) {
-			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page), tweetService, favoriteService, sessionUser());
+		User sessionUser = sessionUser();
+		if (sessionUser == null) {
+			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page, null), tweetService, favoriteService, sessionUser());
 		} else {
-			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser().getId(), TIMELINE_SIZE, page),
+			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser.getId(), TIMELINE_SIZE, page),
 					tweetService, favoriteService, sessionUser());
 		}
 

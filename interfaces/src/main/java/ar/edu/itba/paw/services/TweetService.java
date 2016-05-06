@@ -31,9 +31,10 @@ public interface TweetService {
 	 * @param id The user's ID.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page Number of page needed.
+	 * @param sessionID The id of the user that is logged in.
 	 * @return The recovered tweets.
 	 */
-	public List<Tweet> getTimeline(final String id, final int resultsPerPage, final int page);
+	public List<Tweet> getTimeline(final String id, final int resultsPerPage, final int page, final String sessionID);
 
 	/**
 	 * Get a user's mentions.
@@ -41,9 +42,10 @@ public interface TweetService {
 	 * @param id The user's ID.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page Number of page needed.
+	 * @param sessionID The id of the user that is logged in.
 	 * @return The recovered mentions.
 	 */
-	public List<Tweet> getMentions(final String id, final int resultsPerPage, final int page);
+	public List<Tweet> getMentions(final String id, final int resultsPerPage, final int page, final String sessionID);
 	
 	/**
 	 * Get a user's favorites.
@@ -51,9 +53,10 @@ public interface TweetService {
 	 * @param id The user's ID.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page Number of page needed.
+	 * @param sessionID The id of the user that is logged in.
 	 * @return The recovered favorites.
 	 */
-	public List<Tweet> getFavorites(final String id, final int resultsPerPage, final int page);
+	public List<Tweet> getFavorites(final String id, final int resultsPerPage, final int page, final String sessionID);
 	
 	/**
 	 * Get a list of tweets with a hashtag.
@@ -61,9 +64,10 @@ public interface TweetService {
 	 * @param hashtag The key hashtag.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page Number of page needed.
+	 * @param sessionID The id of the user that is logged in.
 	 * @return The recovered list.
 	 */
-	public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final int page);
+	public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final int page, final String sessionID);
 	
 	/**
 	 * Get a list of tweets containing the search.
@@ -71,18 +75,20 @@ public interface TweetService {
 	 * @param text The text searched.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page Number of page needed.
+	 * @param sessionID The id of the user that is logged in.
 	 * @return The recovered list.
 	 */
-	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page);
+	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final String sessionID);
 
 	/**
 	 * Get a list of the latest tweets in the whole network
 	 *
 	 * @param resultsPerPage limit number of tweets per page
 	 * @param page number of page needed
+	 * @param sessionID The id of the user that is logged in.
      * @return
      */
-	public List<Tweet> globalFeed(final int resultsPerPage, final int page);
+	public List<Tweet> globalFeed(final int resultsPerPage, final int page, final String sessionID);
 	
 	/**
 	 * Get a list of the latest tweets from users followed by the current user.
@@ -134,9 +140,10 @@ public interface TweetService {
 	 * Get a tweet.
 	 * 
 	 * @param tweetID the tweet's ID.
+	 * @param sessionID The id of the user that is logged in.
 	 * @return the tweet.
 	 */
-	public Tweet getTweet(final String tweetID);
+	public Tweet getTweet(final String tweetID, final String sessionID);
 	
 	/**
 	 * Returns whether a user retweeted a tweet or not.

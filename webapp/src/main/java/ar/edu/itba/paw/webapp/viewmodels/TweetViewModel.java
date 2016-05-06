@@ -42,6 +42,8 @@ public class TweetViewModel {
         this.countRetweets = tweet.getCountRetweets();
         this.countFavorites = tweet.getCountFavorites();
         this.retweetedBy = null;
+        this.isFavorited = tweet.getIsFavorited();
+        this.isRetweeted = tweet.getIsRetweeted();
     }
 
     public TweetViewModel(Tweet tweet, Tweet retweeted) {
@@ -52,6 +54,8 @@ public class TweetViewModel {
         this.timestamp = retweeted.getTimestamp();
         this.countRetweets = retweeted.getCountRetweets();
         this.countFavorites = retweeted.getCountFavorites();
+        this.isFavorited = retweeted.getIsFavorited();
+        this.isRetweeted = retweeted.getIsRetweeted();
     }
 
     public static TweetViewModel transformTweet(Tweet tweet) {
@@ -71,18 +75,18 @@ public class TweetViewModel {
             TweetViewModel tweetView;
 
             if (tweet.isRetweet()) {
-                Tweet retweet = ts.getTweet(tweet.getRetweet());
+                Tweet retweet = ts.getTweet(tweet.getRetweet(), (loggedUser==null)? null : loggedUser.getId());
                 tweetView = transformTweet(tweet, retweet);
-                if (loggedUser != null) {
-                    tweetView.isFavorited = fs.isFavorited(retweet.getId(), loggedUser); // Comentar estos dos
-                    tweetView.isRetweeted = ts.isRetweeted(retweet.getId(), loggedUser); //
-                }
+//                if (loggedUser != null) {
+//                    tweetView.isFavorited = fs.isFavorited(retweet.getId(), loggedUser); // Comentar estos dos
+//                    tweetView.isRetweeted = ts.isRetweeted(retweet.getId(), loggedUser); //
+//                }
             } else {
                 tweetView = transformTweet(tweet);
-                if (loggedUser != null) {
-                    tweetView.isFavorited = fs.isFavorited(tweet.getId(), loggedUser); // Y estos dos
-                    tweetView.isRetweeted = ts.isRetweeted(tweet.getId(), loggedUser); //
-                }
+//                if (loggedUser != null) {
+//                    tweetView.isFavorited = fs.isFavorited(tweet.getId(), loggedUser); // Y estos dos
+//                    tweetView.isRetweeted = ts.isRetweeted(tweet.getId(), loggedUser); //
+//                }
             }
 
             //tweetView.isFavorited = Boolean.FALSE; // Descomentar estos dos
