@@ -1,23 +1,26 @@
 package ar.edu.itba.paw.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.FavoriteDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
 
 	@Autowired
 	private FavoriteDAO favoriteDAO;
-	
+
 	@Autowired
 	private TweetService tweetService;
-	
+
 	//test
 	void setFavoriteDAO(FavoriteDAO favoriteDAO) {
-		this.favoriteDAO=favoriteDAO;
+		this.favoriteDAO = favoriteDAO;
+	}
+
+	void setTweetService(TweetService tweetService) {
+		this.tweetService = tweetService;
 	}
 
 	@Override
@@ -29,7 +32,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Override
 	public Boolean isFavorited(final String tweetID, final User user) {
 		Boolean ans = favoriteDAO.isFavorited(tweetID, user.getId());
-		if(ans == null){
+		if (ans == null) {
 			//TODO handle DB error
 		}
 		return ans;
@@ -38,7 +41,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Override
 	public void unfavorite(final String tweetID, final User user) {
 		tweetService.decreaseFavoriteCount(tweetID);
-		favoriteDAO.unfavorite(tweetID, user.getId());	
+		favoriteDAO.unfavorite(tweetID, user.getId());
 	}
-	
+
 }

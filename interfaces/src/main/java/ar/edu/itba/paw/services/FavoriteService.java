@@ -6,16 +6,16 @@ public interface FavoriteService {
 
 	/**
 	 * Register a favorite action.
-	 * 
-	 * @param tweet
+	 *
+	 * @param tweetID
 	 * @param user
 	 */
 	void favorite(final String tweetID, final User user);
 
 	/**
 	 * Returns whether a user favorited a tweet or not.
-	 * 
-	 * @param tweet
+	 *
+	 * @param tweetID
 	 * @param user
 	 * @return true if the user favorited the tweet, false if not.
 	 */
@@ -24,7 +24,7 @@ public interface FavoriteService {
 
 	/**
 	 * Stop a favorite action.
-	 * 
+	 *
 	 * @param tweetID
 	 * @param user
 	 */

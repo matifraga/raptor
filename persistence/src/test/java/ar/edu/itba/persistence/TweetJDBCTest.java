@@ -1,12 +1,10 @@
 package ar.edu.itba.persistence;
 
-import javax.sql.DataSource;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.TweetJDBC;
+import ar.edu.itba.paw.persistence.UserJDBC;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,10 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.TweetJDBC;
-import ar.edu.itba.paw.persistence.UserJDBC;
+import javax.sql.DataSource;
 
 @Sql("classpath:schema.sql")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,58 +21,54 @@ import ar.edu.itba.paw.persistence.UserJDBC;
 public class TweetJDBCTest {
 
 
+    private static final String UNAME = "user", PASSWORD = "password",
+            EMAIL = "email@email.com", FIRSTNAME = "user", LASTNAME = "user";
+    private static final String MESSAGE = "hola soy un tweet";
+
+    private static User user;
 
 
-	private static final String UNAME = "user", PASSWORD = "password",
-			EMAIL = "email@email.com", FIRSTNAME = "user", LASTNAME = "user";
-	private static final String MESSAGE = "hola soy un tweet";
+    @Autowired
+    private DataSource ds;
 
-	private static User user;
-	
+    @Autowired
+    private UserJDBC userJDBC;
+    @Autowired
+    private TweetJDBC tweetJDBC;
 
-	@Autowired
-	private DataSource ds;
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+    }
 
-	@Autowired
-	private UserJDBC userJDBC;
-	@Autowired
-	private TweetJDBC tweetJDBC;
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+    }
 
-	private JdbcTemplate jdbcTemplate;
+    @Before
+    public void setUp() throws Exception {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "tweets");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
+        user = userJDBC.create(UNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+    }
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
+    @After
+    public void tearDown() throws Exception {
+    }
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+    @Test
+    public void createTest() {
 
-	@Before
-	public void setUp() throws Exception {
-		jdbcTemplate = new JdbcTemplate(ds);
-		JdbcTestUtils.deleteFromTables(jdbcTemplate, "tweets");
-		JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
-		user = userJDBC.create(UNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);		
-	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
+        Tweet t = tweetJDBC.create(MESSAGE, user);
 
-	@Test
-	public void createTest() {
-		
-		
-		Tweet t = tweetJDBC.create(MESSAGE, user);
+        assert (t.getMsg().equals(MESSAGE));
+        assert (t.getOwner().equals(user));
 
-		assert (t.getMsg().equals(MESSAGE));
-		assert (t.getOwner().equals(user));
-
-	}
+    }
 
 	/*
-	 * @Test public void getTweetsByUserIdTest() {
+     * @Test public void getTweetsByUserIdTest() {
 	 * 
 	 * List<Tweet> tweetList = new ArrayList<Tweet>();
 	 * 

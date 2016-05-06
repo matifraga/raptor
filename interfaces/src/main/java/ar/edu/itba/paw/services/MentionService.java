@@ -4,10 +4,10 @@ import ar.edu.itba.paw.models.Tweet;
 
 public interface MentionService {
 
-	/**
-	 * Store all mentions from a tweet.
-	 * 
-	 * @param tweet the hashtag's container.
-	 */
-	public void register(final Tweet tweet);
+    /**
+     * Store all mentions from a tweet.
+     *
+     * @param tweet the hashtag's container.
+     */
+    void register(final Tweet tweet);
 }
