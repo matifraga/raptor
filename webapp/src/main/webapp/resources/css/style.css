@@ -83,7 +83,6 @@ input[type="text"], input[type="password"] {
 }
 
 .section-navbar .search-input {
-  max-width: 200px;
   float: left;
   height: 35px;
   margin-right: 5px;
@@ -91,6 +90,14 @@ input[type="text"], input[type="password"] {
   font-weight: normal;
   box-shadow: inset 0px 0px 0px 0px white;
   border-color: #D6D6D6;
+}
+
+.section-navbar .expand {
+  width: 170px;
+}
+
+.section-navbar .expand:focus {
+  width: 320px;
 }
 
 .section-navbar .navbar-raptor {

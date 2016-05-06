@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ar.edu.itba.paw.services.UserService;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class TweetController extends RaptorController{
 
@@ -36,7 +38,7 @@ public class TweetController extends RaptorController{
 
 	@RequestMapping(value =  {ACTIONS + POST}, method = RequestMethod.POST)
 	public String postTweetAction(
-			@RequestParam(value = MESSAGE, required = true) String message) {
+			@RequestParam(value = MESSAGE, required = true) String message, HttpServletRequest request) {
 
 		if(sessionUser() == null) {
 			return REDIRECT + "/";
@@ -45,7 +47,11 @@ public class TweetController extends RaptorController{
 		tweetService.register(message,
 				userService.getUserWithUsername(sessionUser().getUsername()));
 
-		return REDIRECT + MAP_USER + sessionUser().getUsername();
+		String referer = request.getHeader("Referer");
+
+		return REDIRECT + referer;
+
+		//return REDIRECT + MAP_USER + sessionUser().getUsername();
 	}
 
 	@RequestMapping(value = {ACTIONS + RETWEET}, method = RequestMethod.POST, produces = "application/json")
