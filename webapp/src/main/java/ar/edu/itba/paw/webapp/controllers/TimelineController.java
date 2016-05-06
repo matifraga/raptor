@@ -110,9 +110,13 @@ public class TimelineController extends TweetListController {
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
 
 		User u = userService.getUserWithUsername(username);
+		List<Tweet> tweetList = null;
 
-		final ModelAndView mav = buildMav(tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId()),
-				u, page, "timeline");
+		if(u != null) {
+			tweetList = tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
+		}
+
+		final ModelAndView mav = buildMav(tweetList,u, page, "timeline");
 
 		return mav;
 	}
@@ -124,9 +128,13 @@ public class TimelineController extends TweetListController {
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
 
 		User u = userService.getUserWithUsername(username);
+		List<Tweet> tweetList = null;
 
-		final ModelAndView mav = buildMav(tweetService.getMentions(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId()),
-				u, page, "mentions");
+		if(u != null) {
+			tweetList = tweetService.getMentions(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
+		}
+
+		final ModelAndView mav = buildMav(tweetList,u, page, "mentions");
 
 		return mav;
 	}
@@ -138,9 +146,13 @@ public class TimelineController extends TweetListController {
 		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
 
 		User u = userService.getUserWithUsername(username);
+		List<Tweet> tweetList = null;
 
-		final ModelAndView mav = buildMav(tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId()),
-				u, page, "favorites");
+		if(u != null) {
+			tweetList = tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
+		}
+
+		final ModelAndView mav = buildMav(tweetList,u, page, "favorites");
 
 		return mav;
 	}

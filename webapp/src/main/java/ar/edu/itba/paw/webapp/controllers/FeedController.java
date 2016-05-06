@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +28,11 @@ public class FeedController extends TweetListController {
 
 	private static final int TIMELINE_SIZE = 10;
 
+	private static final String GLOBAL_FEED = "globalfeed";
+
 	private static final String TWEET_LIST = "tweetList";
 	private static final String TRENDS_LIST = "trendsList";
+	private static final String HEADER = "header";
 
 	private static final int TRENDING_TOPIC_LIMIT = 5;
 
@@ -45,14 +50,64 @@ public class FeedController extends TweetListController {
 		
 		List<TweetViewModel> tweetList;
 		User sessionUser = sessionUser();
+		String active;
+
 		if (sessionUser == null) {
 			tweetList = transform(tweetService.globalFeed(TIMELINE_SIZE, page, null));
+			active = "global";
 		} else {
 			tweetList = transform(tweetService.currentSessionFeed(sessionUser.getId(), TIMELINE_SIZE, page));
+			active = "custom";
 		}
+
+		List<Map<String, Object>> header = createHeader(sessionUser, active);
+		mav.addObject(HEADER, header);
 
 		mav.addObject(TWEET_LIST, tweetList);
 
 		return mav;
+	}
+
+	@RequestMapping(value={GLOBAL_FEED}, method = RequestMethod.GET)
+	public ModelAndView globalFeed(@PathVariable Map<String, String> pathVariables) {
+
+		int page = Integer.valueOf(pathVariables.getOrDefault(PAGE, "1"));
+		final ModelAndView mav = new ModelAndView(FEED);
+
+		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
+		mav.addObject(TRENDS_LIST, trendsList);
+
+		List<TweetViewModel> tweetList;
+		User sessionUser = sessionUser();
+
+		tweetList = transform(tweetService.globalFeed(TIMELINE_SIZE, page, sessionUser==null?null:sessionUser.getId()));
+		List<Map<String, Object>> header = createHeader(sessionUser, "global");
+		mav.addObject(HEADER, header);
+
+		mav.addObject(TWEET_LIST, tweetList);
+
+		return mav;
+	}
+
+	private List<Map<String, Object>> createHeader(User u, String active) {
+
+		List<Map<String, Object>> header = new ArrayList<Map<String, Object>>();
+
+		HashMap<String, Object> global = new HashMap<String, Object>();
+		global.put("titleCode", "feed.title.globalFeed");
+		global.put("link", "/globalfeed");
+		global.put("active", (active.equals("global")?Boolean.TRUE:Boolean.FALSE));
+
+		if(u != null) {
+			HashMap<String, Object> custom = new HashMap<String, Object>();
+			custom.put("titleCode", "feed.title.customFeed");
+			custom.put("link", "/");
+			custom.put("active", (active.equals("custom")?Boolean.TRUE:Boolean.FALSE));
+			header.add(custom);
+		}
+
+		header.add(global);
+
+		return header;
 	}
 }

@@ -22,9 +22,6 @@
             <div class="row">
                 <div class="col-md-3 col-lg-3">
                     <div class="section-profile">
-                        <c:set var="user" value="${user}" scope="request"/>
-                        <c:set var="userInfo" value="${userInfo}" scope="request"/>
-                        <c:set var="following" value="${following}" scope="request"/>
                         <jsp:include page="fragments/profileBox.jsp"/>
                     </div>
                 </div>
@@ -33,8 +30,6 @@
                         <c:if test="${sessionUser.username == user.username}">
                             <jsp:include page="fragments/tweetBox.jsp"/>
                         </c:if>
-                        <c:set var="tweetList" value="${tweetList}" scope="request"/>
-                        <c:set var="tweetListHeader" value="${header}" scope="request"/>
                         <jsp:include page="fragments/tweetList.jsp"/>
                     </div>
                 </div>
@@ -47,7 +42,7 @@
             </div>
         </c:when>
             <c:otherwise>
-            	<spring:message var = "usernameError" code="timeline.errorMessage"/>
+            	<spring:message var="usernameError" code="timeline.errorMessage"/>
                 <c:set var="errorMessage" value='${usernameError}' scope="request"/>
                 <jsp:include page="fragments/errorPage.jsp"/>
             </c:otherwise>
