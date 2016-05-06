@@ -76,7 +76,7 @@
                                     <li><a href="/logout" style="color: #4A4A4A; text-align: center">Log out</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/user/${tweet.owner.username}"><img src=${navbarViewUser.profilePicture} class="mini-pic"/></a></li>
+                            <li><a class="mini-pic-link" href="/user/${navbarViewUser.username}"><img src=${navbarViewUser.profilePicture} class="mini-pic"/></a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

@@ -19,7 +19,6 @@ import ar.edu.itba.paw.webapp.forms.LoginForm;
 @RequestMapping(value = "/login")
 public class LoginController extends RaptorController{
 
-	private final static String REDIRECT = "redirect:";
 	private final static String FEED = "/";
 
 	@Autowired
@@ -37,7 +36,7 @@ public class LoginController extends RaptorController{
 			User user = userService.logInUser(form.getUsername(),form.getPassword());
 			if(user != null){
 				session.setAttribute(USER, user);
-				return REDIRECT + FEED;
+				return getPreviousPageByRequest(request).orElse(FEED);
 			} else {
 				results.rejectValue("password", "login.error", null);
 				attr.addFlashAttribute("org.springframework.validation.BindingResult.loginForm", results);

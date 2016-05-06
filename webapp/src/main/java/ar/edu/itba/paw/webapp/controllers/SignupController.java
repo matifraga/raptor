@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,7 @@ import ar.edu.itba.paw.webapp.forms.SignupForm;
 public class SignupController extends RaptorController{
 
 	private final static String SIGNUP = "signup";
-
-	private final static String MAP_USER = "/user/";
-	private final static String REDIRECT = "redirect:";
+	private final static String FEED = "/";
 
 	private static final String USERNAME = "username";
 
@@ -37,7 +36,7 @@ public class SignupController extends RaptorController{
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String registerAction(@Valid @ModelAttribute("signUpForm") SignupForm form, BindingResult results){
+	public String registerAction(@Valid @ModelAttribute("signUpForm") SignupForm form, BindingResult results, HttpServletRequest request){
 
 		if (results.hasErrors()) {
 			return SIGNUP;
@@ -51,7 +50,8 @@ public class SignupController extends RaptorController{
 				return SIGNUP;
 			}
 			session.setAttribute(USER, user);
-			return REDIRECT + MAP_USER + user.getUsername();
+			
+			return getPreviousPageByRequest(request).orElse(FEED);
 
 		}
 	}

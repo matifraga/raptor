@@ -44,9 +44,7 @@ public class TweetController extends RaptorController{
 		tweetService.register(message,
 				userService.getUserWithUsername(sessionUser().getUsername()));
 
-		String referer = request.getHeader("Referer");
-
-		return REDIRECT + referer;
+	    return getPreviousPageByRequest(request).orElse("/user/" + sessionUser().getUsername());
 
 		//return REDIRECT +  "/user/" + sessionUser().getUsername();
 	}

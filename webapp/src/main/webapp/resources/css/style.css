@@ -9,6 +9,10 @@ body {
   margin: 0 auto;
 }
 
+.navbar-nav>li>a.mini-pic-link {
+	padding: 0;
+}
+
 .logo {
   background-image: url(../img/logo.png);
   background-repeat: no-repeat;
