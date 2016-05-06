@@ -85,23 +85,22 @@ public class TweetServiceImplTest {
 	
 	@Test
 	public void getHashtagsTest() {
-		
-		ts.getHashtag(HASHTAG, RESULTSPERPAGE, PAGE);
-		verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(PAGE));
+		ts.getHashtag(HASHTAG, RESULTSPERPAGE, PAGE, ID);
+		verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(PAGE), eq(ID));
 		
 	}
 	
 	@Test
 	public void searchTweetsTest() {
 		
-		ts.searchTweets(SEARCH, RESULTSPERPAGE, PAGE);
-		verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(PAGE));
+		ts.searchTweets(SEARCH, RESULTSPERPAGE, PAGE, ID);
+		verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(PAGE), eq(ID));
 	}
 	
 	@Test
 	public void getMentionsTest() {
-		ts.getMentions(UID, RESULTSPERPAGE, PAGE);
-		verify(tweetDAO).getTweetsByMention(eq(UID), eq(RESULTSPERPAGE), eq(PAGE));
+		ts.getMentions(UID, RESULTSPERPAGE, PAGE, ID);
+		verify(tweetDAO).getTweetsByMention(eq(UID), eq(RESULTSPERPAGE), eq(PAGE), eq(ID));
 	}
 	
 }

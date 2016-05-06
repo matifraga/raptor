@@ -86,7 +86,7 @@ public class HashtagJDBCTest {
 		assertEquals(2,
 				JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
 		List<Tweet> ls = tweetJDBC.getTweetsByHashtag(HASHTAG, RESULTSPERPAGE,
-				PAGE);
+				PAGE, null);
 		assert (ls.contains(tweet));
 		assert (ls.contains(t2));
 	}
