@@ -168,7 +168,7 @@ public class Tweet {
 	}
 	
 	public String getTimestamp(){
-		return sdf.format(timestamp); //TODO fix
+		return sdf.format(timestamp); //TODO unsafe for multithread
 	}
 
 	public int getCountRetweets() {

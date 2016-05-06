@@ -177,7 +177,7 @@ public class TweetJDBC implements TweetDAO {
 	}
 
 	@Override
-	public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { //TODO update adding retweets
+	public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { 
 		try{
 			return jdbcTemplate.query(MQ_GET_TWEETS + " LIMIT "+ resultsPerPage + " OFFSET " + (page-1)*resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
 		}catch(Exception e) { return null; } //DataAccessException or SQLException
