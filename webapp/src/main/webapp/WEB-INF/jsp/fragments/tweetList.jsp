@@ -33,7 +33,7 @@
                     <c:if test="${tweet.retweetedBy != null}">
                         <div class="col-md-offset-2 col-sm-offset-2">
                             <div class="rerawr-info-bar">
-                                <div class="rawr-action-bar-img img-rerawr img-rerawr-selected" style="float: left;"></div>
+                                <div class="rawr-action-bar-img img-rerawr img-rerawr-small"></div>
                                 <span><spring:message code="tweetView.retweetedBy"/> ${tweet.retweetedBy}</span>
                             </div>
                         </div>
@@ -72,6 +72,20 @@
             </c:forEach>
         </c:otherwise>
     </c:choose>
+    <c:if test="${pageInfo != null}">
+        <div class="panel panel-rawr no-padding">
+            <div class="page-buttons right-separator">
+                <c:if test="${pageInfo['hasPrevious'] == true}">
+                    <a href="${pageInfo['previous']['link']}"><spring:message code="${pageInfo['previous']['titleCode']}"/></a>
+                </c:if>
+            </div>
+            <div class="page-buttons">
+                <c:if test="${pageInfo['hasNext'] == true}">
+                    <a href="${pageInfo['next']['link']}"><spring:message code="${pageInfo['next']['titleCode']}"/></a>
+                </c:if>
+            </div>
+        </div>
+    </c:if>
 </div>
 <script>
     function favorite(tweetId) {

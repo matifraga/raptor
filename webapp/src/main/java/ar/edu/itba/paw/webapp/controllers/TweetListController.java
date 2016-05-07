@@ -3,7 +3,9 @@ package ar.edu.itba.paw.webapp.controllers;
 import static ar.edu.itba.paw.webapp.viewmodels.TweetViewModel.transformTweet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,43 @@ public abstract class TweetListController extends RaptorController {
         }
 
         return tweetMList;
+    }
+
+    protected Map<String, Object> buildPageInfo(Integer page, Integer resultsPerPage, Integer resultsInPage, String pageBase) {
+
+        Map<String, Object> pageInfo = new HashMap<String, Object>();
+
+        Boolean hasPrevious;
+        Boolean hasNext;
+
+        if (page > 1) {
+            hasPrevious = Boolean.TRUE;
+            Map<String, Object> previous = new HashMap<String, Object>();
+            if (page == 1) {
+
+            }
+            previous.put("link", pageBase + "?" + "page=" + (page-1));
+            previous.put("titleCode", "tweetList.previousTitle");
+            pageInfo.put("previous", previous);
+        } else {
+            hasPrevious = Boolean.FALSE;
+        }
+
+        pageInfo.put("hasPrevious", hasPrevious);
+
+        if (resultsInPage == resultsPerPage) {
+            hasNext = Boolean.TRUE;
+            Map<String, Object> next = new HashMap<String, Object>();
+            next.put("link", pageBase + "?" + "page=" + (page+1));
+            next.put("titleCode", "tweetList.nextTitle");
+            pageInfo.put("next", next);
+        } else {
+            hasNext = Boolean.FALSE;
+        }
+
+        pageInfo.put("hasNext", hasNext);
+
+        return pageInfo;
     }
 
 }

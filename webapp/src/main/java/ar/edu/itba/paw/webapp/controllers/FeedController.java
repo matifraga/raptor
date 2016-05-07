@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = { "/", "/{page:[1-9][0-9]*}" })
+@RequestMapping(value = { "/" })
 public class FeedController extends TweetListController {
 
 	private final static String FEED = "feed";
@@ -31,15 +32,19 @@ public class FeedController extends TweetListController {
 	private static final String TRENDS_LIST = "trendsList";
 	private static final String HEADER = "header";
 
+	private static final String PAGE_INFO = "pageInfo";
+
 	private static final int TRENDING_TOPIC_LIMIT = 5;
 
 	@Autowired
 	private HashtagService hashtagService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView feed(@PathVariable Map<Object, String> pathVariables) {
+	public ModelAndView feed(@PathVariable Map<Object, String> pathVariables,
+							 @RequestParam(value = PAGE, defaultValue = "1") String pageValue) {
 
-		int page = Integer.parseInt(pathVariables.getOrDefault(PAGE, "1"));
+		int page = new Integer(pageValue);
+		if(page<1) page = 1;
 		final ModelAndView mav = new ModelAndView(FEED);
 		
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
@@ -62,13 +67,18 @@ public class FeedController extends TweetListController {
 
 		mav.addObject(TWEET_LIST, tweetList);
 
+		Map<String, Object> pageInfo = buildPageInfo(page, TIMELINE_SIZE, tweetList.size(), "./");
+		mav.addObject(PAGE_INFO, pageInfo);
+
 		return mav;
 	}
 
 	@RequestMapping(value={GLOBAL_FEED}, method = RequestMethod.GET)
-	public ModelAndView globalFeed(@PathVariable Map<String, String> pathVariables) {
+	public ModelAndView globalFeed(@PathVariable Map<String, String> pathVariables,
+								   @RequestParam(value = PAGE, defaultValue = "1") String pageValue) {
 
-		int page = Integer.parseInt(pathVariables.getOrDefault(PAGE, "1"));
+		int page = new Integer(pageValue);
+		if(page<1) page = 1;
 		final ModelAndView mav = new ModelAndView(FEED);
 
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
@@ -82,6 +92,9 @@ public class FeedController extends TweetListController {
 		mav.addObject(HEADER, header);
 
 		mav.addObject(TWEET_LIST, tweetList);
+
+		Map<String, Object> pageInfo = buildPageInfo(page, TIMELINE_SIZE, tweetList.size(), "./globalfeed");
+		mav.addObject(PAGE_INFO, pageInfo);
 
 		return mav;
 	}
