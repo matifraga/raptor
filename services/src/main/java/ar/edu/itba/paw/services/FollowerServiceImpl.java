@@ -2,8 +2,10 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.FollowerDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FollowerServiceImpl implements FollowerService {
@@ -16,12 +18,14 @@ public class FollowerServiceImpl implements FollowerService {
         this.followerDAO = followerDAO;
     }
 
+	@Transactional
     @Override
     public void follow(final User follower, final User following) {
         if (follower.equals(following)) return;
         followerDAO.follow(follower.getId(), following.getId());
     }
 
+	@Transactional
     @Override
     public Boolean isFollower(final User follower, final User following) {
         Boolean ans = followerDAO.isFollower(follower.getId(), following.getId());
@@ -31,11 +35,13 @@ public class FollowerServiceImpl implements FollowerService {
         return ans;
     }
 
+	@Transactional
     @Override
     public void unfollow(final User follower, final User following) {
         followerDAO.unfollow(follower.getId(), following.getId());
     }
 
+	@Transactional
     @Override
     public Integer countFollowers(final User user) {
         Integer ans = followerDAO.countFollowers(user.getId());
@@ -45,6 +51,7 @@ public class FollowerServiceImpl implements FollowerService {
         return ans;
     }
 
+	@Transactional
     @Override
     public Integer countFollowing(final User user) {
         Integer ans = followerDAO.countFollowing(user.getId());

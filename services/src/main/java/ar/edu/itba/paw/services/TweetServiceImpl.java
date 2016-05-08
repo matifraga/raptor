@@ -3,8 +3,10 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.TweetDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class TweetServiceImpl implements TweetService {
         this.mentionService = ms;
     }
 
+	@Transactional
     @Override
     public void register(final String msg, final User owner) {
         Tweet t = tweetDAO.create(msg, owner);
@@ -46,6 +49,7 @@ public class TweetServiceImpl implements TweetService {
         }
     }
 
+	@Transactional
     @Override
     public Tweet getTweet(final String tweetID, final String sessionID) {
         if (tweetID == null)
@@ -57,6 +61,7 @@ public class TweetServiceImpl implements TweetService {
         return t;
     }
 
+	@Transactional
     @Override
     public List<Tweet> getTimeline(final String id, final int resultsPerPage, final int page, final String sessionID) {
         List<Tweet> ans = tweetDAO.getTweetsByUserID(id, resultsPerPage, page, sessionID);
@@ -66,6 +71,7 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public void retweet(final String tweetID, final User owner) {
         Tweet t = tweetDAO.retweet(tweetID, owner);
@@ -76,6 +82,7 @@ public class TweetServiceImpl implements TweetService {
         }
     }
 
+	@Transactional
     @Override
     public List<Tweet> getMentions(final String id, final int resultsPerPage, final int page, final String sessionID) {
         List<Tweet> ans = tweetDAO.getTweetsByMention(id, resultsPerPage, page, sessionID);
@@ -85,6 +92,7 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public List<Tweet> getFavorites(final String id, final int resultsPerPage, final int page, final String sessionID) {
         List<Tweet> ans = tweetDAO.getFavorites(id, resultsPerPage, page, sessionID);
@@ -94,6 +102,7 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final int page, final String sessionID) {
         List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, page, sessionID);
@@ -103,6 +112,7 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final String sessionID) {
         List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, page, sessionID);
@@ -112,6 +122,8 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
+	@Override 
     public List<Tweet> globalFeed(int resultsPerPage, int page, final String sessionID) {
         List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, page, sessionID);
         if (ans == null) {
@@ -120,6 +132,7 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public List<Tweet> currentSessionFeed(final String userID, final int resultsPerPage, final int page) {
         List<Tweet> ans = tweetDAO.getLogedInFeed(userID, resultsPerPage, page);
@@ -129,6 +142,7 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public Integer countTweets(final User user) {
         Integer ans = tweetDAO.countTweets(user.getId());
@@ -138,26 +152,31 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public void increaseFavoriteCount(final String tweetID) {
         tweetDAO.increaseFavoriteCount(tweetID);
     }
 
+	@Transactional
     @Override
     public void decreaseFavoriteCount(final String tweetID) {
         tweetDAO.decreaseFavoriteCount(tweetID);
     }
 
+	@Transactional
     @Override
     public void increaseRetweetCount(final String tweetID) {
         tweetDAO.increaseRetweetCount(tweetID);
     }
 
+	@Transactional
     @Override
     public void decreaseRetweetCount(final String tweetID) {
         tweetDAO.decreaseRetweetCount(tweetID);
     }
-
+	
+	@Transactional
     @Override
     public Boolean isRetweeted(final String tweetID, final User user) {
         Boolean ans = tweetDAO.isRetweeted(tweetID, user.getId());
@@ -167,6 +186,7 @@ public class TweetServiceImpl implements TweetService {
         return ans;
     }
 
+	@Transactional
     @Override
     public void unretweet(final String tweetID, final User user) {
         tweetDAO.unretweet(tweetID, user.getId());

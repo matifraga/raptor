@@ -87,7 +87,7 @@ public interface TweetService {
 	 * @return
      */
 	List<Tweet> globalFeed(final int resultsPerPage, final int page, final String sessionID);
-
+	
 	/**
 	 * Get a list of the latest tweets from users followed by the current user.
 	 *

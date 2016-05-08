@@ -4,8 +4,10 @@ import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.MentionDAO;
 import ar.edu.itba.paw.persistence.UserDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -28,6 +30,7 @@ public class MentionServiceImpl implements MentionService {
         this.mentionDAO = mentionDAO;
     }
 
+    @Transactional
     @Override
     public void register(Tweet tweet) {
         Set<String> mentions = tweet.getMentions();
