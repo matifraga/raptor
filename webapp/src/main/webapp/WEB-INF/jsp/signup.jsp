@@ -11,7 +11,7 @@
     <div class="col-md-6 col-centered">
         <h2><spring:message code="form.title.signup"/></h2>
         <br/>
-        <form:form role="form" modelAttribute= "signUpForm" action="/signup" method="post">
+        <form:form role="form" modelAttribute= "signUpForm" action="signup" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">

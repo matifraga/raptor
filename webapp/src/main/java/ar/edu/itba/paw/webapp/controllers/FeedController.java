@@ -105,13 +105,13 @@ public class FeedController extends TweetListController {
 
 		HashMap<String, Object> global = new HashMap<>();
 		global.put("titleCode", "feed.title.globalFeed");
-		global.put("link", "/globalfeed");
+		global.put("link", "globalfeed");
 		global.put("active", (active.equals("global")?Boolean.TRUE:Boolean.FALSE));
 
 		if(u != null) {
 			HashMap<String, Object> custom = new HashMap<>();
 			custom.put("titleCode", "feed.title.customFeed");
-			custom.put("link", "/");
+			custom.put("link", "");
 			custom.put("active", (active.equals("custom")?Boolean.TRUE:Boolean.FALSE));
 			header.add(custom);
 		}

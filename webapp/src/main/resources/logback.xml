@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<!--<configuration>
         <property name="defaultPattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
 
         <appender name="root-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -29,4 +29,4 @@
         <logger name="ar.edu.itba.paw" level="DEBUG" additivity="false">
                 <appender-ref ref="paw-appender"/>
         </logger>
-</configuration>z
+</configuration>-->

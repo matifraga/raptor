@@ -40,12 +40,12 @@
                     </c:if>
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-xs-4 col-sm-2 col-md-2">
-                           <a href="/user/${tweet.owner.username}"><img class="profile-picture center-block" src="${tweet.owner.profilePicture}"/></a>
+                           <a href="user/${tweet.owner.username}"><img class="profile-picture center-block" src="${tweet.owner.profilePicture}"/></a>
                         </div>
                         <div class="col-xs-8 col-sm-10 col-md-10">
                             <div class="rawr-top-bar">
-                                <a href="/user/${tweet.owner.username}">${tweet.owner.firstName} ${tweet.owner.lastName}</></a>
-                                <a href="/user/${tweet.owner.username}" style="color: #9B9B9B;">@${tweet.owner.username} <c:if test="${tweet.owner.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if></a>
+                                <a href="user/${tweet.owner.username}">${tweet.owner.firstName} ${tweet.owner.lastName}</></a>
+                                <a href="user/${tweet.owner.username}" style="color: #9B9B9B;">@${tweet.owner.username} <c:if test="${tweet.owner.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if></a>
                                 <span style="color: #9B9B9B" class="pull-right hidden-xs">${tweet.timestamp}</span>
                             </div>
                                 <span class="message" style="font-size:1.2em;">${tweet.msg}</span>
@@ -90,7 +90,7 @@
 <script>
     function favorite(tweetId) {
         var contents = $('#fav' + tweetId);
-        $.post("/actions/favorite",
+        $.post("actions/favorite",
                 {'tweetId': tweetId,
                  'favorite': !contents.hasClass('img-fav-selected')},
                 function (data) {
@@ -101,7 +101,7 @@
     }
     function retweet(tweetId) {
         var contents = $('#re' + tweetId);
-        $.post("/actions/retweet",
+        $.post("actions/retweet",
                 {'tweetId': tweetId,
                     'retweet': !contents.hasClass('img-rerawr-selected')},
                 function (data) {

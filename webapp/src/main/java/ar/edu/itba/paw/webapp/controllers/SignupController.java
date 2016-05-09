@@ -22,6 +22,7 @@ public class SignupController extends RaptorController{
 
 	private final static String SIGNUP = "signup";
 	private final static String FEED = "/";
+	private final static String REDIRECT = "redirect:";
 
 	private static final String USERNAME = "username";
 
@@ -50,8 +51,8 @@ public class SignupController extends RaptorController{
 				return SIGNUP;
 			}
 			session.setAttribute(USER, user);
-			
-			return getPreviousPageByRequest(request).orElse(FEED);
+
+			return REDIRECT + FEED;
 
 		}
 	}
