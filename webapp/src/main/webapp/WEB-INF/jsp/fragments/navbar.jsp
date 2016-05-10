@@ -8,16 +8,35 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand logo" href=""></a>
+                <div class="visible-xs">
+                    <c:choose>
+                        <c:when test="${navbarViewUser == null}"><button class="mini-pic-link pull-right navbar-text" data-toggle="collapse" data-target="#loginCollapse"><spring:message code="navbar.login"/><span style="color: #4A4A4A;" class="caret"/></button></c:when>
+                        <c:otherwise><a class="mini-pic-link pull-right" href="user/${navbarViewUser.username}" style="margin-right: 15px;"><img src=${navbarViewUser.profilePicture} class="mini-pic"/></a></c:otherwise>
+                    </c:choose>
+                    <button class="mini-pic-link navbar-text pull-right search-blue" data-toggle="collapse" data-target="#searchCollapse"></button>
+                </div>
+            </div>
+            <div class="collapse " id="loginCollapse">
+                <div class="visible-xs">
+                <jsp:include page="loginForm.jsp"></jsp:include>
+                </div>
+            </div>
+            <div class="collapse " id="searchCollapse">
+                <div class="visible-xs">
+                    <form class="navbar-form navbar-left" role="search" action="search">
+                        <div class="form-group">
+                            <spring:message code="navbar.search" var="search_placeholder" />
+                            <input type="text" class="form-control search-input" name="searchText" placeholder='${search_placeholder}...'>
+                            <button type="submit" class="btn btn-default btn-raptor" style="height: 34px; width: 34px;">
+                                <img src="resources/img/icn-search.png" style="height: 18px; margin-left:-4px;"/>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="hidden-xs">
                 <ul class="nav navbar-nav">
                     <li>
                         <form class="navbar-form navbar-left" role="search" action="search">

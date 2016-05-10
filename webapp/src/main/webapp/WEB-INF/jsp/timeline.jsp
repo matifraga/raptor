@@ -47,6 +47,7 @@
                 <jsp:include page="fragments/errorPage.jsp"/>
             </c:otherwise>
         </c:choose>
+        <jsp:include page="fragments/footer.jsp"></jsp:include>
     </div>
 </div>
 </body>

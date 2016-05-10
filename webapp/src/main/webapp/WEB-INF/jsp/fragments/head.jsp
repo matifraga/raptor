@@ -3,8 +3,9 @@
 <head>
     <base href="${pageContext.request.requestURL.substring(0, pageContext.request.requestURL.length() - pageContext.request.requestURI.length())}${pageContext.request.contextPath}/"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${requestScope.pageTitle}</title>
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="resources/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="resources/img/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="resources/img/favicon-16x16.png">
