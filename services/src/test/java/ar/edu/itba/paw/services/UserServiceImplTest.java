@@ -76,8 +76,8 @@ public class UserServiceImplTest {
 
     @Test
     public void logInuserTest() {
-        us.logInUser(USERNAME, PASSWORD);
-        verify(userDAO).logInUser(eq(USERNAME), eq(PASSWORD));
+        us.authenticateUser(USERNAME, PASSWORD);
+        verify(userDAO).authenticateUser(eq(USERNAME), eq(PASSWORD));
     }
 
     @Test

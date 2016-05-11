@@ -4,6 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,12 +26,14 @@ import ar.edu.itba.paw.webapp.forms.SignupForm;
 public class SignupController extends RaptorController{
 
 	private final static String SIGNUP = "signup";
-	private final static String FEED = "/";
 
 	private static final String USERNAME = "username";
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+    protected AuthenticationManager authenticationManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView signUp(Model model) {
@@ -49,10 +56,13 @@ public class SignupController extends RaptorController{
 				results.rejectValue(USERNAME, "form.username.exists");
 				return SIGNUP;
 			}
-			session.setAttribute(USER, user);
-			
-			return getPreviousPageByRequest(request).orElse(FEED);
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(form.getUsername(), form.getPassword());
 
+	        token.setDetails(new WebAuthenticationDetails(request));
+	        Authentication authenticatedUser = authenticationManager.authenticate(token);
+
+	        SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+			return "redirect:";
 		}
 	}
 }

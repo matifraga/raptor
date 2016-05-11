@@ -19,13 +19,13 @@ public interface UserService {
 	User register(final String username, final String password, final String email, final String firstName, final String lastName);
 
 	/**
-	 * Logs the user.
+	 * Checks if user exists and password is correct.
 	 *
 	 * @param username The user's username.
 	 * @param password The user's password.
-	 * @return the newly logged user.
+	 * @return the user.
 	 */
-	User logInUser(final String username, final String password);
+	User authenticateUser(final String username, final String password);
 
 	/**
 	 * Get a user with a given ID.

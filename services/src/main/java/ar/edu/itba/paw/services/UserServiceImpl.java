@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
     @Override
-    public User logInUser(final String username, final String password) {
-        return userDao.logInUser(username, password);
+    public User authenticateUser(final String username, final String password) {
+        return userDao.authenticateUser(username, password);
     }
 
     @Override

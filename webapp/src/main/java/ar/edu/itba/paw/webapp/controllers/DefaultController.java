@@ -6,14 +6,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = { "*/**" })
 public class DefaultController extends RaptorController {
 
 	private static final String PAGE_NOT_FOUND = "pageNotFound";
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView pageNotFound() {
-
 		return new ModelAndView(PAGE_NOT_FOUND);
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView loginPage() {
+		ModelAndView model = new ModelAndView("login");
+		return model;
 	}
 }

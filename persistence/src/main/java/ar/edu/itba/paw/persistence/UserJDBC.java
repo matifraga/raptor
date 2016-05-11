@@ -159,7 +159,7 @@ public class UserJDBC implements UserDAO {
 	}
 
 	@Override
-	public User logInUser(String username, String password) {
+	public User authenticateUser(String username, String password) {
 		try {
 			final List<User> list = jdbcTemplate.query(SQL_LOG_IN,
 					userRowMapper, username, password);
