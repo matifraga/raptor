@@ -46,7 +46,7 @@ public class TimelineController extends TweetListController {
 	private static final String MAP_USER_UNFOLLOW = MAP_USERS +"/" + UNFOLLOW;
 
 	private static final int 	TIMELINE_SIZE = 10;
-	private static final String TIMELINE = "timelie";
+	private static final String TIMELINE = "timeline";
 	private static final String USER = "user";
 	private static final String TWEET_LIST = "tweetList";
 	private static final String TRENDS_LIST = "trendsList";
