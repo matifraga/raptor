@@ -7,13 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
@@ -22,8 +19,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
 @Configuration
@@ -53,28 +48,16 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             	.loginPage("/login")
 	            .usernameParameter("j_username")
 	            .passwordParameter("j_password")
-	            .failureHandler(failureHandler)
 	            .successHandler(successHandler)
+				.failureHandler(failureHandler)
 	        .and().logout()
             	.logoutUrl("/logout")
-            	.logoutSuccessUrl("/login")
+            	.logoutSuccessUrl("/")
 	        .and().exceptionHandling().
             	accessDeniedPage("/403")
             .and().csrf().disable();
 	}
-	
-	@Override
-    public void configure(final WebSecurity web) throws Exception {
-        web.ignoring()
-            .antMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/403");
-    }
-	
-	@Bean			//for spring security
-	@Override
-	public AuthenticationManager authenticationManager() throws Exception {
-		return super.authenticationManagerBean();
-	}
-	
+
 	@Component
 	class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 		
@@ -90,11 +73,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 			super.onAuthenticationFailure(request, response, exception);
 		}
 		
-		private String getFailureUrl(HttpServletRequest request){
-			return "/login?error";
-		}
+		private String getFailureUrl(HttpServletRequest request){ return request.getHeader("Referer") + "?error=true"; }
+
 	}
-	
+
 	@Component
 	class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		

@@ -14,10 +14,5 @@ public class DefaultController extends RaptorController {
 	public ModelAndView pageNotFound() {
 		return new ModelAndView(PAGE_NOT_FOUND);
 	}
-	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView loginPage() {
-		ModelAndView model = new ModelAndView("login");
-		return model;
-	}
+
 }

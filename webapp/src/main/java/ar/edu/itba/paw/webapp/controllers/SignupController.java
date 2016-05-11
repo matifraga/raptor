@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,9 +32,9 @@ public class SignupController extends RaptorController{
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
-    protected AuthenticationManager authenticationManager;
+	protected AuthenticationProvider authenticationProvider;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView signUp(Model model) {
@@ -56,12 +57,15 @@ public class SignupController extends RaptorController{
 				results.rejectValue(USERNAME, "form.username.exists");
 				return SIGNUP;
 			}
+
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(form.getUsername(), form.getPassword());
 
 	        token.setDetails(new WebAuthenticationDetails(request));
-	        Authentication authenticatedUser = authenticationManager.authenticate(token);
+
+			Authentication authenticatedUser = authenticationProvider.authenticate(token);
 
 	        SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+
 			return "redirect:";
 		}
 	}

@@ -23,6 +23,7 @@ class AuthenticationProv implements AuthenticationProvider{
     private UserService userService;
 	
 	public AuthenticationProv() {
+        super();
 	}
  
     @Override
@@ -31,11 +32,10 @@ class AuthenticationProv implements AuthenticationProvider{
         String password = (String) authentication.getCredentials();
  
         User user = userService.authenticateUser(username, password);
-        //User user = userService.getUserWithUsername(username);
-        if (user == null) {
-            throw new BadCredentialsException("Username or password is incorrect.");
-        }
 
+        if (user == null) {
+            throw new BadCredentialsException("Username not found.");
+        }
  
         Collection<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
