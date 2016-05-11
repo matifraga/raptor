@@ -103,8 +103,14 @@ public class TimelineController extends TweetListController {
 	public ModelAndView timeline(@PathVariable Map<String, String> pathVariables,
 								 @RequestParam(value = PAGE, defaultValue = "1") String pageValue){
 
-		Integer page = new Integer(pageValue);
-		if(page<1) page = 1;
+		Integer page = null;
+
+		try {
+			page = new Integer(pageValue);
+		} catch (Exception e) {
+			page = 1;
+		}
+
 		String username = pathVariables.get(USERNAME);
 
 		User u = userService.getUserWithUsername(username);
@@ -121,8 +127,14 @@ public class TimelineController extends TweetListController {
 	public ModelAndView mentions(@PathVariable Map<String, String> pathVariables,
 								 @RequestParam(value = PAGE, defaultValue = "1") String pageValue){
 
-		Integer page = new Integer(pageValue);
-		if(page<1) page = 1;
+		Integer page = null;
+
+		try {
+			page = new Integer(pageValue);
+		} catch (Exception e) {
+			page = 1;
+		}
+
 		String username = pathVariables.get(USERNAME);
 
 		User u = userService.getUserWithUsername(username);
@@ -139,8 +151,14 @@ public class TimelineController extends TweetListController {
 	public ModelAndView favorites(@PathVariable Map<String, String> pathVariables,
 								  @RequestParam(value = PAGE, defaultValue = "1") String pageValue){
 
-		Integer page = new Integer(pageValue);
-		if(page<1) page = 1;
+		Integer page = null;
+
+		try {
+			page = new Integer(pageValue);
+		} catch (Exception e) {
+			page = 1;
+		}
+
 		String username = pathVariables.get(USERNAME);
 
 		User u = userService.getUserWithUsername(username);

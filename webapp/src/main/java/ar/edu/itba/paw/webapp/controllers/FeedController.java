@@ -43,8 +43,14 @@ public class FeedController extends TweetListController {
 	public ModelAndView feed(@PathVariable Map<Object, String> pathVariables,
 							 @RequestParam(value = PAGE, defaultValue = "1") String pageValue) {
 
-		int page = new Integer(pageValue);
-		if(page<1) page = 1;
+		Integer page = null;
+
+		try {
+			page = new Integer(pageValue);
+		} catch (Exception e) {
+			page = 1;
+		}
+
 		final ModelAndView mav = new ModelAndView(FEED);
 		
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
@@ -77,8 +83,16 @@ public class FeedController extends TweetListController {
 	public ModelAndView globalFeed(@PathVariable Map<String, String> pathVariables,
 								   @RequestParam(value = PAGE, defaultValue = "1") String pageValue) {
 
-		int page = new Integer(pageValue);
+		Integer page = null;
+
+		try {
+			 page = new Integer(pageValue);
+		} catch (Exception e) {
+			 page = 1;
+		}
+
 		if(page<1) page = 1;
+
 		final ModelAndView mav = new ModelAndView(FEED);
 
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);

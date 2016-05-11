@@ -43,6 +43,7 @@
                 <form:label path="email">*<spring:message code="form.email"/>:</form:label>
                 <spring:message code="form.email" var="email_placeholder" />
                 <form:input type="text" path="email" placeholder='${email_placeholder}' class="form-control" id="email"/>
+                <p style="margin: 5px;"><spring:message code="form.gravatarRem"/></p>
             	<form:errors path="email" cssClass="error"/>
             </div>
             <div class="form-group">
