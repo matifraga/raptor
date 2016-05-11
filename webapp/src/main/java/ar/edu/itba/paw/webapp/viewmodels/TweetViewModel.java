@@ -114,7 +114,7 @@ public class TweetViewModel {
             result = matcher.group();
             result = result.replace(" ", "");
             String search = result.replace("#", "");
-            StringBuilder searchHTML = new StringBuilder("<a href='/search?searchText=%23").append(search).
+            StringBuilder searchHTML = new StringBuilder("<a href='search?searchText=%23").append(search).
             		append("'>").append(result).append("</a>");
             s = s.replace(result,searchHTML.toString());
         }
@@ -130,7 +130,7 @@ public class TweetViewModel {
             result = matcher.group();
             result = result.replace(" ", "");
             String rawName = result.replace("@", "");
-            StringBuilder userHTML=new StringBuilder("<a href='/user/").append(rawName).append("'>").append(result).append("</a>");
+            StringBuilder userHTML=new StringBuilder("<a href='user/").append(rawName).append("'>").append(result).append("</a>");
             s = s.replace(result,userHTML.toString());
         }
 

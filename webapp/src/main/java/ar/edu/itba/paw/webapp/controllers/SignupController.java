@@ -27,6 +27,7 @@ import ar.edu.itba.paw.webapp.forms.SignupForm;
 public class SignupController extends RaptorController{
 
 	private final static String SIGNUP = "signup";
+	private final static String REDIRECT = "redirect:";
 
 	private static final String USERNAME = "username";
 
@@ -66,7 +67,7 @@ public class SignupController extends RaptorController{
 
 	        SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 
-			return "redirect:";
+			return REDIRECT;
 		}
 	}
 }

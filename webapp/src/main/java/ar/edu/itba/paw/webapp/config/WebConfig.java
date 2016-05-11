@@ -60,30 +60,25 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 		return viewResolver;
 	}
 
-	//BASE DE DATOS DE HEROKU (old)
-	/*@Bean					
-	public DataSource dataSource() {
-		final DriverManagerDataSource ds = new DriverManagerDataSource();
-		ds.setDriverClassName("org.postgresql.Driver");
-		ds.setUrl("jdbc:postgresql://tantor.db.elephantsql.com:5432/bevoasov");
-		ds.setUsername("bevoasov");
-		ds.setPassword("hJmre4hNt9KHH44PVLNBH44HmJJn6DVh");
-
-		return ds;
-	}*/
-	
-	//DO NOT DELETE
-	//NUEVA BASE DE DATOS PARA TESTEO      
 	@Bean					
 	public DataSource dataSource() {
 		final DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("org.postgresql.Driver");
+
+		// DB ELEPHANT
 		/*ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/rroxiqgx");
 		ds.setUsername("rroxiqgx");
 		ds.setPassword("IugU760wJ4CcMpk2g-iwyMM8VSyQnjXi");*/
+
+		// DB TESTING TOMI
 		ds.setUrl("jdbc:postgresql://localhost/tomi");
 		ds.setUsername("Tomi");
  		ds.setPassword("147852");
+
+		// DB FOR DEPLOY
+		/*ds.setUrl("jdbc:postgresql://localhost/grupo6");
+		ds.setUsername("grupo6");
+		ds.setPassword("baiK8Hah");*/
 
 		return ds;
 	}

@@ -8,25 +8,44 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand logo" href="/"></a>
+                <a class="navbar-brand logo" href=""></a>
+                <div class="visible-xs">
+                    <c:choose>
+                        <c:when test="${navbarViewUser == null}"><button class="mini-pic-link pull-right navbar-text" data-toggle="collapse" data-target="#loginCollapse"><spring:message code="navbar.login"/><span style="color: #4A4A4A;" class="caret"/></button></c:when>
+                        <c:otherwise><a class="mini-pic-link pull-right" href="user/${navbarViewUser.username}" style="margin-right: 15px;"><img src=${navbarViewUser.profilePicture} class="mini-pic"/></a></c:otherwise>
+                    </c:choose>
+                    <button class="mini-pic-link navbar-text pull-right search-blue" data-toggle="collapse" data-target="#searchCollapse"></button>
+                </div>
+            </div>
+            <div class="collapse " id="loginCollapse">
+                <div class="visible-xs">
+                <jsp:include page="loginForm.jsp"></jsp:include>
+                </div>
+            </div>
+            <div class="collapse " id="searchCollapse">
+                <div class="visible-xs">
+                    <form class="navbar-form navbar-left" role="search" action="search">
+                        <div class="form-group">
+                            <spring:message code="navbar.search" var="search_placeholder" />
+                            <input type="text" class="form-control search-input" name="searchText" placeholder='${search_placeholder}...'>
+                            <button type="submit" class="btn btn-default btn-raptor" style="height: 34px; width: 34px;">
+                                <img src="resources/img/icn-search.png" style="height: 18px; margin-left:-4px;"/>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="hidden-xs">
                 <ul class="nav navbar-nav">
                     <li>
-                        <form class="navbar-form navbar-left" role="search" action="/search">
+                        <form class="navbar-form navbar-left" role="search" action="search">
                             <div class="form-group">
                             	<spring:message code="navbar.search" var="search_placeholder" />
                                 <input type="text" class="form-control search-input" name="searchText" placeholder='${search_placeholder}...'>
                             </div>
                             <button type="submit" class="btn btn-default btn-raptor" style="height: 34px; width: 34px;">
-                                <img src="/resources/img/icn-search.png" style="height: 18px; margin-left:-4px;"/>
+                                <img src="resources/img/icn-search.png" style="height: 18px; margin-left:-4px;"/>
                             </button>
                         </form>
                     </li>
@@ -39,18 +58,18 @@
                                 <div class="dropdown-menu">
                                     <div class="navbar-form" style="margin-bottom: 0px;">
                                         <form role="form" action="/login" method="post">
-                                        <div class="form-group">
-                                            <spring:message code="form.username" var="username_placeholder" />
-                                            <input type="text" name="j_username" class="form-control search-input" placeholder='${username_placeholder}' aria-describedby="usern" id="username" style="margin-bottom:10px; margin-right: 0px;"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <spring:message code="form.password" var="password_placeholder" />
-                                            <input type="password" name="j_password" placeholder='${password_placeholder}' class="form-control search-input" id="password" style="margin-bottom:10px; margin-right: 0px;"/>
-                                        </div>
-                                        <button class="btn btn-raptor pull-right" style="margin-bottom:15px;"><spring:message code="form.login"/></button>
-                                        <div class="form-group" style="text-align: center;">
-                                            <a href="/signup" style="text-align: center;"><spring:message code="navbar.no_account"/></a>
-                                        </div>
+                                            <div class="form-group">
+                                                <spring:message code="form.username" var="username_placeholder" />
+                                                <input type="text" name="j_username" class="form-control search-input" placeholder='${username_placeholder}' aria-describedby="usern" id="username" style="margin-bottom:10px; margin-right: 0px;"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <spring:message code="form.password" var="password_placeholder" />
+                                                <input type="password" name="j_password" placeholder='${password_placeholder}' class="form-control search-input" id="password" style="margin-bottom:10px; margin-right: 0px;"/>
+                                            </div>
+                                            <button class="btn btn-raptor pull-right" style="margin-bottom:15px;"><spring:message code="form.login"/></button>
+                                            <div class="form-group" style="text-align: center;">
+                                                <a href="signup" style="text-align: center;"><spring:message code="navbar.no_account"/></a>
+                                            </div>
                                         </form>
                                     </div>
                                     <br/>
@@ -59,7 +78,7 @@
                         </c:when>
                         <c:otherwise>
                             <li class="hidden-xs hidden-sm">
-                                <form class="navbar-form" action="/actions/post" method="post">
+                                <form class="navbar-form" action="actions/post" method="post">
                                     <div class="form-group">
                                         <spring:message code="tweetBox.placeholder" var="tweet_placeholder"/>
                                         <input autocomplete="off" type="text" class="form-control search-input expand" name="message" placeholder='${tweet_placeholder}'>
@@ -69,12 +88,12 @@
                                     </button>
                                 </form>
                             </li>
-                            <li class="dropdown"><a href="/user/${navbarViewUser.username}" style="color: #4A4A4A;">${navbarViewUser.firstName} <c:if test="${navbarViewUser.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if><span style="color: #4A4A4A;" class="caret"/></a>
+                            <li class="dropdown"><a href="user/${navbarViewUser.username}" style="color: #4A4A4A;">${navbarViewUser.firstName} <c:if test="${navbarViewUser.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if><span style="color: #4A4A4A;" class="caret hidden-sm"/></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/logout" style="color: #4A4A4A; text-align: center">Log out</a></li>
+                                    <li><a href="logout" style="color: #4A4A4A; text-align: center">Log out</a></li>
                                 </ul>
                             </li>
-                            <li><a class="mini-pic-link" href="/user/${navbarViewUser.username}"><img src=${navbarViewUser.profilePicture} class="mini-pic"/></a></li>
+                            <li><a class="mini-pic-link" href="user/${navbarViewUser.username}"><img src=${navbarViewUser.profilePicture} class="mini-pic"/></a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

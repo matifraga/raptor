@@ -43,8 +43,14 @@ public class FeedController extends TweetListController {
 	public ModelAndView feed(@PathVariable Map<Object, String> pathVariables,
 							 @RequestParam(value = PAGE, defaultValue = "1") String pageValue) {
 
-		int page = new Integer(pageValue);
-		if(page<1) page = 1;
+		Integer page = null;
+
+		try {
+			page = new Integer(pageValue);
+		} catch (Exception e) {
+			page = 1;
+		}
+
 		final ModelAndView mav = new ModelAndView(FEED);
 		
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
@@ -77,8 +83,16 @@ public class FeedController extends TweetListController {
 	public ModelAndView globalFeed(@PathVariable Map<String, String> pathVariables,
 								   @RequestParam(value = PAGE, defaultValue = "1") String pageValue) {
 
-		int page = new Integer(pageValue);
+		Integer page = null;
+
+		try {
+			 page = new Integer(pageValue);
+		} catch (Exception e) {
+			 page = 1;
+		}
+
 		if(page<1) page = 1;
+
 		final ModelAndView mav = new ModelAndView(FEED);
 
 		List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
@@ -105,13 +119,13 @@ public class FeedController extends TweetListController {
 
 		HashMap<String, Object> global = new HashMap<>();
 		global.put("titleCode", "feed.title.globalFeed");
-		global.put("link", "/globalfeed");
+		global.put("link", "globalfeed");
 		global.put("active", (active.equals("global")?Boolean.TRUE:Boolean.FALSE));
 
 		if(u != null) {
 			HashMap<String, Object> custom = new HashMap<>();
 			custom.put("titleCode", "feed.title.customFeed");
-			custom.put("link", "/");
+			custom.put("link", "");
 			custom.put("active", (active.equals("custom")?Boolean.TRUE:Boolean.FALSE));
 			header.add(custom);
 		}

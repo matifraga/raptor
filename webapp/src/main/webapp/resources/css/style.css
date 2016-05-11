@@ -94,6 +94,7 @@ input[type="text"], input[type="password"] {
   font-weight: normal;
   box-shadow: inset 0px 0px 0px 0px white;
   border-color: #D6D6D6;
+  width: auto;
 }
 
 .section-navbar .expand {
@@ -113,12 +114,34 @@ input[type="text"], input[type="password"] {
   background-color: transparent !important;
 }
 
+.section-navbar .navbar-text input, button {
+  border:none;
+  background-color: transparent;
+  color: #3C8BED;
+}
+
 .section-navbar .mini-pic {
   height: 34px;
   width: 34px;
   border-radius: 50%;
   border-color: #4A4A4A;
   margin-top: 7px;
+}
+
+.section-navbar .search-blue {
+  background-image: url(../img/search-blue.png);
+  height: 20px;
+  width: 20px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+}
+
+.section-navbar .navbar-text {
+  margin-right: 5px !important;
+}
+a.navbar-text {
+  text-decoration: none;
+  display: inline-block;
 }
 
 /* PROFILE */
@@ -297,7 +320,7 @@ input[type="text"], input[type="password"] {
 
 .page-buttons {
   display: inline-block;
-  width: 49.5%;
+  width: 49%;
   text-align: center;
   height: 50px;
   line-height: 50px;

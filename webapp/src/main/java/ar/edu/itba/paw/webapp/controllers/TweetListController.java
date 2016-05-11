@@ -54,7 +54,7 @@ public abstract class TweetListController extends RaptorController {
             if (page == 1) {
 
             }
-            previous.put("link", pageBase + "?" + "page=" + (page-1));
+            previous.put("link", TweetListController.addParameter(pageBase, "page", Integer.toString(page-1)));
             previous.put("titleCode", "tweetList.previousTitle");
             pageInfo.put("previous", previous);
         } else {
@@ -66,7 +66,7 @@ public abstract class TweetListController extends RaptorController {
         if (resultsInPage == resultsPerPage) {
             hasNext = Boolean.TRUE;
             Map<String, Object> next = new HashMap<String, Object>();
-            next.put("link", pageBase + "?" + "page=" + (page+1));
+            next.put("link", TweetListController.addParameter(pageBase, "page", Integer.toString(page+1)));
             next.put("titleCode", "tweetList.nextTitle");
             pageInfo.put("next", next);
         } else {
@@ -77,5 +77,16 @@ public abstract class TweetListController extends RaptorController {
 
         return pageInfo;
     }
+
+    protected static String addParameter(String URL, String name, String value)
+    {
+        int qpos = URL.indexOf('?');
+        int hpos = URL.indexOf('#');
+        char sep = qpos == -1 ? '?' : '&';
+        String seg = sep + name + '=' + value;
+        return hpos == -1 ? URL + seg : URL.substring(0, hpos) + seg
+                + URL.substring(hpos);
+    }
+
 
 }

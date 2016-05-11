@@ -11,7 +11,7 @@
     <div class="col-md-6 col-centered">
         <h2><spring:message code="form.title.signup"/></h2>
         <br/>
-        <form:form role="form" modelAttribute= "signUpForm" action="/signup" method="post">
+        <form:form role="form" modelAttribute= "signUpForm" action="signup" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -43,6 +43,7 @@
                 <form:label path="email">*<spring:message code="form.email"/>:</form:label>
                 <spring:message code="form.email" var="email_placeholder" />
                 <form:input type="text" path="email" placeholder='${email_placeholder}' class="form-control" id="email"/>
+                <p style="margin: 5px;"><spring:message code="form.gravatarRem"/></p>
             	<form:errors path="email" cssClass="error"/>
             </div>
             <div class="form-group">
