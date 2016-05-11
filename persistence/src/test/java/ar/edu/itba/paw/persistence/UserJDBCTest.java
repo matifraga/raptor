@@ -1,7 +1,6 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.UserJDBC;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,9 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 
 @Sql("classpath:schema.sql")
@@ -41,6 +43,9 @@ public class UserJDBCTest {
 
     @Autowired
     private UserJDBC userJDBC;
+
+    @Autowired
+    private FollowerJDBC followerJDBC;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -122,4 +127,34 @@ public class UserJDBCTest {
 
     }
 
+    @Test
+    public void getByUsernameTest() {
+        User u1 = userJDBC.create(UNAME1, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+        assertEquals(u1, userJDBC.getByUsername(UNAME1));
+    }
+
+    @Test
+    public void isUsernameAvailableTest() {
+        User u1 = userJDBC.create(UNAME1, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+        assertFalse(userJDBC.isUsernameAvailable(UNAME1));
+    }
+
+    @Test
+    public void logInUserTest() {
+        User u1 = userJDBC.create(UNAME1, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+        assertEquals(u1, userJDBC.logInUser(UNAME1, PASSWORD));
+    }
+
+    @Test
+    public void getFollowersFollowingTest() {
+        User u1 = userJDBC.create(UNAME1, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+        User u2 = userJDBC.create(UNAME2, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+        User u3 = userJDBC.create(UNAME3, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+
+        followerJDBC.follow(u2.getId(), u1.getId());
+        followerJDBC.follow(u1.getId(), u3.getId());
+
+        assert (userJDBC.getFollowers(u1.getId(), RESULTSPERPAGE, PAGE).contains(u2));
+        assert (userJDBC.getFollowing(u1.getId(), RESULTSPERPAGE, PAGE).contains(u3));
+    }
 }

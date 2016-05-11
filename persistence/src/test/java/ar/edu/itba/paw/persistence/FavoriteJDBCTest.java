@@ -1,10 +1,7 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.MentionJDBC;
-import ar.edu.itba.paw.persistence.TweetJDBC;
-import ar.edu.itba.paw.persistence.UserJDBC;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +18,29 @@ import static org.junit.Assert.assertEquals;
 @Sql("classpath:schema.sql")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-public class MentionJDBCTest {
+public class FavoriteJDBCTest {
 
-    private static final String MESSAGE = "hola soy un tweet";
     private static final String USERNAME = "@raptorTest", PASSWORD = "raptor",
             EMAIL = "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
+
+    private static final String MESSAGE = "hola soy un tweet";
+
     @Autowired
-    private DataSource ds;
+    DataSource dataSource;
+
     @Autowired
-    private UserJDBC userJDBC;
+    FavoriteJDBC favoriteJDBC;
+
     @Autowired
-    private TweetJDBC tweetJDBC;
+    TweetDAO tweetJDBC;
+
     @Autowired
-    private MentionJDBC mentionJDBC;
-    private JdbcTemplate jdbcTemplate;
-    private User user;
-    private Tweet tweet;
+    UserDAO userDAO;
+
+    JdbcTemplate jdbcTemplate;
+
+    User user;
+    Tweet tweet;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -48,12 +52,14 @@ public class MentionJDBCTest {
 
     @Before
     public void setUp() throws Exception {
-        jdbcTemplate = new JdbcTemplate(ds);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "mentions");
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "tweets");
+
+        jdbcTemplate = new JdbcTemplate(dataSource);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
-        user = userJDBC.create(USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "tweets");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "favorites");
+        user = userDAO.create(USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
         tweet = tweetJDBC.create(MESSAGE, user);
+
     }
 
     @After
@@ -61,11 +67,15 @@ public class MentionJDBCTest {
     }
 
     @Test
-    public void createTest() {
-        mentionJDBC.create(user.getId(), tweet.getId());
-
-        assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "mentions"));
-
+    public void favoriteTest() {
+        favoriteJDBC.favorite(tweet.getId(), user.getId());
+        assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "favorites"));
     }
 
+    @Test
+    public void unfavoriteTest() {
+        favoriteJDBC.favorite(tweet.getId(), user.getId());
+        favoriteJDBC.unfavorite(tweet.getId(), user.getId());
+        assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, "favorites"));
+    }
 }

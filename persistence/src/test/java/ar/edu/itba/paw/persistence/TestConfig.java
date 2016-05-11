@@ -1,4 +1,4 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import org.hsqldb.jdbc.JDBCDriver;
 import org.springframework.context.annotation.Bean;

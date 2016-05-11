@@ -1,9 +1,7 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.TweetJDBC;
-import ar.edu.itba.paw.persistence.UserJDBC;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,12 @@ public class TweetJDBCTest {
             EMAIL = "email@email.com", FIRSTNAME = "user", LASTNAME = "user";
     private static final String MESSAGE = "hola soy un tweet";
 
+    private static final int RESULTSPERPAGE = 3, PAGE = 1;
+
     private static User user;
-
-
+    JdbcTemplate jdbcTemplate;
     @Autowired
     private DataSource ds;
-
     @Autowired
     private UserJDBC userJDBC;
     @Autowired
@@ -46,7 +44,7 @@ public class TweetJDBCTest {
 
     @Before
     public void setUp() throws Exception {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+        jdbcTemplate = new JdbcTemplate(ds);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "tweets");
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
         user = userJDBC.create(UNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
@@ -67,32 +65,5 @@ public class TweetJDBCTest {
 
     }
 
-	/*
-     * @Test public void getTweetsByUserIdTest() {
-	 * 
-	 * List<Tweet> tweetList = new ArrayList<Tweet>();
-	 * 
-	 * tweetList.add(tweetJDBC.create(MESSAGE, user));
-	 * 
-	 * assert(tweetList.equals(tweetJDBC.getTweetsByUserID(user.getId(),
-	 * RESULTSPERPAGE, PAGE)));
-	 * 
-	 * tweetList.add(tweetJDBC.create(MESSAGE, user));
-	 * 
-	 * assert(tweetList.equals(tweetJDBC.getTweetsByUserID(user.getId(),
-	 * RESULTSPERPAGE, PAGE)));
-	 * 
-	 * tweetList.add(tweetJDBC.create(MESSAGE, user));
-	 * 
-	 * assert(tweetList.equals(tweetJDBC.getTweetsByUserID(user.getId(),
-	 * RESULTSPERPAGE, PAGE)));
-	 * 
-	 * tweetList.add(tweetJDBC.create(MESSAGE, user));
-	 * 
-	 * assert(tweetList.equals(tweetJDBC.getTweetsByUserID(user.getId(),
-	 * RESULTSPERPAGE, PAGE)));
-	 * 
-	 * 
-	 * }
-	 */
+
 }

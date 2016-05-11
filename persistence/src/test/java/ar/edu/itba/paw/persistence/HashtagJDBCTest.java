@@ -1,10 +1,7 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.HashtagJDBC;
-import ar.edu.itba.paw.persistence.TweetJDBC;
-import ar.edu.itba.paw.persistence.UserJDBC;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -75,14 +71,6 @@ public class HashtagJDBCTest {
         hashtagJDBC.create(HASHTAG, tweet.getId());
         assertEquals(1,
                 JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
-        Tweet t2 = tweetJDBC.create(MESSAGE, user);
-        hashtagJDBC.create(HASHTAG, t2.getId());
-        assertEquals(2,
-                JdbcTestUtils.countRowsInTable(jdbcTemplate, "hashtags"));
-        List<Tweet> ls = tweetJDBC.getTweetsByHashtag(HASHTAG, RESULTSPERPAGE,
-                PAGE, null);
-        assert (ls.contains(tweet));
-        assert (ls.contains(t2));
     }
 
 	/*
