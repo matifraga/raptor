@@ -135,7 +135,7 @@ public class UserJDBCTest {
 
     @Test
     public void isUsernameAvailableTest() {
-        User u1 = userJDBC.create(UNAME1, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
+        userJDBC.create(UNAME1, PASSWORD, EMAIL, FIRSTNAME, LASTNAME);
         assertFalse(userJDBC.isUsernameAvailable(UNAME1));
     }
 

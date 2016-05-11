@@ -9,12 +9,12 @@ public interface UserService {
 	/**
 	 * Registers a new user.
 	 *
-	 * @param username  the new user's username
-	 * @param password  the new user's password
-	 * @param email     the new user's email
-	 * @param firstName the new user's first name
-	 * @param lastName  the new user's last name
-	 * @return the newly created user
+	 * @param username  The new user's username.
+	 * @param password  The new user's password.
+	 * @param email     The new user's email.
+	 * @param firstName The new user's first name.
+	 * @param lastName  The new user's last name.
+	 * @return The newly created user.
 	 */
 	User register(final String username, final String password, final String email, final String firstName, final String lastName);
 
@@ -23,23 +23,23 @@ public interface UserService {
 	 *
 	 * @param username The user's username.
 	 * @param password The user's password.
-	 * @return the user.
+	 * @return The user.
 	 */
 	User authenticateUser(final String username, final String password);
 
 	/**
 	 * Get a user with a given ID.
 	 *
-	 * @param userId
-	 * @return the user with the given identifier
+	 * @param userId The user's ID.
+	 * @return The user with the given identifier.
 	 */
 	User getUserWithId(final String userId);
 
 	/**
 	 * Get a user with a given username.
 	 *
-	 * @param username
-	 * @return the user with the given username
+	 * @param username The user's username.
+	 * @return The user with the given username.
 	 */
 	User getUserWithUsername(final String username);
 

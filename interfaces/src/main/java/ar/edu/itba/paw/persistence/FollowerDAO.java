@@ -5,26 +5,25 @@ public interface FollowerDAO {
     /**
      * Register a following action.
      *
-     * @param followerID  the userID from the follower.
-     * @param followingID the userID from the user being followed.
+     * @param followerID  The userID from the follower.
+     * @param followingID The userID from the user being followed.
      */
     void follow(final String followerID, final String followingID);
 
     /**
      * Returns whether a user follows another or not.
      *
-     * @param followerID  the userID from the follower.
-     * @param followingID the userID from the user being followed.
-     * @return true if the user follows the other, false if not.
+     * @param followerID  The userID from the follower.
+     * @param followingID The userID from the user being followed.
+     * @return True if the user follows the other, false if not.
      */
-
-    Boolean isFollower(final String followerID, final String followingID); //no se si va a hacer falta despues
+    Boolean isFollower(final String followerID, final String followingID); 
 
     /**
      * Stop a following action.
      *
-     * @param followerID  the userID from the follower.
-     * @param followingID the userID from the user not longer being followed.
+     * @param followerID  The userID from the follower.
+     * @param followingID The userID from the user not longer being followed.
      */
     void unfollow(final String followerID, final String followingID);
 

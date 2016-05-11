@@ -11,7 +11,7 @@ public interface TweetService {
 	 * Store a new Tweet.
 	 *
 	 * @param msg   The tweet's message.
-	 * @param owner The user wrote this tweet.
+	 * @param owner The user who wrote this tweet.
 	 */
 	void register(final String msg, final User owner);
 
@@ -59,7 +59,7 @@ public interface TweetService {
 	/**
 	 * Get a list of tweets with a hashtag.
 	 *
-	 * @param hashtag        The key hashtag.
+	 * @param hashtag        The hashtag to be searched.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page           Number of page needed.
 	 * @param sessionID      The id of the user that is logged in.
@@ -79,76 +79,76 @@ public interface TweetService {
 	List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final String sessionID);
 
 	/**
-	 * Get a list of the latest tweets in the whole network
+	 * Get a list of the latest tweets in the whole network.
 	 *
-	 * @param resultsPerPage limit number of tweets per page
-	 * @param page           number of page needed
+	 * @param resultsPerPage Limit number of tweets per page.
+	 * @param page           Number of page needed.
 	 * @param sessionID      The id of the user that is logged in.
-	 * @return
+	 * @return The recovered List.
      */
 	List<Tweet> globalFeed(final int resultsPerPage, final int page, final String sessionID);
 	
 	/**
 	 * Get a list of the latest tweets from users followed by the current user.
 	 *
-	 * @param userID         the id of the current user.
-	 * @param resultsPerPage limit number of tweets per page
-	 * @param page           number of page needed
-	 * @return
+	 * @param userID         The id of the current user.
+	 * @param resultsPerPage Limit number of tweets per page
+	 * @param page           Number of page needed.
+	 * @return The recovered List.
      */
 	List<Tweet> currentSessionFeed(final String userID, final int resultsPerPage, final int page);
 
 	/**
-	 * Get the amount of tweets the user has
+	 * Get the amount of tweets the user has.
 	 *
-	 * @param user the user.
-	 * @return the amount of tweets the user has.
+	 * @param user The user.
+	 * @return The amount of tweets the user has.
 	 */
 	Integer countTweets(final User user);
 
 	/**
 	 * Reflect favorite action on the tweet's favorite counter.
 	 *
-	 * @param tweetID
+	 * @param tweetID The tweet's ID.
 	 */
 	void increaseFavoriteCount(final String tweetID);
 
 	/**
 	 * Reflect unfavorite action on the tweet's favorite counter.
 	 *
-	 * @param tweetID
+	 * @param tweetID The tweet's ID.
 	 */
 	void decreaseFavoriteCount(final String tweetID);
 
 	/**
 	 * Reflect retweet action on the tweet's retweet counter.
 	 *
-	 * @param tweetID
+	 * @param tweetID The tweet's ID.
 	 */
 	void increaseRetweetCount(final String tweetID);
 
 	/**
 	 * Reflect unretweet action on the tweet's retweet counter.
 	 *
-	 * @param tweetID
+	 * @param tweetID The tweet's ID.
 	 */
 	void decreaseRetweetCount(final String tweetID);
 
 	/**
 	 * Get a tweet.
 	 *
-	 * @param tweetID   the tweet's ID.
+	 * @param tweetID   The tweet's ID.
 	 * @param sessionID The id of the user that is logged in.
-	 * @return the tweet.
+	 * @return The recovered tweet.
 	 */
 	Tweet getTweet(final String tweetID, final String sessionID);
 
 	/**
 	 * Returns whether a user retweeted a tweet or not.
 	 *
-	 * @param tweetID
-	 * @param user
-	 * @return true if the user retweeted the tweet, false if not.
+	 * @param tweetID The tweet's ID.
+	 * @param user The user who retweeted.
+	 * @return True if the user retweeted the tweet, false if not.
 	 */
 
 	Boolean isRetweeted(final String tweetID, final User user);
@@ -156,8 +156,8 @@ public interface TweetService {
 	/**
 	 * Stop a retweet action.
 	 *
-	 * @param tweetID
-	 * @param user
+	 * @param tweetID The tweet's ID.
+	 * @param user The user who stop retweeting.
 	 */
 	void unretweet(final String tweetID, final User user);
 }

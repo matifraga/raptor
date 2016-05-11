@@ -89,7 +89,6 @@ public class UserJDBC implements UserDAO {
 	public User create(final String username, final String password,
 					   final String email, final String firstName, final String lastName) {
 		if (!isValidUser(username, password, email, firstName, lastName)) {
-			System.out.println("invalid username");
 			return null;
 		}
 		final Map<String, Object> args = new HashMap<>();

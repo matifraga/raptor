@@ -17,9 +17,15 @@ import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
 @Controller
 public abstract class TweetListController extends RaptorController {
 
-    @Autowired
+    private static final String HAS_NEXT = "hasNext";
+	private static final String NEXT = "next";
+	private static final String PAGE = "page";
+	private static final String PREVIOUS = "previous";
+	private static final String TITLE_CODE = "titleCode";
+	private static final String LINK = "link";
+	
+	@Autowired
     protected TweetService tweetService;
-
 
     public List<TweetViewModel> transform(List<Tweet> tweetList) {
 
@@ -54,9 +60,9 @@ public abstract class TweetListController extends RaptorController {
             if (page == 1) {
 
             }
-            previous.put("link", TweetListController.addParameter(pageBase, "page", Integer.toString(page-1)));
-            previous.put("titleCode", "tweetList.previousTitle");
-            pageInfo.put("previous", previous);
+            previous.put(LINK, TweetListController.addParameter(pageBase, PAGE, Integer.toString(page-1)));
+            previous.put(TITLE_CODE, "tweetList.previousTitle");
+            pageInfo.put(PREVIOUS, previous);
         } else {
             hasPrevious = Boolean.FALSE;
         }
@@ -66,14 +72,14 @@ public abstract class TweetListController extends RaptorController {
         if (resultsInPage == resultsPerPage) {
             hasNext = Boolean.TRUE;
             Map<String, Object> next = new HashMap<String, Object>();
-            next.put("link", TweetListController.addParameter(pageBase, "page", Integer.toString(page+1)));
-            next.put("titleCode", "tweetList.nextTitle");
-            pageInfo.put("next", next);
+            next.put(LINK, TweetListController.addParameter(pageBase, PAGE, Integer.toString(page+1)));
+            next.put(TITLE_CODE, "tweetList.nextTitle");
+            pageInfo.put(NEXT, next);
         } else {
             hasNext = Boolean.FALSE;
         }
 
-        pageInfo.put("hasNext", hasNext);
+        pageInfo.put(HAS_NEXT, hasNext);
 
         return pageInfo;
     }

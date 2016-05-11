@@ -8,7 +8,7 @@ public interface HashtagDAO {
      * Create a hashtag.
      *
      * @param hashtag The hashtag name.
-     * @param tweetID ID The tweet with the hashtag.
+     * @param tweetID The ID of the tweet with the hashtag.
      */
     void create(final String hashtag, final String tweetID);
 

@@ -16,6 +16,12 @@ import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 public abstract class RaptorController {
 
+	private static final String REDIRECT = "redirect:";
+
+	private static final String REFERER = "Referer";
+
+	private static final String ANONYMOUS_USER = "anonymousUser";
+
 	@Autowired
 	MessageSource messageSource;
 
@@ -25,7 +31,7 @@ public abstract class RaptorController {
 	@ModelAttribute("sessionUser")
     public User sessionUser() {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth.getName().equals("anonymousUser"))
+			if(auth.getName().equals(ANONYMOUS_USER))
 				return null;
 			User user = (User)auth.getPrincipal();
             return user;
@@ -42,6 +48,6 @@ public abstract class RaptorController {
 
 	protected Optional<String> getPreviousPageByRequest(HttpServletRequest request)
 	{
-	   return Optional.ofNullable(request.getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl);
+	   return Optional.ofNullable(request.getHeader(REFERER)).map(requestUrl -> REDIRECT + requestUrl);
 	}
 }

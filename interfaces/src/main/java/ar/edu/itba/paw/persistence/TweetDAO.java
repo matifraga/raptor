@@ -19,9 +19,9 @@ public interface TweetDAO {
 	/**
 	 * Retweet a previous tweet.
 	 *
-	 * @param tweetID the previous tweet.
-	 * @param user    the owner of the reTweet.
-	 * @return
+	 * @param tweetID The previous tweet.
+	 * @param user    The owner of the reTweet.
+	 * @return The new tweet.
 	 */
 	Tweet retweet(final String tweetID, final User user);
 
@@ -39,58 +39,58 @@ public interface TweetDAO {
 	/**
 	 * Get a list of Tweets with a hashtag.
 	 *
-	 * @param hashtag
-	 * @param resultsPerPage limit number of tweets per page.
+	 * @param hashtag		 The searched hashtag.
+	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param sessionID      The id of the user that is logged in.
-	 * @param page           number of page needed.
-	 * @return the list
+	 * @param page           Number of page needed.
+	 * @return The list of tweets containing the hashtag.
 	 */
 	List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page, final String sessionID);
 
 	/**
 	 * Get a list of Tweets mentioning a user.
 	 *
-	 * @param userID         the id of the user.
-	 * @param resultsPerPage limit number of tweets per page.
+	 * @param userID         The id of the user.
+	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param sessionID      The id of the user that is logged in.
-	 * @param page           number of page needed.
-	 * @return the list
+	 * @param page           Number of page needed.
+	 * @return the list of tweets containing the mention.
 	 */
 	List<Tweet> getTweetsByMention(final String userID, final int resultsPerPage, final int page, final String sessionID);
 
 	/**
 	 * Search for tweets.
 	 *
-	 * @param text           the searched text.
-	 * @param resultsPerPage limit number of tweets per page.
-	 * @param page           number of page needed.
+	 * @param text           The searched text.
+	 * @param resultsPerPage Limit number of tweets per page.
+	 * @param page           Number of page needed.
 	 * @param sessionID      The id of the user that is logged in.
-	 * @return the list of tweets.
+	 * @return the list of tweets containing the text.
      */
     List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final String sessionID);
 
 	/**
-	 * Get a list of the latest tweets in the whole network
+	 * Get a list of the latest tweets in the whole network.
 	 *
-	 * @param resultsPerPage limit number of tweets per page.
+	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param sessionID      The id of the user that is logged in.
-	 * @param page           number of page needed.
-	 * @return
+	 * @param page           Number of page needed.
+	 * @return The list of tweets.
      */
 	List<Tweet> getGlobalFeed(final int resultsPerPage, final int page, final String sessionID);
 
 	/**
 	 * Get a list of the latest tweets from the users you follow.
 	 *
-	 * @param userID         the user's ID.
-	 * @param resultsPerPage limit number of tweets per page.
-	 * @param page           number of page needed.
-	 * @return
+	 * @param userID         The user's ID.
+	 * @param resultsPerPage Limit number of tweets per page.
+	 * @param page           Number of page needed.
+	 * @return The list of tweets.
      */
 	List<Tweet> getLogedInFeed(final String userID, final int resultsPerPage, final int page);
 
 	/**
-	 * Get the amount of tweets the user has
+	 * Get the amount of tweets the user has.
 	 *
 	 * @param userID the user's ID.
 	 * @return the amount of tweets the user has.
@@ -128,27 +128,26 @@ public interface TweetDAO {
 	/**
 	 * Get a tweet.
 	 *
-	 * @param tweetID   the tweet's ID.
+	 * @param tweetID   The tweet's ID.
 	 * @param sessionID The id of the user that is logged in.
-	 * @return the tweet.
+	 * @return The recovered tweet.
 	 */
 	Tweet getTweet(final String tweetID, final String sessionID);
 
 	/**
 	 * Returns whether a user retweeted a tweet or not.
 	 *
-	 * @param tweetID the tweet's ID.
-	 * @param userID  the user's ID.
-	 * @return true if the user retweeted the tweet, false if not.
+	 * @param tweetID The tweet's ID.
+	 * @param userID  The user's ID.
+	 * @return True if the user retweeted the tweet, false if not.
 	 */
-
 	Boolean isRetweeted(final String tweetID, final String userID);
 
 	/**
 	 * Stop a retweet action.
 	 *
-	 * @param tweetID the tweet's ID.
-	 * @param userID  the user's ID.
+	 * @param tweetID The tweet's ID.
+	 * @param userID  The user's ID.
 	 */
 	void unretweet(final String tweetID, final String userID);
 
