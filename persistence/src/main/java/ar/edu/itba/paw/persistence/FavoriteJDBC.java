@@ -16,11 +16,12 @@ import java.util.Map;
 @Repository
 public class FavoriteJDBC implements FavoriteDAO {
 
-	static final String FAVORITE_ID = "favoriteID";
-	static final String TWEET_ID = "tweetID";
-	static final String FAVORITES = "favorites";
-	static final String SQL_GET_FAVORITE_IDS = "SELECT " + FAVORITE_ID + " FROM " + FAVORITES + " WHERE "
+	/*package*/ static final String FAVORITE_ID = "favoriteID";
+	/*package*/ static final String TWEET_ID = "tweetID";
+	/*package*/ static final String FAVORITES = "favorites";
+	/*package*/ static final String SQL_GET_FAVORITE_IDS = "SELECT " + FAVORITE_ID + " FROM " + FAVORITES + " WHERE "
 			+ FAVORITE_ID + " = ?";
+
 	private static final String SQL_IS_FAVORITE = "SELECT EXISTS( SELECT * FROM " + FAVORITES + " WHERE " + TWEET_ID
 			+ " = ? AND " + FAVORITE_ID + " = ?)";
 	private static final String SQL_UNFAVORITE = "DELETE FROM " + FAVORITES + " WHERE " + TWEET_ID + " = ? AND "

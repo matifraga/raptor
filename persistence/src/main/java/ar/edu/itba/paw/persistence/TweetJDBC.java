@@ -29,91 +29,50 @@ import static ar.edu.itba.paw.persistence.UserJDBC.*;
 @Repository
 public class TweetJDBC implements TweetDAO {
 
-    static final String TWEET_ID = "tweetID";
-    static final String MESSAGE = "message";
-    static final String USER_ID = "userID";
-    static final String TIMESTAMP = "timestamp";
-    static final String TWEETS = "tweets";
-    static final String RETWEET_FROM = "retweetFrom";
-    static final String REPLY_FROM = "replyFrom";
-    static final String REPLY_TO = "replyTo";
-    static final String COUNT_FAVORITES = "countFavorites";
-    static final String COUNT_RETWEETS = "countRetweets";
-    static final int TWEET_ID_LENGTH = 12;
+    /*package*/ static final String TWEET_ID = "tweetID";
+    /*package*/ static final String MESSAGE = "message";
+    /*package*/ static final String USER_ID = "userID";
+    /*package*/ static final String TIMESTAMP = "timestamp";
+    /*package*/ static final String TWEETS = "tweets";
+    /*package*/ static final String RETWEET_FROM = "retweetFrom";
+    /*package*/ static final String REPLY_FROM = "replyFrom";
+    /*package*/ static final String REPLY_TO = "replyTo";
+    /*package*/ static final String COUNT_FAVORITES = "countFavorites";
+    /*package*/ static final String COUNT_RETWEETS = "countRetweets";
+    /*package*/ static final int TWEET_ID_LENGTH = 12;
+
     private static final String IS_RETWEETED = "isRetweeted";
     private static final String IS_FAVORITED = "isFavorited";
-    private static final String MQ_SELECT_FROM = "select distinct tweets.tweetID, tweets.message, users2.userID, tweets.timestamp, tweets.retweetFrom, "
+    private static final String SQL_SELECT_FROM = "select distinct tweets.tweetID, tweets.message, users2.userID, tweets.timestamp, tweets.retweetFrom, "
             + "tweets.countRetweets, tweets.countFavorites, users2.username, users2.email, users2.firstname, users2.lastname, users2.verified, "
             + "max((CASE when favoriteID = users.userID and favoriteID =? and tweets.tweetID = favorites.tweetID then 1 else 0 end)) as isFavorited, "
             + "max((CASE when tweets2.retweetFrom = tweets.tweetID and users.userID =? and tweets2.userID = users.userID then 1 else 0 end)) as isRetweeted "
             + "from tweets, users,favorites, tweets as tweets2, users as users2, followers";
-    private static final String MQ_GROUP_BY = " group by tweets.tweetID, users2.userID order by tweets.timestamp desc";
-    private static final String MQ_JOIN_TWEET_USER2 = " where users2.userID = tweets.userID";
-    private static final String MQ_GET_TWEETS = MQ_SELECT_FROM + MQ_JOIN_TWEET_USER2 + " and users2.userID = ?" + MQ_GROUP_BY;
-//			"select distinct tweets.tweetID, tweets.message, users2.userID, tweets.timestamp, tweets.retweetFrom, "
-//			+ "tweets.countRetweets, tweets.countFavorites, users2.username, users2.email, users2.firstname, users2.lastname, users2.verified, "
-//			+ "max((CASE when favoriteID = users.userID and favoriteID =? and tweets.tweetID = favorites.tweetID then 1 else 0 end)) as isFav, "
-//			+ "max((CASE when tweets2.retweetFrom = tweets.tweetID and users.userID =? and tweets2.userID = users.userID then 1 else 0 end)) as isRet "
-//			+ "from tweets, users,favorites, tweets as tweets2, users as users2, followers where users2.userID = tweets.userID "
-//			+ "and (users2.userID in (select followingID from followers where followerID = ?) or users2.userID = ? ) "
-//			+ "group by tweets.tweetID, users2.userID order by tweets.timestamp desc";
+    private static final String SQL_GROUP_BY = " group by tweets.tweetID, users2.userID order by tweets.timestamp desc";
+    private static final String SQL_JOIN_TWEET_USER2 = " where users2.userID = tweets.userID";
+    private static final String SQL_GET_TWEETS = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and users2.userID = ?" + SQL_GROUP_BY;
 
-    private static final String MQ_LOGGED_IN_FEED = MQ_SELECT_FROM + MQ_JOIN_TWEET_USER2 + " and (users2.userID in (select followingID from followers where followerID = ?) or users2.userID = ? )" + MQ_GROUP_BY;
+    private static final String SQL_LOGGED_IN_FEED = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and (users2.userID in (select followingID from followers where followerID = ?) or users2.userID = ? )" + SQL_GROUP_BY;
 
-    private static final String MQ_GET_TWEETS_WITH_HASHTAG = MQ_SELECT_FROM + ", hashtags " + MQ_JOIN_TWEET_USER2 + " and " + HASHTAGS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + " and UPPER(" + HASHTAG + ") = ?" + MQ_GROUP_BY;
+    private static final String SQL_GET_TWEETS_WITH_HASHTAG = SQL_SELECT_FROM + ", hashtags " + SQL_JOIN_TWEET_USER2 + " and " + HASHTAGS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + " and UPPER(" + HASHTAG + ") = ?" + SQL_GROUP_BY;
 
+    private static final String SQL_GET_TWEETS_WITH_MENTION = SQL_SELECT_FROM + ", mentions " + SQL_JOIN_TWEET_USER2 + " and " + MENTIONS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID +
+            " AND " + MENTIONS + "." + USER_ID + " = ?" + SQL_GROUP_BY;
 
-//	private static final String TWEET_SELECT = TWEETS + "." + TWEET_ID + ", " + MESSAGE + ", " + TWEETS + "." + USER_ID
-//						+ " AS " + USER_ID + ", " + TIMESTAMP + ", " + USERNAME + ", " + FIRST_NAME 
-//						+ ", " + LAST_NAME + ", " + EMAIL + ", " + VERIFIED + ", " + RETWEET_FROM + ", " + REPLY_TO + ", " + REPLY_FROM
-//						+ ", " + COUNT_FAVORITES + ", " + COUNT_RETWEETS;
+    private static final String SQL_GET_TWEETS_CONTAINING = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " AND UPPER(" + TWEETS + "." + MESSAGE + ") LIKE ('%' || ? || '%')" + SQL_GROUP_BY;
 
-    private static final String SQL_GET_TWEETS = "select * from " + TWEETS + ", "
+    private static final String SQL_GET_GLOBAL_FEED = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + SQL_GROUP_BY;
+
+    private static final String SQL_COUNT_TWEETS = "SELECT COUNT(aux) FROM (" + "select * from " + TWEETS + ", "
             + USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID +
-            " AND " + USERS + "." + USER_ID + " = ? ORDER BY "
-            + TIMESTAMP + " DESC";
+            " AND " + USERS + "." + USER_ID + " = ?" + ") as aux";
 
-//	private static final String SQL_GET_TWEETS_WITH_HASHTAG = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
-//						+ HASHTAGS + ", " + USERS + " where " + HASHTAGS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + 
-//						" AND " + TWEETS + "." + USER_ID + " = " + USERS + "." + USER_ID + " AND UPPER(" + HASHTAG + ") = ? ORDER BY " 
-//						+ TIMESTAMP + " DESC";
-
-    private static final String MQ_GET_TWEETS_WITH_MENTION = MQ_SELECT_FROM + ", mentions " + MQ_JOIN_TWEET_USER2 + " and " + MENTIONS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID +
-            " AND " + MENTIONS + "." + USER_ID + " = ?" + MQ_GROUP_BY;
-
-//	private static final String SQL_GET_TWEETS_WITH_MENTION = "select " + TWEET_SELECT + " from " + TWEETS + ", " 
-//						+ MENTIONS + ", " + USERS + " where " + MENTIONS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + 
-//						" AND " + TWEETS + "." + USER_ID + " = " + USERS + "." + USER_ID + 
-//						" AND " + MENTIONS + "." + USER_ID + " = ? ORDER BY " 
-//						+ TIMESTAMP + " DESC";
-
-    private static final String MQ_GET_TWEETS_CONTAINING = MQ_SELECT_FROM + MQ_JOIN_TWEET_USER2 + " AND UPPER(" + TWEETS + "." + MESSAGE + ") LIKE ('%' || ? || '%')" + MQ_GROUP_BY;
-
-//	private static final String SQL_GET_TWEETS_CONTAINING = "select " + TWEET_SELECT + " from " + TWEETS 
-//						+ ", " + USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID + 
-//						" AND UPPER(" + MESSAGE + ") LIKE ('%' || ? || '%') ORDER BY " + TIMESTAMP + " DESC";
-
-    private static final String MQ_GET_GLOBAL_FEED = MQ_SELECT_FROM + MQ_JOIN_TWEET_USER2 + MQ_GROUP_BY;
-
-//	private static final String SQL_GET_GLOBAL_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
-//						+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
-//						+ " ORDER BY " + TIMESTAMP + " DESC";
-
-//	private static final String SQL_GET_LOGED_IN_FEED = "select " + TWEET_SELECT + " from " + TWEETS + ", "
-//			+ USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID
-//			+ " AND (" + USERS + "." + USER_ID + " IN (" + SQL_GET_FOLLOWING_IDS + ") OR " + USERS + "." + USER_ID + "= ?)" 
-//			+ " ORDER BY " + TIMESTAMP + " DESC";
-
-    private static final String SQL_COUNT_TWEETS = "SELECT COUNT(aux) FROM (" + SQL_GET_TWEETS + ") as aux";
     private static final String SQL_INCREASE_FAVORITES = "UPDATE " + TWEETS + " SET " + COUNT_FAVORITES + " = " + COUNT_FAVORITES + "+1 WHERE " + TWEET_ID + "=?";
     private static final String SQL_DECREASE_FAVORITES = "UPDATE " + TWEETS + " SET " + COUNT_FAVORITES + " = " + COUNT_FAVORITES + "-1 WHERE " + TWEET_ID + "=?";
     private static final String SQL_INCREASE_RETWEETS = "UPDATE " + TWEETS + " SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "+1 WHERE " + TWEET_ID + "=?";
     private static final String SQL_DECREASE_RETWEETS = "UPDATE " + TWEETS + " SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "-1 WHERE " + TWEET_ID + "=?";
 
-//	private static final String SQL_GET_BY_ID = "SELECT "+ TWEET_SELECT +" FROM " + TWEETS + ", " + USERS
-//			+ " WHERE " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID + " AND " + TWEET_ID + " = ?";
-
-    private static final String MQ_GET_BY_ID = MQ_SELECT_FROM + MQ_JOIN_TWEET_USER2 + " AND " + TWEETS + "." + TWEET_ID + " = ?" + MQ_GROUP_BY;
+    private static final String SQL_GET_BY_ID = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " AND " + TWEETS + "." + TWEET_ID + " = ?" + SQL_GROUP_BY;
 
 
     private static final String SQL_IS_RETWEETED = "SELECT EXISTS( SELECT * FROM " + TWEETS + " WHERE " + RETWEET_FROM
@@ -122,11 +81,7 @@ public class TweetJDBC implements TweetDAO {
     private static final String SQL_UNRETWEET = "DELETE FROM " + TWEETS + " WHERE " + RETWEET_FROM + " = ? AND "
             + USER_ID + " = ?";
 
-//	private static final String SQL_GET_FAVORITES = "SELECT " + TWEET_SELECT + " FROM " + TWEETS + ", " + USERS + ", " + FAVORITES 
-//			+ " WHERE " + FAVORITE_ID + " = ?" + " AND " + TWEETS + "." + TWEET_ID + " = " + FAVORITES + "." + TWEET_ID 
-//			+ " AND " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID;
-
-    private static final String MQ_GET_FAVORITES = MQ_SELECT_FROM + MQ_JOIN_TWEET_USER2 + " and " + FAVORITE_ID + " = ?" + " AND " + TWEETS + "." + TWEET_ID + " = " + FAVORITES + "." + TWEET_ID + MQ_GROUP_BY;
+    private static final String SQL_GET_FAVORITES = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and " + FAVORITE_ID + " = ?" + " AND " + TWEETS + "." + TWEET_ID + " = " + FAVORITES + "." + TWEET_ID + SQL_GROUP_BY;
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
@@ -166,7 +121,7 @@ public class TweetJDBC implements TweetDAO {
     @Override
     public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { //TODO update adding retweets
         try {
-            return jdbcTemplate.query(MQ_GET_TWEETS + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
+            return jdbcTemplate.query(SQL_GET_TWEETS + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
         } catch (Exception e) {
             return null;
         } //DataAccessException or SQLException
@@ -194,7 +149,7 @@ public class TweetJDBC implements TweetDAO {
     @Override
     public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page, final String sessionID) {
         try {
-            return jdbcTemplate.query(MQ_GET_TWEETS_WITH_HASHTAG + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, hashtag.toUpperCase());
+            return jdbcTemplate.query(SQL_GET_TWEETS_WITH_HASHTAG + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, hashtag.toUpperCase());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -204,7 +159,7 @@ public class TweetJDBC implements TweetDAO {
     @Override
     public List<Tweet> getTweetsByMention(final String userID, final int resultsPerPage, final int page, final String sessionID) {
         try {
-            return jdbcTemplate.query(MQ_GET_TWEETS_WITH_MENTION + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, userID);
+            return jdbcTemplate.query(SQL_GET_TWEETS_WITH_MENTION + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, userID);
         } catch (Exception e) {
             return null;
         } //DataAccessException or SQLException
@@ -213,7 +168,7 @@ public class TweetJDBC implements TweetDAO {
     @Override
     public List<Tweet> searchTweets(String text, final int resultsPerPage, final int page, final String sessionID) {
         try {
-            return jdbcTemplate.query(MQ_GET_TWEETS_CONTAINING + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, text.toUpperCase());
+            return jdbcTemplate.query(SQL_GET_TWEETS_CONTAINING + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, text.toUpperCase());
         } catch (Exception e) {
             return null;
         }
@@ -222,7 +177,7 @@ public class TweetJDBC implements TweetDAO {
     @Override
     public List<Tweet> getGlobalFeed(final int resultsPerPage, final int page, final String sessionID) {
         try {
-            return jdbcTemplate.query(MQ_GET_GLOBAL_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID);
+            return jdbcTemplate.query(SQL_GET_GLOBAL_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID);
         } catch (Exception e) {
             return null;
         }
@@ -231,7 +186,7 @@ public class TweetJDBC implements TweetDAO {
     @Override
     public List<Tweet> getLogedInFeed(final String userID, final int resultsPerPage, final int page) {
         try {
-            return jdbcTemplate.query(MQ_LOGGED_IN_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, userID, userID, userID, userID);
+            return jdbcTemplate.query(SQL_LOGGED_IN_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, userID, userID, userID, userID);
         } catch (Exception e) {
             return null;
         }
@@ -307,7 +262,7 @@ public class TweetJDBC implements TweetDAO {
         if (tweetID == null)
             return null;
         try {
-            final List<Tweet> list = jdbcTemplate.query(MQ_GET_BY_ID, tweetRowMapper, sessionID, sessionID, tweetID);
+            final List<Tweet> list = jdbcTemplate.query(SQL_GET_BY_ID, tweetRowMapper, sessionID, sessionID, tweetID);
             if (list.isEmpty()) {
                 return null; // TODO difference between no tweet found and
                 // DataAccessException pending
@@ -339,7 +294,7 @@ public class TweetJDBC implements TweetDAO {
     @Override
     public List<Tweet> getFavorites(String id, int resultsPerPage, int page, final String sessionID) {
         try {
-            return jdbcTemplate.query(MQ_GET_FAVORITES + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
+            return jdbcTemplate.query(SQL_GET_FAVORITES + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
         } catch (Exception e) {
             return null;
         }

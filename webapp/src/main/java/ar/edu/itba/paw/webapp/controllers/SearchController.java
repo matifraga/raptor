@@ -47,8 +47,7 @@ public class SearchController extends TweetListController {
         final ModelAndView mav = new ModelAndView(SEARCH);
         mav.addObject(SEARCH_TEXT, text);
 
-		String baseURL = (String) request.getAttribute(
-				HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+		String baseURL = (String) request.getContextPath() + "/search";
 
 		baseURL = TweetListController.addParameter(baseURL, SEARCH_TEXT, text);
 

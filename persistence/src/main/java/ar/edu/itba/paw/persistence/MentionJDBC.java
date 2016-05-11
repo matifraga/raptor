@@ -16,9 +16,9 @@ import java.util.Map;
 @Repository
 public class MentionJDBC implements MentionDAO {
 
-    final static String MENTIONS = "mentions";
-    static final String USER_ID = "userID";
-    static final String TWEET_ID = "tweetID";
+    /*package*/ static final String MENTIONS = "mentions";
+    /*package*/ static final String USER_ID = "userID";
+    /*package*/ static final String TWEET_ID = "tweetID";
 
     private final SimpleJdbcInsert jdbcInsert;
 

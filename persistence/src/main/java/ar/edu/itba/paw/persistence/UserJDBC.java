@@ -25,15 +25,16 @@ import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
 @Repository
 public class UserJDBC implements UserDAO {
 
-	static final String USERNAME = "username";
-	static final String PASSWORD = "password";
-	static final String EMAIL = "email";
-	static final String FIRST_NAME = "firstName";
-	static final String LAST_NAME = "lastName";
-	static final String USER_ID = "userID";
-	static final String USERS = "users";
-	static final String VERIFIED = "verified";
-	static final int USER_ID_LENGTH = 12;
+	/*package*/ static final String USERNAME = "username";
+	/*package*/ static final String PASSWORD = "password";
+	/*package*/ static final String EMAIL = "email";
+	/*package*/ static final String FIRST_NAME = "firstName";
+	/*package*/ static final String LAST_NAME = "lastName";
+	/*package*/ static final String USER_ID = "userID";
+	/*package*/ static final String USERS = "users";
+	/*package*/ static final String VERIFIED = "verified";
+	/*package*/ static final int USER_ID_LENGTH = 12;
+
 	private static final int USERNAME_MAX_LENGTH = 100;
 	private static final int PASSWORD_MAX_LENGTH = 100;
 	private static final int EMAIL_MAX_LENGTH = 100;

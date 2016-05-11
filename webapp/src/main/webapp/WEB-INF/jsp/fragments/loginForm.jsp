@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="navbar-form" style="margin-bottom: 0px;">
     <form role="form" action="login" method="post">
         <div class="form-group">
@@ -18,6 +19,7 @@
             <spring:message code="form.password" var="password_placeholder" />
             <input type="password" name="j_password" placeholder='${password_placeholder}' class="form-control search-input" id="password" style="margin-bottom:10px; margin-right: 0px;"/>
         </div>
+        <c:if test="${param['error'] == 'true'}"><div class="error"><spring:message code="login.error"></spring:message></div></c:if>
         <button class="btn btn-raptor pull-right" style="margin-bottom:15px;"><spring:message code="form.login"/></button>
         <div class="form-group" style="text-align: center;">
             <a href="signup" style="text-align: center;"><spring:message code="navbar.no_account"/></a>

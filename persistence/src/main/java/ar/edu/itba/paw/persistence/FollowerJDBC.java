@@ -16,11 +16,12 @@ import java.util.Map;
 @Repository
 public class FollowerJDBC implements FollowerDAO {
 
-    static final String FOLLOWERS = "followers";
-    static final String FOLLOWER_ID = "followerID";
-    static final String FOLLOWING_ID = "followingID";
-    static final String SQL_GET_FOLLOWING_IDS = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
-    static final String SQL_GET_FOLLOWER_IDS = "SELECT " + FOLLOWER_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
+    /*package*/ static final String FOLLOWERS = "followers";
+    /*package*/ static final String FOLLOWER_ID = "followerID";
+    /*package*/ static final String FOLLOWING_ID = "followingID";
+    /*package*/ static final String SQL_GET_FOLLOWING_IDS = "SELECT " + FOLLOWING_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWER_ID + " = ?";
+    /*package*/ static final String SQL_GET_FOLLOWER_IDS = "SELECT " + FOLLOWER_ID + " FROM " + FOLLOWERS + " WHERE " + FOLLOWING_ID + " = ?";
+
     private static final String SQL_IS_FOLLOWER = "SELECT EXISTS( SELECT * FROM " + FOLLOWERS +
             " WHERE " + FOLLOWER_ID + " = ? AND " +
             FOLLOWING_ID + " = ?)";

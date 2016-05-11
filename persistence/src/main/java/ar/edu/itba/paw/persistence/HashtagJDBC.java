@@ -25,9 +25,9 @@ import static ar.edu.itba.paw.persistence.TweetJDBC.TWEETS;
 @Repository
 public class HashtagJDBC implements HashtagDAO {
 
-    static final String HASHTAGS = "hashtags";
-    static final String HASHTAG = "hashtag";
-    static final String TWEET_ID = "tweetID";
+    /*package*/ static final String HASHTAGS = "hashtags";
+    /*package*/ static final String HASHTAG = "hashtag";
+    /*package*/ static final String TWEET_ID = "tweetID";
 
     private static final int INTERVAL = 20000; // in seconds
 

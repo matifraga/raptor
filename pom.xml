@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ar.edu.itba.paw</groupId>
-    <artifactId>TPRaptor</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>raptor</artifactId>
+    <version>1.1.0-RELEASE</version>
     <packaging>pom</packaging>
-    <name>TPRaptor</name>
+    <name>Raptor</name>
     <modules>
         <module>webapp</module>
         <module>interfaces</module>
@@ -45,8 +45,6 @@
                 <configuration>
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
-                    <source>1.8</source>
-                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
