@@ -23,8 +23,6 @@ public class TweetJDBCTest {
             EMAIL = "email@email.com", FIRSTNAME = "user", LASTNAME = "user";
     private static final String MESSAGE = "hola soy un tweet";
 
-    private static final int RESULTSPERPAGE = 3, PAGE = 1;
-
     private static User user;
     JdbcTemplate jdbcTemplate;
     @Autowired

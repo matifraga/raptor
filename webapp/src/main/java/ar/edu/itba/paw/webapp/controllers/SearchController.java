@@ -1,20 +1,21 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
-import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.UserService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 @Controller
 @RequestMapping(value = { "/search", "/search/{page:[1-9][0-9]*}" })

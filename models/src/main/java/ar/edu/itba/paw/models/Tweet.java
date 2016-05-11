@@ -49,7 +49,7 @@ public class Tweet {
 		this.isRetweeted = isRetweeted;
 	}
 
-	public Tweet(final String id, final User owner, final Timestamp timestamp, final String retweetID) throws IllegalArgumentException {
+	public Tweet(final String id, final User owner, final Timestamp timestamp, final String retweetID) {
 		this.msg = null;
 		this.id = id;
 		this.owner = owner;
@@ -61,9 +61,8 @@ public class Tweet {
 		this.isRetweeted = false;
 	}
 
-	//TODO ASI NO LLORAN LOS TESTS POR AHORA.
 	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
-		if (!isValidLength(msg)) {
+		if (msg != null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
 		}
 		this.msg = msg;

@@ -19,17 +19,11 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(classes = TestConfig.class)
 public class FollowerJDBCTest {
 
-    private static final String USERNAME = "@raptorTest", PASSWORD = "raptor",
+    private static final String PASSWORD = "raptor",
             EMAIL = "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
-
-    private static final String USERNAME2 = "@rawr";
-
 
     private static final String UNAME1 = "@user1", UNAME2 = "@user2",
             UNAME3 = "@user3";
-
-
-    private static final int RESULTSPERPAGE = 3, PAGE = 1;
 
     @Autowired
     DataSource ds;

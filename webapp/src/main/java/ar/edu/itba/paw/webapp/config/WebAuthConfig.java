@@ -2,13 +2,11 @@ package ar.edu.itba.paw.webapp.config;
 
 import java.io.IOException;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -29,6 +27,15 @@ import org.springframework.web.context.WebApplicationContext;
 @ComponentScan({ "ar.edu.itba.paw.webapp.auth"})
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
+	private static final String EVERYTHING = "**";
+	private static final String ERROR_PAGE = "/403";
+	private static final String LOGOUT = "/logout";
+	private static final String PASSWORD = "j_password";
+	private static final String USERNAME = "j_username";
+	private static final String FEED = "/";
+	private static final String SIGNUP = "/signup";
+	private static final String LOGIN = "/login";
+
 	@Autowired
 	private AuthenticationProvider authProv;
 
@@ -40,34 +47,37 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private AuthenticationSuccessHandler successHandler;
-
+	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
 
 		http.authenticationProvider(authProv)
             .authorizeRequests()
-            	.antMatchers("/login").anonymous()
-            	.antMatchers("/signup").anonymous()
-            	.antMatchers("**").permitAll()
+            	.antMatchers(LOGIN).anonymous()
+            	.antMatchers(SIGNUP).anonymous()
+            	.antMatchers(EVERYTHING).permitAll()
         	.and().sessionManagement()
-        		.invalidSessionUrl("/")
+        		.invalidSessionUrl(FEED)
             .and().formLogin()
-            	.loginPage("/login")
-	            .usernameParameter("j_username")
-	            .passwordParameter("j_password")
+            	.loginPage(LOGIN)
+	            .usernameParameter(USERNAME)
+	            .passwordParameter(PASSWORD)
 	            .successHandler(successHandler)
 				.failureHandler(failureHandler)
 	        .and().logout()
-            	.logoutUrl("/logout")
-            	.logoutSuccessUrl("/")
+            	.logoutUrl(LOGOUT)
+            	.logoutSuccessUrl(FEED)
 	        .and().exceptionHandling().
-            	accessDeniedPage("/403")
+            	accessDeniedPage(ERROR_PAGE)
             .and().csrf().disable();
 	}
 
 	@Component
 	class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 		
+		private static final String ERROR_PARAM_TRUE = "?error=true";
+		private static final String REFERER = "Referer";
+
 		@Autowired
 		public FailureHandler(){
 			super();
@@ -81,7 +91,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		}
 		
 		private String getFailureUrl(HttpServletRequest request){
-			return request.getHeader("Referer") + "?error=true";
+			return request.getHeader(REFERER) + ERROR_PARAM_TRUE;
 		}
 
 	}
@@ -89,6 +99,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	@Component
 	class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		
+		private static final String REFERER = "Referer";
+
 		@Autowired
 		public SuccessHandler(){
 			super();
@@ -102,7 +114,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		}
 		
 		private String getSuccessUrl(HttpServletRequest request){
-			return request.getHeader("Referer");
+			return request.getHeader(REFERER);
 		}
 	}
 	

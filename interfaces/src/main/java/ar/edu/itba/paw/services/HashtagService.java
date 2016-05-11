@@ -9,7 +9,7 @@ public interface HashtagService {
     /**
      * Store all hashtag from a tweet.
      *
-     * @param tweet the hashtag's container.
+     * @param tweet The hashtag's container.
      */
     void register(final Tweet tweet);
 

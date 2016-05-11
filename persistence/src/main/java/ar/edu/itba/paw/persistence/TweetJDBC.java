@@ -48,6 +48,7 @@ public class TweetJDBC implements TweetDAO {
             + "max((CASE when favoriteID = users.userID and favoriteID =? and tweets.tweetID = favorites.tweetID then 1 else 0 end)) as isFavorited, "
             + "max((CASE when tweets2.retweetFrom = tweets.tweetID and users.userID =? and tweets2.userID = users.userID then 1 else 0 end)) as isRetweeted "
             + "from tweets, (users left outer join favorites on 1=1) left outer join followers on 1=1, tweets as tweets2, users as users2";
+    
     private static final String SQL_GROUP_BY = " group by tweets.tweetID, users2.userID order by tweets.timestamp desc";
     private static final String SQL_JOIN_TWEET_USER2 = " where users2.userID = tweets.userID";
     private static final String SQL_GET_TWEETS = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and users2.userID = ?" + SQL_GROUP_BY;
@@ -114,12 +115,16 @@ public class TweetJDBC implements TweetDAO {
         args.put(REPLY_FROM, null);
         args.put(REPLY_TO, null);
         args.put(RETWEET_FROM, null);
-        jdbcInsert.execute(args);
+        try {
+            jdbcInsert.execute(args);
+        } catch (DataAccessException e) {
+        	return null;
+        }
         return ans;
     }
 
     @Override
-    public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { //TODO update adding retweets
+    public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { 
         try {
             return jdbcTemplate.query(SQL_GET_TWEETS + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
         } catch (Exception e) {
@@ -171,7 +176,7 @@ public class TweetJDBC implements TweetDAO {
             return jdbcTemplate.query(SQL_GET_TWEETS_CONTAINING + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, text.toUpperCase());
         } catch (Exception e) {
             return null;
-        }
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -180,7 +185,7 @@ public class TweetJDBC implements TweetDAO {
             return jdbcTemplate.query(SQL_GET_GLOBAL_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID);
         } catch (Exception e) {
             return null;
-        }
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -189,7 +194,7 @@ public class TweetJDBC implements TweetDAO {
             return jdbcTemplate.query(SQL_LOGGED_IN_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, userID, userID, userID, userID);
         } catch (Exception e) {
             return null;
-        }
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -206,7 +211,7 @@ public class TweetJDBC implements TweetDAO {
         try {
             jdbcTemplate.update(SQL_INCREASE_FAVORITES, tweetID);
         } catch (DataAccessException e) {
-        }
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -214,7 +219,7 @@ public class TweetJDBC implements TweetDAO {
         try {
             jdbcTemplate.update(SQL_DECREASE_FAVORITES, tweetID);
         } catch (DataAccessException e) {
-        }
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -222,7 +227,7 @@ public class TweetJDBC implements TweetDAO {
         try {
             jdbcTemplate.update(SQL_INCREASE_RETWEETS, tweetID);
         } catch (DataAccessException e) {
-        }
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -230,7 +235,7 @@ public class TweetJDBC implements TweetDAO {
         try {
             jdbcTemplate.update(SQL_DECREASE_RETWEETS, tweetID);
         } catch (DataAccessException e) {
-        }
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -264,8 +269,7 @@ public class TweetJDBC implements TweetDAO {
         try {
             final List<Tweet> list = jdbcTemplate.query(SQL_GET_BY_ID, tweetRowMapper, sessionID, sessionID, tweetID);
             if (list.isEmpty()) {
-                return null; // TODO difference between no tweet found and
-                // DataAccessException pending
+                return null; // TODO difference between no tweet found and DataAccessException pending
             }
             return list.get(0);
         } catch (Exception e) {
@@ -287,8 +291,7 @@ public class TweetJDBC implements TweetDAO {
         try {
             jdbcTemplate.update(SQL_UNRETWEET, tweetID, userID);
         } catch (DataAccessException e) {
-        }
-
+        } //SQLException or DataAccessException
     }
 
     @Override
@@ -297,7 +300,7 @@ public class TweetJDBC implements TweetDAO {
             return jdbcTemplate.query(SQL_GET_FAVORITES + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
         } catch (Exception e) {
             return null;
-        }
+        } //SQLException or DataAccessException
     }
 
     private static class TweetRowMapper implements RowMapper<Tweet> {

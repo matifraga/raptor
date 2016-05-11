@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controllers;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.HashtagService;
 import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,16 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = { "/" })
 public class FeedController extends TweetListController {
+
+	private static final String CUSTOM = "custom";
+
+	private static final String GLOBAL = "global";
+
+	private static final String ACTIVE = "active";
+
+	private static final String LINK = "link";
+
+	private static final String TITLE_CODE = "titleCode";
 
 	private final static String FEED = "feed";
 
@@ -62,10 +73,10 @@ public class FeedController extends TweetListController {
 
 		if (sessionUser == null) {
 			tweetList = transform(tweetService.globalFeed(TIMELINE_SIZE, page, null));
-			active = "global";
+			active = GLOBAL;
 		} else {
 			tweetList = transform(tweetService.currentSessionFeed(sessionUser.getId(), TIMELINE_SIZE, page));
-			active = "custom";
+			active = CUSTOM;
 		}
 
 		List<Map<String, Object>> header = createHeader(sessionUser, active);
@@ -102,7 +113,7 @@ public class FeedController extends TweetListController {
 		User sessionUser = sessionUser();
 
 		tweetList = transform(tweetService.globalFeed(TIMELINE_SIZE, page, sessionUser==null?null:sessionUser.getId()));
-		List<Map<String, Object>> header = createHeader(sessionUser, "global");
+		List<Map<String, Object>> header = createHeader(sessionUser, GLOBAL);
 		mav.addObject(HEADER, header);
 
 		mav.addObject(TWEET_LIST, tweetList);
@@ -118,15 +129,15 @@ public class FeedController extends TweetListController {
 		List<Map<String, Object>> header = new ArrayList<>();
 
 		HashMap<String, Object> global = new HashMap<>();
-		global.put("titleCode", "feed.title.globalFeed");
-		global.put("link", "globalfeed");
-		global.put("active", (active.equals("global")?Boolean.TRUE:Boolean.FALSE));
+		global.put(TITLE_CODE, "feed.title.globalFeed");
+		global.put(LINK, "globalfeed");
+		global.put(ACTIVE, (active.equals(GLOBAL)?Boolean.TRUE:Boolean.FALSE));
 
 		if(u != null) {
 			HashMap<String, Object> custom = new HashMap<>();
-			custom.put("titleCode", "feed.title.customFeed");
-			custom.put("link", "");
-			custom.put("active", (active.equals("custom")?Boolean.TRUE:Boolean.FALSE));
+			custom.put(TITLE_CODE, "feed.title.customFeed");
+			custom.put(LINK, "");
+			custom.put(ACTIVE, (active.equals(CUSTOM)?Boolean.TRUE:Boolean.FALSE));
 			header.add(custom);
 		}
 

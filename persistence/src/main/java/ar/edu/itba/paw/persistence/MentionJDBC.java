@@ -36,7 +36,6 @@ public class MentionJDBC implements MentionDAO {
         args.put(TWEET_ID, tweetID);
         try {
             jdbcInsert.execute(args);
-        } catch (DataAccessException e) {
-        }
+        } catch (DataAccessException e) {}
     }
 }

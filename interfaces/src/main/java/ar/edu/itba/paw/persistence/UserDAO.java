@@ -21,26 +21,27 @@ public interface UserDAO {
     /**
      * Get a user with a given username.
      *
-     * @param username the searched username
-     * @return the user
+     * @param username The searched username.
+     * @return The user
      */
     User getByUsername(final String username);
 
     /**
      * Search for users.
      *
-     * @param text           the searched text.
-     * @param resultsPerPage limit number of users per page.
-     * @param page           number of page needed.
-     * @return the list of users.
+     * @param text           The searched text.
+     * @param resultsPerPage Limit number of users per page.
+     * @param page           Number of page needed.
+     * @return The list of users.
      */
     List<User> searchUsers(final String text, final int resultsPerPage, final int page);
 
     /**
-     * @param username the tested username.
-     * @return true if username can be used by new user, false if not.
+     * Checks if a certain username is available.
+     * 
+     * @param username The tested username.
+     * @return True if username can be used by new user, false if not.
      */
-
     Boolean isUsernameAvailable(final String username);
 
     /**

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controllers;
 import ar.edu.itba.paw.services.FavoriteService;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class TweetController extends RaptorController{
 
+	private static final String SUCCESS_0 = "{\"success\":0}";
+	private static final String SUCCESS_1 = "{\"success\":1}";
 	private static final String REDIRECT = "redirect:";
 	private static final String MESSAGE = "message";
 	private static final String TWEETID = "tweetId";
@@ -45,8 +48,6 @@ public class TweetController extends RaptorController{
 				userService.getUserWithUsername(sessionUser().getUsername()));
 
 	    return getPreviousPageByRequest(request).orElse("/user/" + sessionUser().getUsername());
-
-		//return REDIRECT +  "/user/" + sessionUser().getUsername();
 	}
 
 	@RequestMapping(value = {ACTIONS + RETWEET}, method = RequestMethod.POST, produces = "application/json")
@@ -60,10 +61,10 @@ public class TweetController extends RaptorController{
 			} else {
 				tweetService.unretweet(tweetId, sessionUser());
 			}
-			return "{\"success\":1}";
+			return SUCCESS_1;
 		}
 
-		return "{\"success\":0}";
+		return SUCCESS_0;
 	}
 
 	@RequestMapping(value = {ACTIONS + FAVORITE}, method = RequestMethod.POST, produces = "application/json")
@@ -77,10 +78,10 @@ public class TweetController extends RaptorController{
 			} else {
 				favoriteService.unfavorite(tweetId, sessionUser());
 			}
-			return "{\"success\":1}";
+			return SUCCESS_1;
 		}
 
-		return "{\"success\":0}";
+		return SUCCESS_0;
 	}
 
 }

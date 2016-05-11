@@ -25,8 +25,6 @@ public class HashtagJDBCTest {
     private static final String USERNAME = "@raptorTest", PASSWORD = "raptor",
             EMAIL = "raptor@gmail.com ", FIRSTNAME = "rap", LASTNAME = "tor";
 
-    private static final int RESULTSPERPAGE = 3, PAGE = 1;
-
     private static final String HASHTAG = "RAWR";
 
     @Autowired
