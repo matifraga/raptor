@@ -47,7 +47,7 @@ public class TweetJDBC implements TweetDAO {
             + "tweets.countRetweets, tweets.countFavorites, users2.username, users2.email, users2.firstname, users2.lastname, users2.verified, "
             + "max((CASE when favoriteID = users.userID and favoriteID =? and tweets.tweetID = favorites.tweetID then 1 else 0 end)) as isFavorited, "
             + "max((CASE when tweets2.retweetFrom = tweets.tweetID and users.userID =? and tweets2.userID = users.userID then 1 else 0 end)) as isRetweeted "
-            + "from tweets, users,favorites, tweets as tweets2, users as users2, followers";
+            + "from tweets, (users left outer join favorites on 1=1) left outer join followers on 1=1, tweets as tweets2, users as users2";
     private static final String SQL_GROUP_BY = " group by tweets.tweetID, users2.userID order by tweets.timestamp desc";
     private static final String SQL_JOIN_TWEET_USER2 = " where users2.userID = tweets.userID";
     private static final String SQL_GET_TWEETS = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and users2.userID = ?" + SQL_GROUP_BY;
