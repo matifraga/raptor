@@ -98,7 +98,7 @@ public class TweetViewModel {
 
         for(int i=0; i<parts.length; i++) try {
             URL url = new URL(parts[i]);
-            parts[i] = new StringBuilder("<a href=\"").append(url).append("\">").append(url).append("</a> ").toString();
+            parts[i] = new StringBuilder("<a target=\"_blank\" href=\"").append(url).append("\">").append(url).append("</a> ").toString();
         } catch (MalformedURLException e) {
             // Ignore
         }
