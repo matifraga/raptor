@@ -1,16 +1,44 @@
 package ar.edu.itba.paw.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
 
-    private final String id;
-    private final String username;
-    private final String email;
-    private final String firstName;
-    private final String lastName;
-    private final Boolean verified;
+	@Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_userid_seq") //TODO what to do with randomID 
+    @SequenceGenerator(sequenceName = "users_userid_seq", name = "users_userid_seq", allocationSize = 1) //idem 
+    @Column(name = "userID", length = 12, nullable = false)
+    private String id;
+	
+	@Column(name = "username", length = 100, nullable = false, unique = true)
+    private String username;
+
+	@Column(name = "email", length = 100, nullable = false)
+    private String email;
+
+	@Column(name = "firstName", length = 100, nullable = false)
+    private String firstName;
+
+	@Column(name = "lastName", length = 100, nullable = false)
+    private String lastName;
+
+	@Column(name = "verified", nullable = false)
+    private Boolean verified;
 
     @SuppressWarnings("unused")
-    private final String miniBio = null; //TODO use!
+    private String miniBio = null; //TODO use!
+    
+    /* package */ User() {
+        // Just for Hibernate.
+    }
 
     public User(String username, String email,
                 String firstName, String lastName, String id, Boolean verified) {

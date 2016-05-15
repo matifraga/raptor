@@ -7,6 +7,19 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = "tweets")
 public class Tweet {
 
 	private final static String HASHTAG_REGEX = "(?:\\s|\\A)[##]+([A-Za-z0-9-_]+)";
@@ -21,16 +34,69 @@ public class Tweet {
 	private final static String ERROR_LENGTH = "A tweet can not have more than " + MAX_LENGTH + " or 0 characters.";
 
 	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+	
+	/**
+	 * The @Basic annotation allows you to declare the fetching strategy for a property:
+	 * @Basic(fetch = FetchType.LAZY)
+	 * 
+	 * @OneToOne @ManyToOne @ManyToMany @OneToMany check cascade attribute
+	 * 
+	 * */
 
-	private final String msg;
-	private final String id;
-	private final User owner;
-	private final Timestamp timestamp;
-	private final int countRetweets;
-	private final int countFavorites;
-	private final String retweetID;
-	private final Boolean isRetweeted;
-	private final Boolean isFavorited;
+	@Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweets_tweetid_seq") //TODO what to do with randomID 
+    @SequenceGenerator(sequenceName = "tweets_tweetid_seq", name = "tweets_tweetid_seq", allocationSize = 1) //idem 
+    @Column(name = "tweetID", length = 12, nullable = false, unique = true)
+	private String id;
+
+	@Column(name = "message", length = 256, nullable = true)
+	private String msg;
+	
+	//@ManyToMany(...)
+	//@JoinColumn(name = "userID", table="users")
+	private User owner;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "timestamp", nullable = false)
+	private Timestamp timestamp;
+	
+	@Column(name = "countRetweets", nullable = false)
+	private int countRetweets;
+	
+	@Column(name = "countFavorites", nullable = false)
+	private int countFavorites;
+	
+	//TODO discuss in group, this could be a Tweet fetched lazy.
+	@Column(name = "retweetFrom", length = 12, nullable = true, unique = true)
+	private String retweetID;
+	
+	//TODO discuss in group
+	//differences between DB and model
+	
+	/*
+	 * @Transient es una annotation que se usa para campos del modelo que no se persisten.
+	 * */
+	
+	@Transient
+	private Boolean isRetweeted;
+	
+	@Transient
+	private Boolean isFavorited;
+
+	@Column(name = "retweetFrom", length = 12, nullable = true)
+	private String retweetFrom;
+	
+	@Column(name = "replyTo", length = 12, nullable = true)
+	private String replyTo;
+	
+	@Column(name = "replyFrom", length = 12, nullable = true)
+	private String replyFrom;
+	
+	//end differences
+	
+	 /* package */ Tweet() {
+	        // Just for Hibernate.
+	 }
 
 	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp,
 				 final int countRetweets, final int countFavorites, final String retweetID,
