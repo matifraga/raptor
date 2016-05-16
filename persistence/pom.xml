@@ -6,29 +6,31 @@
     <parent>
         <groupId>ar.edu.itba.paw</groupId>
         <artifactId>raptor</artifactId>
-        <version>1.1.0-RELEASE</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
     <groupId>ar.edu.itba.paw</groupId>
     <artifactId>persistence</artifactId>
-    <version>1.1.0-RELEASE</version>
+    <version>1.2.0-SNAPSHOT</version>
     <name>persistence</name>
     <url>http://maven.apache.org</url>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    
     <dependencies>
-         <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
         <dependency>
             <groupId>ar.edu.itba.paw</groupId>
             <artifactId>interfaces</artifactId>

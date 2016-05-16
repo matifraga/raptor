@@ -1,97 +1,95 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ar.edu.itba.paw</groupId>
         <artifactId>raptor</artifactId>
-        <version>1.1.0-RELEASE</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
     <groupId>ar.edu.itba.paw</groupId>
     <artifactId>webapp</artifactId>
-    <version>1.1.0-RELEASE</version>
+    <version>1.2.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>webapp</name>
     <url>http://maven.apache.org</url>
 
     <properties>
-      <javax.validation.validation-api.version>1.1.0.Final</javax.validation.validation-api.version>
-      <org.hibernate.hibernate-validator.version>5.1.2.Final</org.hibernate.hibernate-validator.version>
+        <javax.validation.validation-api.version>1.1.0.Final</javax.validation.validation-api.version>
+        <org.hibernate.hibernate-validator.version>5.1.2.Final</org.hibernate.hibernate-validator.version>
     </properties>
 
-  <dependencies>
-      <dependency>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-          <version>1.2</version>
-      </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-config</artifactId>
-    </dependency>
-    <dependency>
-    <groupId>javax.validation</groupId>
-    <artifactId>validation-api</artifactId>
-    <version>${javax.validation.validation-api.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-validator</artifactId>
-    <version>${org.hibernate.hibernate-validator.version}</version>
-</dependency>
-    <dependency>
-     <groupId>org.springframework</groupId>
-     <artifactId>spring-webmvc</artifactId>
-    </dependency>
-    <dependency>
-     <groupId>ar.edu.itba.paw</groupId>
-     <artifactId>interfaces</artifactId>
-     <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-     <groupId>ar.edu.itba.paw</groupId>
-     <artifactId>services</artifactId>
-     <version>${project.parent.version}</version>
-     <scope>runtime</scope>
-    </dependency>
-    <dependency>
-     <groupId>javax.servlet</groupId>
-     <artifactId>servlet-api</artifactId>
-    </dependency>
-    <dependency>
-     <groupId>javax.servlet</groupId>
-     <artifactId>jstl</artifactId>
-    </dependency>
-    <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-jdbc</artifactId>
-    </dependency>
-     <dependency>
-      <groupId>ar.edu.itba.paw</groupId>
-      <artifactId>persistence</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-     <groupId>org.hsqldb</groupId>
-     <artifactId>hsqldb</artifactId>
-    </dependency>
-    <dependency>
-    <groupId>org.postgresql</groupId>
-    <artifactId>postgresql</artifactId>
-    </dependency>
-  </dependencies>
-  <build>
-    <finalName>webapp</finalName>
-  </build>
- 
+    <dependencies>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.security</groupId>
+          <artifactId>spring-security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation.validation-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${org.hibernate.hibernate-validator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ar.edu.itba.paw</groupId>
+            <artifactId>interfaces</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ar.edu.itba.paw</groupId>
+            <artifactId>services</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ar.edu.itba.paw</groupId>
+            <artifactId>persistence</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>webapp</finalName>
+    </build>
 </project>
 
