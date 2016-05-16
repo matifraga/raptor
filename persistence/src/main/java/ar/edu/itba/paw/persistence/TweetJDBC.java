@@ -156,7 +156,6 @@ public class TweetJDBC implements TweetDAO {
         try {
             return jdbcTemplate.query(SQL_GET_TWEETS_WITH_HASHTAG + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, hashtag.toUpperCase());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return null;
         } //DataAccessException or SQLException
     }
