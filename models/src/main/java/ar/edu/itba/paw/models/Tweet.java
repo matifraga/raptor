@@ -9,9 +9,11 @@ import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,7 +43,6 @@ public class Tweet {
 	 * The @Basic annotation allows you to declare the fetching strategy for a property:
 	 * @Basic(fetch = FetchType.LAZY)
 	 * 
-	 * @OneToOne @ManyToOne @ManyToMany @OneToMany check cascade attribute
 	 * 
 	 * */
 
@@ -56,8 +57,7 @@ public class Tweet {
 	@Column(name = "message", length = 256, nullable = true)
 	private String msg;
 	
-	//@ManyToMany(...)
-	//@JoinColumn(name = "userID", table="users")
+	@ManyToOne(fetch = FetchType.EAGER , optional = false)
 	private User owner;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -69,26 +69,15 @@ public class Tweet {
 	
 	@Column(name = "countFavorites", nullable = false)
 	private int countFavorites;
-	
-	//TODO discuss in group, this could be a Tweet fetched lazy.
-	@Column(name = "retweetFrom", length = 12, nullable = true, unique = true)
-	private String retweetID;
-	
-	//TODO discuss in group
-	//differences between DB and model
-	
-	/*
-	 * @Transient es una annotation que se usa para campos del modelo que no se persisten.
-	 * */
-	
+
+	@ManyToOne(fetch = FetchType.LAZY , optional = true) 
+	private Tweet retweetFrom;
+
 	@Transient
 	private Boolean isRetweeted;
 	
 	@Transient
 	private Boolean isFavorited;
-
-	@Column(name = "retweetFrom", length = 12, nullable = true)
-	private String retweetFrom;
 	
 	@Column(name = "replyTo", length = 12, nullable = true)
 	private String replyTo;
@@ -96,14 +85,12 @@ public class Tweet {
 	@Column(name = "replyFrom", length = 12, nullable = true)
 	private String replyFrom;
 	
-	//end differences
-	
 	 /* package */ Tweet() {
 	        // Just for Hibernate.
 	 }
 
 	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp,
-				 final int countRetweets, final int countFavorites, final String retweetID,
+				 final int countRetweets, final int countFavorites, final Tweet retweetFrom,
 				 final Boolean isRetweeted, final Boolean isFavorited) throws IllegalArgumentException {
 		if (msg != null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
@@ -114,19 +101,19 @@ public class Tweet {
 		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = countRetweets;
 		this.countFavorites = countFavorites;
-		this.retweetID = retweetID;
+		this.retweetFrom = retweetFrom;
 		this.isFavorited = isFavorited;
 		this.isRetweeted = isRetweeted;
 	}
 
-	public Tweet(final String id, final User owner, final Timestamp timestamp, final String retweetID) {
+	public Tweet(final String id, final User owner, final Timestamp timestamp, final Tweet retweetFrom) {
 		this.msg = null;
 		this.id = id;
 		this.owner = owner;
 		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = 0;
 		this.countFavorites = 0;
-		this.retweetID = retweetID;
+		this.retweetFrom = retweetFrom;
 		this.isFavorited = false;
 		this.isRetweeted = false;
 	}
@@ -141,7 +128,7 @@ public class Tweet {
 		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = 0;
 		this.countFavorites = 0;
-		this.retweetID = null;
+		this.retweetFrom = null;
 		this.isFavorited = false;
 		this.isRetweeted = false;
 	}
@@ -219,7 +206,7 @@ public class Tweet {
 	}
 
 	public Boolean isRetweet() {
-		return !(retweetID == null);
+		return !(retweetFrom == null);
 	}
 
 	public String getMsg() {
@@ -246,8 +233,8 @@ public class Tweet {
 		return countFavorites;
 	}
 
-	public String getRetweet() {
-		return retweetID;
+	public Tweet getRetweet() {
+		return retweetFrom;
 	}
 
 	public Boolean getIsRetweeted() {
@@ -258,5 +245,54 @@ public class Tweet {
 		return isFavorited;
 	}
 
+	/*
+     * 
+     * Setters (just for hibernate)
+     * 
+     * */
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void setCountRetweets(int countRetweets) {
+		this.countRetweets = countRetweets;
+	}
+
+	public void setCountFavorites(int countFavorites) {
+		this.countFavorites = countFavorites;
+	}
+
+	public void setRetweetFrom(Tweet retweetFrom) {
+		this.retweetFrom = retweetFrom;
+	}
+
+	public void setIsRetweeted(Boolean isRetweeted) {
+		this.isRetweeted = isRetweeted;
+	}
+
+	public void setIsFavorited(Boolean isFavorited) {
+		this.isFavorited = isFavorited;
+	}
+
+	public void setReplyTo(String replyTo) {
+		this.replyTo = replyTo;
+	}
+
+	public void setReplyFrom(String replyFrom) {
+		this.replyFrom = replyFrom;
+	}
 }
+

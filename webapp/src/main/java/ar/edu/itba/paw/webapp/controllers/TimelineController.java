@@ -179,7 +179,7 @@ public class TimelineController extends TweetListController {
 			mav.addObject(USER, new UserViewModel(user, TIMELINE_PIC_SIZE));
 
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
-			List<TweetViewModel> tweetViewList = transform(tweetList);
+			List<TweetViewModel> tweetViewList = TweetViewModel.transform(tweetList);
 
 			Map<String, Integer> userInfo = new HashMap<>();
 			userInfo.put(FOLLOWERS_COUNT, followerService.countFollowers(user));

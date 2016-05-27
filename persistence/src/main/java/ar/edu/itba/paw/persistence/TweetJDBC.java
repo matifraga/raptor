@@ -1,8 +1,29 @@
 package ar.edu.itba.paw.persistence;
 
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
+import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITES;
+import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITE_ID;
+import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
+import static ar.edu.itba.paw.persistence.UserJDBC.EMAIL;
+import static ar.edu.itba.paw.persistence.UserJDBC.FIRST_NAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.LAST_NAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.USERNAME;
+import static ar.edu.itba.paw.persistence.UserJDBC.USERS;
+import static ar.edu.itba.paw.persistence.UserJDBC.VERIFIED;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
+import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,18 +31,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.*;
-
-import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITES;
-import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITE_ID;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
-import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
-import static ar.edu.itba.paw.persistence.UserJDBC.*;
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
 
 /**
  * Testing model
@@ -244,7 +255,7 @@ public class TweetJDBC implements TweetDAO {
         String id = randomTweetId();
         Timestamp thisMoment = new Timestamp(new Date().getTime());
         try {
-            ans = new Tweet(id, user, thisMoment, tweetID);
+            ans = new Tweet(id, user, thisMoment, null /*tweetID*/); //TODO momentary fix
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -310,7 +321,7 @@ public class TweetJDBC implements TweetDAO {
             Boolean isFavorited = (rs.getInt(IS_FAVORITED) == 1);
             return new Tweet(rs.getString(MESSAGE), rs.getString(TWEET_ID),
                     new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID), rs.getBoolean(VERIFIED)),
-                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), rs.getString(RETWEET_FROM), isRetweeted, isFavorited);
+                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), null /*rs.getString(RETWEET_FROM)*/, isRetweeted, isFavorited);	//TODO momentary fix
         }
 
     }
