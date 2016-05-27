@@ -72,10 +72,10 @@ public class FeedController extends TweetListController {
 		String active;
 
 		if (sessionUser == null) {
-			tweetList = transform(tweetService.globalFeed(TIMELINE_SIZE, page, null));
+			tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page, null));
 			active = GLOBAL;
 		} else {
-			tweetList = transform(tweetService.currentSessionFeed(sessionUser.getId(), TIMELINE_SIZE, page));
+			tweetList = TweetViewModel.transform(tweetService.currentSessionFeed(sessionUser.getId(), TIMELINE_SIZE, page));
 			active = CUSTOM;
 		}
 
@@ -112,7 +112,7 @@ public class FeedController extends TweetListController {
 		List<TweetViewModel> tweetList;
 		User sessionUser = sessionUser();
 
-		tweetList = transform(tweetService.globalFeed(TIMELINE_SIZE, page, sessionUser==null?null:sessionUser.getId()));
+		tweetList = TweetViewModel.transform(tweetService.globalFeed(TIMELINE_SIZE, page, sessionUser==null?null:sessionUser.getId()));
 		List<Map<String, Object>> header = createHeader(sessionUser, GLOBAL);
 		mav.addObject(HEADER, header);
 

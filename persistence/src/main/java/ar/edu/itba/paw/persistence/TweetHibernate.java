@@ -1,33 +1,31 @@
 //package ar.edu.itba.paw.persistence;
 //
-//
-//import ar.edu.itba.paw.models.Tweet;
-//import ar.edu.itba.paw.models.User;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.dao.DataAccessException;
-//import org.springframework.jdbc.core.JdbcTemplate;
-//import org.springframework.jdbc.core.RowMapper;
-//import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-//import org.springframework.stereotype.Repository;
-//
-//import javax.sql.DataSource;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.sql.Timestamp;
-//import java.util.*;
-//
 //import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITES;
 //import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITE_ID;
 //import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
 //import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
 //import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
-//import static ar.edu.itba.paw.persistence.UserJDBC.*;
+//import static ar.edu.itba.paw.persistence.UserJDBC.USERS;
 //
-///**
-// * Testing model
-// */
+//import java.sql.Timestamp;
+//import java.util.Date;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.Map;
+//import java.util.Random;
+//
+//import javax.persistence.EntityManager;
+//import javax.persistence.PersistenceContext;
+//import javax.persistence.TypedQuery;
+//
+//import org.springframework.dao.DataAccessException;
+//import org.springframework.stereotype.Repository;
+//
+//import ar.edu.itba.paw.models.Tweet;
+//import ar.edu.itba.paw.models.User;
+//
 //@Repository
-//public class TweetJDBC implements TweetDAO {
+//public class TweetHibernate implements TweetDAO {
 //
 //    /*package*/ static final String TWEET_ID = "tweetID";
 //    /*package*/ static final String MESSAGE = "message";
@@ -41,8 +39,6 @@
 //    /*package*/ static final String COUNT_RETWEETS = "countRetweets";
 //    /*package*/ static final int TWEET_ID_LENGTH = 12;
 //
-//    private static final String IS_RETWEETED = "isRetweeted";
-//    private static final String IS_FAVORITED = "isFavorited";
 //    private static final String SQL_SELECT_FROM = "select distinct tweets.tweetID, tweets.message, users2.userID, tweets.timestamp, tweets.retweetFrom, "
 //            + "tweets.countRetweets, tweets.countFavorites, users2.username, users2.email, users2.firstname, users2.lastname, users2.verified, "
 //            + "max((CASE when favoriteID = users.userID and favoriteID =? and tweets.tweetID = favorites.tweetID then 1 else 0 end)) as isFavorited, "
@@ -50,19 +46,19 @@
 //            + "from tweets, (users left outer join favorites on 1=1) left outer join followers on 1=1, tweets as tweets2, users as users2";
 //    
 //    private static final String SQL_GROUP_BY = " group by tweets.tweetID, users2.userID order by tweets.timestamp desc";
-//    private static final String SQL_JOIN_TWEET_USER2 = " where users2.userID = tweets.userID";
-//    private static final String SQL_GET_TWEETS = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and users2.userID = ?" + SQL_GROUP_BY;
+//    private static final String JPA_JOIN_TWEET_USER2 = "from User as u, Tweet as t where u.userID = t.userID";
+//    private static final String SQL_GET_TWEETS = SQL_SELECT_FROM + JPA_JOIN_TWEET_USER2 + " and users2.userID = ?" + SQL_GROUP_BY;
 //
-//    private static final String SQL_LOGGED_IN_FEED = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and (users2.userID in (select followingID from followers where followerID = ?) or users2.userID = ? )" + SQL_GROUP_BY;
+//    private static final String SQL_LOGGED_IN_FEED = SQL_SELECT_FROM + JPA_JOIN_TWEET_USER2 + " and (users2.userID in (select followingID from followers where followerID = ?) or users2.userID = ? )" + SQL_GROUP_BY;
 //
-//    private static final String SQL_GET_TWEETS_WITH_HASHTAG = SQL_SELECT_FROM + ", hashtags " + SQL_JOIN_TWEET_USER2 + " and " + HASHTAGS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + " and UPPER(" + HASHTAG + ") = ?" + SQL_GROUP_BY;
+//    private static final String SQL_GET_TWEETS_WITH_HASHTAG = SQL_SELECT_FROM + ", hashtags " + JPA_JOIN_TWEET_USER2 + " and " + HASHTAGS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID + " and UPPER(" + HASHTAG + ") = ?" + SQL_GROUP_BY;
 //
-//    private static final String SQL_GET_TWEETS_WITH_MENTION = SQL_SELECT_FROM + ", mentions " + SQL_JOIN_TWEET_USER2 + " and " + MENTIONS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID +
+//    private static final String SQL_GET_TWEETS_WITH_MENTION = SQL_SELECT_FROM + ", mentions " + JPA_JOIN_TWEET_USER2 + " and " + MENTIONS + "." + TWEET_ID + " = " + TWEETS + "." + TWEET_ID +
 //            " AND " + MENTIONS + "." + USER_ID + " = ?" + SQL_GROUP_BY;
 //
-//    private static final String SQL_GET_TWEETS_CONTAINING = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " AND UPPER(" + TWEETS + "." + MESSAGE + ") LIKE ('%' || ? || '%')" + SQL_GROUP_BY;
+//    private static final String SQL_GET_TWEETS_CONTAINING = SQL_SELECT_FROM + JPA_JOIN_TWEET_USER2 + " AND UPPER(" + TWEETS + "." + MESSAGE + ") LIKE ('%' || ? || '%')" + SQL_GROUP_BY;
 //
-//    private static final String SQL_GET_GLOBAL_FEED = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + SQL_GROUP_BY;
+//    private static final String SQL_GET_GLOBAL_FEED = SQL_SELECT_FROM + JPA_JOIN_TWEET_USER2 + SQL_GROUP_BY;
 //
 //    private static final String SQL_COUNT_TWEETS = "SELECT COUNT(aux) FROM (" + "select * from " + TWEETS + ", "
 //            + USERS + " where " + USERS + "." + USER_ID + " = " + TWEETS + "." + USER_ID +
@@ -73,7 +69,7 @@
 //    private static final String SQL_INCREASE_RETWEETS = "UPDATE " + TWEETS + " SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "+1 WHERE " + TWEET_ID + "=?";
 //    private static final String SQL_DECREASE_RETWEETS = "UPDATE " + TWEETS + " SET " + COUNT_RETWEETS + " = " + COUNT_RETWEETS + "-1 WHERE " + TWEET_ID + "=?";
 //
-//    private static final String SQL_GET_BY_ID = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " AND " + TWEETS + "." + TWEET_ID + " = ?" + SQL_GROUP_BY;
+//    private static final String SQL_GET_BY_ID = SQL_SELECT_FROM + JPA_JOIN_TWEET_USER2 + " AND " + TWEETS + "." + TWEET_ID + " = ?" + SQL_GROUP_BY;
 //
 //
 //    private static final String SQL_IS_RETWEETED = "SELECT EXISTS( SELECT * FROM " + TWEETS + " WHERE " + RETWEET_FROM
@@ -82,73 +78,26 @@
 //    private static final String SQL_UNRETWEET = "DELETE FROM " + TWEETS + " WHERE " + RETWEET_FROM + " = ? AND "
 //            + USER_ID + " = ?";
 //
-//    private static final String SQL_GET_FAVORITES = SQL_SELECT_FROM + SQL_JOIN_TWEET_USER2 + " and " + FAVORITE_ID + " = ?" + " AND " + TWEETS + "." + TWEET_ID + " = " + FAVORITES + "." + TWEET_ID + SQL_GROUP_BY;
+//    private static final String SQL_GET_FAVORITES = SQL_SELECT_FROM + JPA_JOIN_TWEET_USER2 + " and " + FAVORITE_ID + " = ?" + " AND " + TWEETS + "." + TWEET_ID + " = " + FAVORITES + "." + TWEET_ID + SQL_GROUP_BY;
 //
-//    private final JdbcTemplate jdbcTemplate;
-//    private final SimpleJdbcInsert jdbcInsert;
-//    private final TweetRowMapper tweetRowMapper;
-//
-//    @Autowired
-//    public TweetJDBC(final DataSource ds) {
-//        tweetRowMapper = new TweetRowMapper();
-//        jdbcTemplate = new JdbcTemplate(ds);
-//        jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(TWEETS);
-//    }
-//
-//    @Override
-//    public Tweet create(final String msg, final User owner) {
-//        final Map<String, Object> args = new HashMap<>();
-//        Tweet ans;
-//        String id = randomTweetId();
-//        Timestamp thisMoment = new Timestamp(new Date().getTime());
-//        try {
-//            ans = new Tweet(msg, id, owner, thisMoment);
-//        } catch (IllegalArgumentException e) {
-//            return null;
-//        }
-//        args.put(TWEET_ID, id);
-//        args.put(MESSAGE, msg);
-//        args.put(USER_ID, owner.getId());
-//        args.put(TIMESTAMP, thisMoment);
-//        args.put(COUNT_FAVORITES, 0);
-//        args.put(COUNT_RETWEETS, 0);
-//        args.put(REPLY_FROM, null);
-//        args.put(REPLY_TO, null);
-//        args.put(RETWEET_FROM, null);
-//        try {
-//            jdbcInsert.execute(args);
-//        } catch (DataAccessException e) {
-//        	return null;
-//        }
-//        return ans;
-//    }
+//	
+//	@PersistenceContext
+//	private EntityManager em;
+//	
+//	@Override
+//	public Tweet create(final String msg, final User owner) {
+//		final Tweet t = new Tweet(msg,randomUserId(),owner,new Timestamp(new Date().getTime()),0,0,null,false,false);
+//		em.persist(t);
+//		return t;
+//	}
 //
 //    @Override
 //    public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { 
-//        try {
-//            return jdbcTemplate.query(SQL_GET_TWEETS + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
-//        } catch (Exception e) {
-//            return null;
-//        } //DataAccessException or SQLException
-//    }
-//
-//    /**
-//     * Generates random tweet ID.
-//     *
-//     * @return Tweet ID.
-//     */
-//    private String randomTweetId() {
-//        char[] characterArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-//        char[] id = new char[TWEET_ID_LENGTH];
-//        Random rand = new Random();
-//
-//        int i = TWEET_ID_LENGTH - 1;
-//        while (i >= 0) {
-//            id[i] = characterArray[rand.nextInt(characterArray.length)];
-//            i--;
-//        }
-//
-//        return new String(id);
+//    	final TypedQuery<Tweet> query = em.createQuery("from User as u, Tweet as t where u.userID = t.userID and u.userID = :user group by t.tweetID, u.userID order by tweets.timestamp desc", Tweet.class);
+//    	query.setParameter("userID", id);
+//    	query.setParameter("sessionID", sessionID);
+//    	final List<Tweet> list = query.getResultList();
+//    	return list;
 //    }
 //
 //    @Override
@@ -302,16 +251,25 @@
 //        } //SQLException or DataAccessException
 //    }
 //
-//    private static class TweetRowMapper implements RowMapper<Tweet> {
+//	/**
+//	 * Sketchy method needed to be replaced
+//	 *
+//	 * @return a "random" userId
+//	 */
 //
-//        @Override
-//        public Tweet mapRow(ResultSet rs, int rowNum) throws SQLException {
-//            Boolean isRetweeted = (rs.getInt(IS_RETWEETED) == 1);
-//            Boolean isFavorited = (rs.getInt(IS_FAVORITED) == 1);
-//            return new Tweet(rs.getString(MESSAGE), rs.getString(TWEET_ID),
-//                    new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID), rs.getBoolean(VERIFIED)),
-//                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), rs.getString(RETWEET_FROM), isRetweeted, isFavorited);
-//        }
+//	private String randomUserId() {
+//		char[] characterArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+//				.toCharArray();
+//		char[] userId = new char[USER_ID_LENGTH];
+//		Random rand = new Random();
 //
-//    }
+//		int i = USER_ID_LENGTH - 1;
+//		while (i >= 0) {
+//			userId[i] = characterArray[rand.nextInt(characterArray.length)];
+//			i--;
+//		}
+//
+//		return new String(userId);
+//	}
+//
 //}

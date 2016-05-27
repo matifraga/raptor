@@ -1,10 +1,14 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -33,7 +37,12 @@ public class User {
 	@Column(name = "verified", nullable = false)
     private Boolean verified;
 
-    @SuppressWarnings("unused")
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<User> followers;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<User> followings;
+	
     private String miniBio = null; //TODO use!
     
     /* package */ User() {
@@ -101,4 +110,61 @@ public class User {
     public Boolean getVerified() {
         return verified;
     }
+    
+	public Set<User> getFollowers() {
+		return followers;
+	}
+
+	public Set<User> getFollowings() {
+		return followings;
+	}
+
+	public String getMiniBio() {
+		return miniBio;
+	}    
+    
+    /*
+     * 
+     * Setters (just for hibernate)
+     * 
+     * */
+
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setFollowers(Set<User> followers) {
+		this.followers = followers;
+	}
+
+	public void setFollowings(Set<User> followings) {
+		this.followings = followings;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
+
+	public void setMiniBio(String miniBio) {
+		this.miniBio = miniBio;
+	}
+    
 }
