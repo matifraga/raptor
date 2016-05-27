@@ -7,14 +7,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "users")
 public class User {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_userid_seq") //TODO what to do with randomID 
-    @SequenceGenerator(sequenceName = "users_userid_seq", name = "users_userid_seq", allocationSize = 1) //idem 
+//  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweets_tweetid_seq") //TODO what to do with randomID 
+//  @SequenceGenerator(sequenceName = "tweets_tweetid_seq", name = "tweets_tweetid_seq", allocationSize = 1) //idem 
+	@GenericGenerator(name = "random_id", strategy = "idgenerators.RandomIdGenerator")
+    @GeneratedValue(generator = "random_id")
     @Column(name = "userID", length = 12, nullable = false)
     private String id;
 	

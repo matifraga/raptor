@@ -18,6 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "tweets")
 public class Tweet {
@@ -44,8 +46,10 @@ public class Tweet {
 	 * */
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweets_tweetid_seq") //TODO what to do with randomID 
-    @SequenceGenerator(sequenceName = "tweets_tweetid_seq", name = "tweets_tweetid_seq", allocationSize = 1) //idem 
+	@GenericGenerator(name = "random_id", strategy = "idgenerators.RandomIdGenerator")
+    @GeneratedValue(generator = "random_id")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweets_tweetid_seq") //TODO what to do with randomID 
+//    @SequenceGenerator(sequenceName = "tweets_tweetid_seq", name = "tweets_tweetid_seq", allocationSize = 1) //idem 
     @Column(name = "tweetID", length = 12, nullable = false, unique = true)
 	private String id;
 
