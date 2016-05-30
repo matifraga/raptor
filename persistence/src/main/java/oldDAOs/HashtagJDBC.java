@@ -76,10 +76,8 @@ public class HashtagJDBC implements HashtagDAO {
 
         try {
             Timestamp timestamp = new Timestamp(new Date().getTime());
-
             return jdbcTemplate.query(SQL_GET_TRENDINGS, hashtagRowMapper, timestamp, count); // new Timestamp(new Date().getTime()),
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return null;
         } //DataAccessException or SQLException
     }

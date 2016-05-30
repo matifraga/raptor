@@ -77,8 +77,6 @@ public class UserJDBCTest {
                 LASTNAME);
         User other = userJDBC.getByUsername(USERNAME2);
 
-        System.out.println(u);
-        System.out.println(other);
 
         assert (u.getUsername().equals(USERNAME2));
         assert (u.getEmail().equals(EMAIL));
