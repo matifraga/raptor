@@ -75,10 +75,12 @@ public class SearchController extends TweetListController {
 						mav.addObject(PAGE_INFO, pageInfo);
 						break;
         	case '@':   mav.addObject(SEARCH_TYPE, USER_SEARCH);
-        				List<UserViewModel> users = UserViewModel.transform(userService.searchUsers(text.substring(1),USER_RESULTS_PER_PAGE,1), SEARCH_PIC_SIZE);
+        				List<UserViewModel> users = UserViewModel.transform(userService.searchUsers(text.substring(1),USER_RESULTS_PER_PAGE, page), SEARCH_PIC_SIZE);
         				mav.addObject(NUMBER_OF_RESULTS, users.size());
-        				mav.addObject(RESULT, users);
-        				break;
+						mav.addObject(RESULT, users);
+						pageInfo = buildPageInfo(page, USER_RESULTS_PER_PAGE, users.size(), baseURL);
+						mav.addObject(PAGE_INFO, pageInfo);
+						break;
         	default:	mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
 						List<TweetViewModel> tweets = transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE, page, (sessionUser==null)?null:sessionUser.getId()));
 						mav.addObject(NUMBER_OF_RESULTS, tweets.size());

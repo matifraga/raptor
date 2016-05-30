@@ -12,28 +12,33 @@
             </li>
             <li style="font-size: 1.2em;"><a href="./user/${requestScope.user.username}">${requestScope.user.firstName} ${requestScope.user.lastName}</a></li>
             <li><a href="./user/${requestScope.user.username}">@${requestScope.user.username} <c:if test="${requestScope.user.verified == true}"><span class="glyphicon glyphicon-ok-sign" /></c:if></a></li>
-            <c:choose>
-                <c:when test="${requestScope.following == 0}">
-                    <form action="user/${requestScope.user.username}/follow" method="post">
-                        <li><button class="btn btn-raptor" style="margin-top: 10px;"><spring:message code="profileBox.follow"/></button></li>
-                    </form>
-                </c:when>
-                <c:when test="${requestScope.following == 1}">
-                    <form action="user/${requestScope.user.username}/unfollow" method="post">
-                        <li><button class="btn btn-raptor" style="margin-top: 10px;"><spring:message code="profileBox.unfollow"/></button></li>
-                    </form>
-                </c:when>
-                <c:otherwise></c:otherwise>
-            </c:choose>
+            <c:if test="${sessionUser != null && sessionUser.username != requestScope.user.username}">
+                <c:choose>
+                    <c:when test="${requestScope.user.following == false}">
+                        <form action="user/${requestScope.user.username}/follow" method="post">
+                            <li><button class="btn btn-raptor" style="margin-top: 10px;"><spring:message code="profileBox.follow"/></button></li>
+                        </form>
+                    </c:when>
+                    <c:otherwise>
+                        <form action="user/${requestScope.user.username}/unfollow" method="post">
+                            <li><button class="btn btn-raptor" style="margin-top: 10px;"><spring:message code="profileBox.unfollow"/></button></li>
+                        </form>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
         </ul>
     </div>
-    <c:if test="${requestScope.userInfo != null}">
     <div class="panel panel-raptor panel-profile-stats">
-        <a><span class="number">${requestScope.userInfo["followers_count"]}</span><br/><spring:message code="profileBox.followers"/></a>
-        <a><span class="number">${requestScope.userInfo["tweets_count"]}</span><br/><spring:message code="profileBox.tweets"/></a>
-        <a><span class="number">${requestScope.userInfo["following_count"]}</span><br/><spring:message code="profileBox.following"/></a>
+        <c:if test="${requestScope.user.followersCount != null}">
+            <a><span class="number">${requestScope.user.followingCount}</span><br/><spring:message code="profileBox.followers"/></a>
+        </c:if>
+        <c:if test="${requestScope.user.tweetsCount != null}">
+            <a><span class="number">${requestScope.user.tweetsCount}</span><br/><spring:message code="profileBox.tweets"/></a>
+        </c:if>
+        <c:if test="${requestScope.user.followingCount != null}">
+            <a><span class="number">${requestScope.user.followingCount}</span><br/><spring:message code="profileBox.following"/></a>
+        </c:if>
     </div>
-    </c:if>
     <script>$(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })</script>

@@ -20,10 +20,10 @@
     <c:choose>
         <c:when test="${empty requestScope.tweetList}">
             <div class="panel panel-rawr" style="padding-top: 15px;">
-                <div class="row">
-                    <div class="col-xs-8 col-sm-10 col-md-10">
-                        <span><spring:message code="tweetList.noTweets"/></span>
-                    </div>
+                <div class="row" style="margin-bottom: 50px;">
+                    <spring:message var="searchResultsError" code="tweetList.noTweets"/>
+                    <c:set var="errorMessage" value= '${searchResultsError}' scope="request"/>
+                    <jsp:include page="errorPage.jsp"/>
                 </div>
             </div>
         </c:when>
@@ -45,11 +45,11 @@
                         <div class="col-xs-8 col-sm-10 col-md-10">
                             <div class="rawr-top-bar">
                                 <a href="user/${tweet.owner.username}">${tweet.owner.firstName} ${tweet.owner.lastName}</></a>
-                                <a href="user/${tweet.owner.username}" style="color: #9B9B9B;">@${tweet.owner.username} <c:if test="${tweet.owner.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if></a>
-                                <span style="color: #9B9B9B" class="pull-right hidden-xs">${tweet.timestamp}</span>
+                                <a href="user/${tweet.owner.username}" style="color: #9DAFBB;">@${tweet.owner.username} <c:if test="${tweet.owner.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if></a>
+                                <span style="color: #9DAFBB" class="pull-right hidden-xs">${tweet.timestamp}</span>
                             </div>
                                 <span class="message" style="font-size:1.2em;">${tweet.msg}</span>
-                                <span style="color: #9B9B9B" class="hidden-sm hidden-md hidden-lg"><br/><br/>${tweet.timestamp}</span>
+                                <span style="color: #9DAFBB" class="hidden-sm hidden-md hidden-lg"><br/><br/>${tweet.timestamp}</span>
                             <c:if test="${sessionUser != null}">
                                 <div class="rawr-action-bar">
                                     <c:if test="${tweet.owner.id != sessionUser.id}">
@@ -72,20 +72,7 @@
             </c:forEach>
         </c:otherwise>
     </c:choose>
-    <c:if test="${pageInfo != null}">
-        <div class="panel panel-rawr no-padding">
-            <div class="page-buttons right-separator">
-                <c:if test="${pageInfo['hasPrevious'] == true}">
-                    <a href="${pageInfo['previous']['link']}"><spring:message code="${pageInfo['previous']['titleCode']}"/></a>
-                </c:if>
-            </div>
-            <div class="page-buttons">
-                <c:if test="${pageInfo['hasNext'] == true}">
-                    <a href="${pageInfo['next']['link']}"><spring:message code="${pageInfo['next']['titleCode']}"/></a>
-                </c:if>
-            </div>
-        </div>
-    </c:if>
+    <jsp:include page="pageControls.jsp"></jsp:include>
 </div>
 <script>
     function favorite(tweetId) {

@@ -17,15 +17,10 @@
 				<jsp:include page="fragments/tweetList.jsp"/>
 			</c:when>
 			<c:when test="${searchType=='userSearch'}">
-				<h2><spring:message var = "searchResultNumber" code="searchResults.number" arguments="${number};${searchText}" htmlEscape="false" argumentSeparator=";"/></h2>
-				<div class="row">
-					<c:forEach items="${resultList}" var="user">
-						<c:set var="user" value="${user}" scope="request"/>
-						<div class="col-md-3">
-							<jsp:include page="fragments/profileBox.jsp"/>
-						</div>
-					</c:forEach>
-				</div>
+				<c:set var="userList" value="${resultList}" scope="request"/>
+				<spring:message var = "searchResultNumber" code="searchResults.number" arguments="${number};${searchText}" htmlEscape="false" argumentSeparator=";"/>
+				<c:set var="userListTitle" value='${searchResultNumber}' scope="request"/>
+				<jsp:include page="fragments/userList.jsp"/>
 			</c:when>
 			<c:otherwise>
 				<spring:message var="searchResultsError" code="searchResults.error"/>

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import ar.edu.itba.paw.models.Tweet;
+import org.apache.commons.validator.routines.UrlValidator;
 
 public class TweetViewModel {
 	
@@ -93,14 +94,21 @@ public class TweetViewModel {
 
     public Boolean getRetweeted() { return isRetweeted; }
 
+    private String parseNewLines(String s) {
+        return s.replaceAll("(\r\n|\n|\r)", "<br />");
+    }
+
     private String parseURL(String s) {
         String [] parts = s.split("\\s+");
 
-        for(int i=0; i<parts.length; i++) try {
-            URL url = new URL(parts[i]);
-            parts[i] = new StringBuilder("<a href=\"").append(url).append("\">").append(url).append("</a> ").toString();
-        } catch (MalformedURLException e) {
-            // Ignore
+        String[] schemes = {"http","https"};
+        UrlValidator urlValidator = new UrlValidator(schemes);
+
+        for(int i=0; i<parts.length; i++) {
+            String url = parts[i];
+            if(urlValidator.isValid(url)) {
+                parts[i] = new StringBuilder("<a href=\"").append(url).append("\" target=\"_blank\">").append(url).append("</a> ").toString();
+            }
         }
 
         return Arrays.stream(parts).collect(Collectors.joining(" "));
@@ -138,6 +146,6 @@ public class TweetViewModel {
     }
 
     private String parseToHTMLString(String message) {
-        return (parseUsers(parseHashtags(parseURL(message))));
+        return (parseUsers(parseHashtags(parseURL(parseNewLines(message)))));
     }
 }

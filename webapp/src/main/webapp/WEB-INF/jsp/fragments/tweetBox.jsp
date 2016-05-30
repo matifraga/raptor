@@ -8,7 +8,7 @@
         <p>${request.contextPath}</p>
         <form class="form-group" action="actions/post" method="post">
         	<spring:message code="tweetBox.placeholder" var="tweet_placeholder"/>
-            <textarea placeholder='${tweet_placeholder}' name="message" class="form-control" style="margin-bottom:10px;"></textarea>
+            <textarea placeholder='${tweet_placeholder}' name="message" class="form-control tweet-box" style="margin-bottom:10px;"></textarea>
             <button type="submit" class="btn btn-raptor pull-right">Rawr</button>
             <br/>
         </form>

@@ -176,8 +176,6 @@ public class TimelineController extends TweetListController {
 		final ModelAndView mav = new ModelAndView(TIMELINE);
 
 		if(user != null){
-			mav.addObject(USER, new UserViewModel(user, TIMELINE_PIC_SIZE));
-
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
 			List<TweetViewModel> tweetViewList = transform(tweetList);
 
@@ -186,17 +184,18 @@ public class TimelineController extends TweetListController {
 			userInfo.put(FOLLOWING_COUNT, followerService.countFollowing(user));
 			userInfo.put(TWEETS_COUNT, tweetService.countTweets(user));
 
+			UserViewModel uvm = new UserViewModel(user, TIMELINE_PIC_SIZE);
+			uvm.setFollowersCount(followerService.countFollowers(user));
+			uvm.setFollowingCount(followerService.countFollowing(user));
+			uvm.setTweetsCount(tweetService.countTweets(user));
+			if (sessionUser() != null) {
+				uvm.setFollowing(followerService.isFollower(sessionUser(), user));
+			}
+			mav.addObject(USER, uvm);
+
 			mav.addObject(TWEET_LIST, tweetViewList);
 			mav.addObject(TRENDS_LIST, trendsList);
 			mav.addObject(USER_INFO, userInfo);
-
-			if(sessionUser() == null) {
-				mav.addObject(FOLLOWING, -1);
-			} else if(sessionUser().getUsername().equals(user.getUsername())) {
-				mav.addObject(FOLLOWING, 2);
-			} else {
-				mav.addObject(FOLLOWING, (followerService.isFollower(sessionUser(), user)? 1 : 0));
-			}
 
 			List<Map<String, Object>> header = createHeader(user, headerType);
 			mav.addObject(HEADER, header);
