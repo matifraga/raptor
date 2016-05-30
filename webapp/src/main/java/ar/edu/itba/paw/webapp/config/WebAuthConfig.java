@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
 @EnableWebSecurity
@@ -39,8 +38,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationProvider authProv;
 
-	@Autowired
-	private WebApplicationContext context;
+//	@Autowired
+//	private WebApplicationContext context;
 
 	@Autowired
 	private AuthenticationFailureHandler failureHandler;

@@ -13,17 +13,15 @@ import org.hibernate.annotations.GenericGenerator;
 public class User {
 
 	@Id
-//  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweets_tweetid_seq") //TODO what to do with randomID 
-//  @SequenceGenerator(sequenceName = "tweets_tweetid_seq", name = "tweets_tweetid_seq", allocationSize = 1) //idem 
 	@GenericGenerator(name = "random_id", strategy = "idgenerators.RandomIdGenerator")
     @GeneratedValue(generator = "random_id")
     @Column(name = "userID", length = 12, nullable = false)
     private String id;
 	
-	@Column(name = "username", nullable = false, length = 100)
+	@Column(name = "username", nullable = false, length = 100, unique = true)
     private String username;
 	
-	@Column(name = "email", nullable = false, length = 100)
+	@Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;
 	
 	@Column(name = "firstName", nullable = false, length = 100)

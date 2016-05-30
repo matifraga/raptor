@@ -245,7 +245,7 @@ public class TweetJDBC implements TweetDAO {
         String id = randomTweetId();
         Timestamp thisMoment = new Timestamp(new Date().getTime());
         try {
-            ans = new Tweet(id, user, thisMoment, tweetID);
+            ans = new Tweet(id, user, thisMoment, /*TODO temporary fix*/ null); 
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -311,7 +311,7 @@ public class TweetJDBC implements TweetDAO {
             Boolean isFavorited = (rs.getInt(IS_FAVORITED) == 1);
             return new Tweet(rs.getString(MESSAGE), rs.getString(TWEET_ID),
                     new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID), rs.getBoolean(VERIFIED)),
-                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), rs.getString(RETWEET_FROM), isRetweeted, isFavorited);
+                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), /*TODO temporary fix rs.getString(RETWEET_FROM)*/ null, isRetweeted, isFavorited);
         }
 
     }

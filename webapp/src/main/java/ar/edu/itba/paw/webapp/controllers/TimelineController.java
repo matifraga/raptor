@@ -1,12 +1,9 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.FollowerService;
-import ar.edu.itba.paw.services.HashtagService;
-import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
-import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.FollowerService;
+import ar.edu.itba.paw.services.HashtagService;
+import ar.edu.itba.paw.services.UserService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 @Controller
 @RequestMapping(value="/user")
@@ -53,7 +53,6 @@ public class TimelineController extends TweetListController {
 	private static final String USER_INFO = "userInfo";
 	private static final String HEADER = "header";
 	private static final String PAGE_INFO = "pageInfo";
-	private static final String FOLLOWING = "following";
 	private final static String REDIRECT = "redirect:";
 	
 	private static final int TRENDING_TOPIC_LIMIT = 5;
@@ -177,7 +176,7 @@ public class TimelineController extends TweetListController {
 
 		if(user != null){
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
-			List<TweetViewModel> tweetViewList = transform(tweetList);
+			List<TweetViewModel> tweetViewList = TweetViewModel.transform(tweetList);
 
 			Map<String, Integer> userInfo = new HashMap<>();
 			userInfo.put(FOLLOWERS_COUNT, followerService.countFollowers(user));
