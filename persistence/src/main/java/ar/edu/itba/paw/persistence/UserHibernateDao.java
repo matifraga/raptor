@@ -6,9 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.stereotype.Repository;
+
 import ar.edu.itba.paw.models.User;
 
-public class UserHibernateDao implements UserDAO{
+/**
+ * Testing model
+ */
+@Repository
+public class UserHibernateDAO implements UserDAO{
 
 	@PersistenceContext
 	private EntityManager em;
@@ -47,13 +53,13 @@ public class UserHibernateDao implements UserDAO{
 	}
 
 	@Override
-	public List<User> getFollowers(final String userId, final int resultsPerPage, final int page) {
+	public List<User> getFollowers(final User user, final int resultsPerPage, final int page) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<User> getFollowing(final String userId, final int resultsPerPage, final int page) {
+	public List<User> getFollowing(final User user, final int resultsPerPage, final int page) {
 		// TODO Auto-generated method stub
 		return null;
 	}

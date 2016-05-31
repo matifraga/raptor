@@ -31,9 +31,6 @@ public abstract class TweetListController extends RaptorController {
         if (page > 1) {
             hasPrevious = Boolean.TRUE;
             Map<String, Object> previous = new HashMap<String, Object>();
-//            if (page == 1) {
-//
-//            }
             previous.put(LINK, TweetListController.addParameter(pageBase, PAGE, Integer.toString(page-1)));
             previous.put(TITLE_CODE, "tweetList.previousTitle");
             pageInfo.put(PREVIOUS, previous);

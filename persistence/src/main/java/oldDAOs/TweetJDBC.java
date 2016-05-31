@@ -1,8 +1,10 @@
-package ar.edu.itba.paw.persistence;
+package oldDAOs;
 
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.TweetDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,12 +18,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 
-import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITES;
-import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITE_ID;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
-import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
-import static ar.edu.itba.paw.persistence.UserJDBC.*;
+import static oldDAOs.FavoriteJDBC.FAVORITES;
+import static oldDAOs.FavoriteJDBC.FAVORITE_ID;
+import static oldDAOs.HashtagJDBC.HASHTAG;
+import static oldDAOs.HashtagJDBC.HASHTAGS;
+import static oldDAOs.MentionJDBC.MENTIONS;
+import static oldDAOs.UserJDBC.*;
 
 /**
  * Testing model
@@ -124,7 +126,7 @@ public class TweetJDBC implements TweetDAO {
     }
 
     @Override
-    public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { 
+    public List<Tweet> getTweetsForUser(final String id, final int resultsPerPage, final int page, final String sessionID) { 
         try {
             return jdbcTemplate.query(SQL_GET_TWEETS + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
         } catch (Exception e) {
@@ -263,7 +265,7 @@ public class TweetJDBC implements TweetDAO {
     }
 
     @Override
-    public Tweet getTweet(final String tweetID, final String sessionID) {
+    public Tweet getTweetById(final String tweetID, final String sessionID) {
         if (tweetID == null)
             return null;
         try {

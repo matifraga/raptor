@@ -60,7 +60,7 @@ public class Tweet {
 	private int countFavorites;
 	
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
-	@JoinColumn(name = "tweetID", foreignKey = @ForeignKey(foreignKeyDefinition = "ON UPDATE RESTRICT ON DELETE CASCADE"))
+	@JoinColumn(name = "retweetFrom", foreignKey = @ForeignKey(foreignKeyDefinition = "ON UPDATE RESTRICT ON DELETE CASCADE"))
 	private Tweet retweet;
 	
 	@Transient
@@ -73,14 +73,13 @@ public class Tweet {
 		
 	}
 	
-	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp,
+	public Tweet(final String msg, final User owner, final Timestamp timestamp,
 				 final int countRetweets, final int countFavorites, final Tweet retweet,
 				 final Boolean isRetweeted, final Boolean isFavorited) throws IllegalArgumentException {
 		if (msg != null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
 		}
 		this.msg = msg;
-		this.id = id;
 		this.owner = owner;
 		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = countRetweets;
@@ -90,9 +89,8 @@ public class Tweet {
 		this.isRetweeted = isRetweeted;
 	}
 
-	public Tweet(final String id, final User owner, final Timestamp timestamp, final Tweet retweet) {
+	public Tweet(final User owner, final Timestamp timestamp, final Tweet retweet) {
 		this.msg = null;
-		this.id = id;
 		this.owner = owner;
 		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = 0;
@@ -102,12 +100,11 @@ public class Tweet {
 		this.isRetweeted = false;
 	}
 
-	public Tweet(final String msg, final String id, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
+	public Tweet(final String msg, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
 		if (msg != null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
 		}
 		this.msg = msg;
-		this.id = id;
 		this.owner = owner;
 		this.timestamp = new Timestamp(timestamp.getTime());
 		this.countRetweets = 0;

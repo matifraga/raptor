@@ -34,11 +34,10 @@ public class MentionServiceImpl implements MentionService {
     @Override
     public void register(Tweet tweet) {
         Set<String> mentions = tweet.getMentions();
-        String id = tweet.getId();
         for (String ment : mentions) {
             User user = userDAO.getByUsername(ment);
             if (user != null)
-                mentionDAO.create(user.getId(), id);
+                mentionDAO.create(user, tweet);
         }
     }
 

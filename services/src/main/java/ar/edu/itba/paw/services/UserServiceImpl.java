@@ -1,13 +1,13 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.UserDAO;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.UserDAO;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,8 +60,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
     @Override
-    public List<User> getFollowers(final String userId, final int resultsPerPage, final int page) {
-        List<User> ans = userDao.getFollowers(userId, resultsPerPage, page);
+    public List<User> getFollowers(final User user, final int resultsPerPage, final int page) {
+        List<User> ans = userDao.getFollowers(user, resultsPerPage, page);
         if (ans == null) {
             //TODO handle null
         }
@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
     @Override
-    public List<User> getFollowing(final String userId, final int resultsPerPage, final int page) {
-        List<User> ans = userDao.getFollowing(userId, resultsPerPage, page);
+    public List<User> getFollowing(final User user, final int resultsPerPage, final int page) {
+        List<User> ans = userDao.getFollowing(user, resultsPerPage, page);
         if (ans == null) {
             //TODO handle null
         }

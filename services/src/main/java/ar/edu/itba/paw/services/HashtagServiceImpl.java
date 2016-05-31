@@ -25,9 +25,8 @@ public class HashtagServiceImpl implements HashtagService {
     @Override
     public void register(final Tweet tweet) {
         Set<String> hashtags = tweet.getHashtags();
-        String id = tweet.getId();
         for (String hs : hashtags) {
-            hashtagDAO.create(hs, id);
+            hashtagDAO.create(hs, tweet);
         }
     }
 

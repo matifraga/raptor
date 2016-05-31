@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.services.FavoriteService;
-import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.services.UserService;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.FavoriteService;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.services.UserService;
 
 @Controller
 public class TweetController extends RaptorController{
@@ -55,11 +57,13 @@ public class TweetController extends RaptorController{
 	public String retweetAction(@RequestParam(value = TWEETID) String tweetId,
 								@RequestParam(value = RETWEET) Boolean retweet) {
 
-		if(sessionUser() != null) {
+		User sessionUser = sessionUser();
+		Tweet tweet = tweetService.getTweet(tweetId, sessionUser);
+		if(sessionUser != null) {
 			if (retweet) {
-				tweetService.retweet(tweetId, sessionUser());
+				tweetService.retweet(tweet, sessionUser);
 			} else {
-				tweetService.unretweet(tweetId, sessionUser());
+				tweetService.unretweet(tweet, sessionUser);
 			}
 			return SUCCESS_1;
 		}
@@ -72,11 +76,13 @@ public class TweetController extends RaptorController{
 	public String favoriteTweetAction(@RequestParam(value = TWEETID) String tweetId,
 									  @RequestParam(value = FAVORITE) Boolean favorite) {
 
-		if(sessionUser() != null) {
+		User sessionUser = sessionUser();
+		Tweet tweet = tweetService.getTweet(tweetId, sessionUser);
+		if(sessionUser != null) {
 			if (favorite) {
-				favoriteService.favorite(tweetId, sessionUser());
+				favoriteService.favorite(tweet, sessionUser);
 			} else {
-				favoriteService.unfavorite(tweetId, sessionUser());
+				favoriteService.unfavorite(tweet, sessionUser);
 			}
 			return SUCCESS_1;
 		}

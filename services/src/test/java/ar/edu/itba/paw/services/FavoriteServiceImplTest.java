@@ -36,7 +36,7 @@ public class FavoriteServiceImplTest {
     public static void setUpBeforeClass() throws Exception {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         user = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, ID, VERIFIED);
-        tweet = new Tweet(MESSAGE, ID, user, timestamp);
+        tweet = new Tweet(MESSAGE, user, timestamp);
     }
 
     @AfterClass
@@ -61,9 +61,9 @@ public class FavoriteServiceImplTest {
 
     @Test
     public void favoriteTest() {
-        favoriteService.favorite(tweet.getId(), user);
-        verify(tweetService).increaseFavoriteCount(tweet.getId());
-        verify(favoriteDAO).favorite(eq(tweet.getId()), eq(user.getId()));
+        favoriteService.favorite(tweet, user);
+        verify(tweetService).increaseFavoriteCount(tweet);
+        verify(favoriteDAO).favorite(eq(tweet), eq(user));
     }
 
 /*
@@ -77,9 +77,9 @@ public class FavoriteServiceImplTest {
 
     @Test
     public void unfavoriteTest() {
-        favoriteService.unfavorite(tweet.getId(), user);
-        verify(tweetService).decreaseFavoriteCount(tweet.getId());
-        verify(favoriteDAO).unfavorite(eq(tweet.getId()), eq(user.getId()));
+        favoriteService.unfavorite(tweet, user);
+        verify(tweetService).decreaseFavoriteCount(tweet);
+        verify(favoriteDAO).unfavorite(eq(tweet), eq(user));
     }
 /*
     @Test

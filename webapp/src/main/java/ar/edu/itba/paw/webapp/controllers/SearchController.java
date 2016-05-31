@@ -68,7 +68,7 @@ public class SearchController extends TweetListController {
 		User sessionUser = sessionUser();
         switch(text.charAt(0)){
         	case '#':   mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE, page, (sessionUser==null)?null:sessionUser.getId()));
+						List<TweetViewModel> hashtags = TweetViewModel.transform(tweetService.getHashtag(text.substring(1),TWEET_RESULTS_PER_PAGE, page, sessionUser));
 						mav.addObject(NUMBER_OF_RESULTS, hashtags.size());
 						mav.addObject(RESULT, hashtags);
 						pageInfo = buildPageInfo(page, TWEET_RESULTS_PER_PAGE, hashtags.size(), baseURL);
@@ -82,7 +82,7 @@ public class SearchController extends TweetListController {
 						mav.addObject(PAGE_INFO, pageInfo);
 						break;
         	default:	mav.addObject(SEARCH_TYPE, TWEET_SEARCH);
-						List<TweetViewModel> tweets = TweetViewModel.transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE, page, (sessionUser==null)?null:sessionUser.getId()));
+						List<TweetViewModel> tweets = TweetViewModel.transform(tweetService.searchTweets(text,TWEET_RESULTS_PER_PAGE, page, sessionUser));
 						mav.addObject(NUMBER_OF_RESULTS, tweets.size());
 						mav.addObject(RESULT, tweets);
 						pageInfo = buildPageInfo(page, TWEET_RESULTS_PER_PAGE, tweets.size(), baseURL);

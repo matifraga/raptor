@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.FavoriteDAO;
 
@@ -27,15 +28,15 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Transactional
 	@Override
-	public void favorite(final String tweetID, final User user) {
-		tweetService.increaseFavoriteCount(tweetID);
-		favoriteDAO.favorite(tweetID, user.getId());
+	public void favorite(final Tweet tweet, final User user) {
+		tweetService.increaseFavoriteCount(tweet);
+		favoriteDAO.favorite(tweet, user);
 	}
 
 	@Transactional
 	@Override
-	public Boolean isFavorited(final String tweetID, final User user) {
-		Boolean ans = favoriteDAO.isFavorited(tweetID, user.getId());
+	public Boolean isFavorited(final Tweet tweet, final User user) {
+		Boolean ans = favoriteDAO.isFavorited(tweet, user);
 		if (ans == null) {
 			//TODO handle DB error
 		}
@@ -44,9 +45,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Transactional
 	@Override
-	public void unfavorite(final String tweetID, final User user) {
-		tweetService.decreaseFavoriteCount(tweetID);
-		favoriteDAO.unfavorite(tweetID, user.getId());
+	public void unfavorite(final Tweet tweet, final User user) {
+		tweetService.decreaseFavoriteCount(tweet);
+		favoriteDAO.unfavorite(tweet, user);
 	}
 
 }
