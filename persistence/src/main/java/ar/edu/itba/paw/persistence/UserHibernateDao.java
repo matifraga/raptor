@@ -36,20 +36,24 @@ public class UserHibernateDAO implements UserDAO{
 
 	@Override
 	public List<User> searchUsers(final String text, final int resultsPerPage, final int page) {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<User> query = em.createQuery("from User as u WHERE UPPER(u.username) LIKE (% || :text || %)", User.class);
+		query.setParameter("text", text).setFirstResult((page-1)*resultsPerPage).setMaxResults(resultsPerPage);
+		final List<User> list = query.getResultList();
+		return list;
 	}
 
 	@Override
 	public Boolean isUsernameAvailable(final String username) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = getByUsername(username);
+		return u==null;
 	}
 
 	@Override
 	public User authenticateUser(final String username, final String password) {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<User> query = em.createQuery("from User as u where u.username = :username and u.password = :password", User.class);
+		query.setParameter("username", username).setParameter("password", password);
+		List<User> list = query.getResultList();
+		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override

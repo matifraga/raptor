@@ -1,9 +1,15 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -36,8 +42,40 @@ public class User {
 	@Column(name = "password", nullable = false, length = 100)
 	private String password;
 	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="followers",
+	 joinColumns=@JoinColumn(name="followingID"),
+	 inverseJoinColumns=@JoinColumn(name="followerID")
+	)
+	private Set<User> followers;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="followers",
+	 joinColumns=@JoinColumn(name="followerID"),
+	 inverseJoinColumns=@JoinColumn(name="followingID")
+	)
+	private Set<User> followings;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="favorites",
+	 joinColumns=@JoinColumn(name="favoriteID"),
+	 inverseJoinColumns=@JoinColumn(name="tweetID")
+	)
+	private Set<Tweet> favorites;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="mentions",
+	 joinColumns=@JoinColumn(name="userID"),
+	 inverseJoinColumns=@JoinColumn(name="tweetID")
+	)
+	private Set<Tweet> mentions;
+	
 //    @SuppressWarnings("unused")
 //    private final String miniBio = null; //TODO use!
+	
+	/* default */ User(){
+		
+	}
 
     public User(String username, String email,
                 String firstName, String lastName, String password, Boolean verified) {

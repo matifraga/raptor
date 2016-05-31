@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -39,8 +40,10 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page, final User sessionUser) {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<Tweet> query = em.createQuery("from Tweet as t where t.owner = :user", Tweet.class);
+		query.setParameter("user", user).setFirstResult((page-1)*resultsPerPage).setMaxResults(resultsPerPage);
+		List<Tweet> list = query.getResultList();
+		return list;
 	}
 
 	@Override
@@ -63,7 +66,6 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public List<Tweet> getGlobalFeed(final int resultsPerPage, final int page, final User sessionUser) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

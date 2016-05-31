@@ -7,18 +7,23 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "tweets")
@@ -47,7 +52,8 @@ public class Tweet {
 	private String msg;
 	
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "userID", foreignKey = @ForeignKey(foreignKeyDefinition = "ON UPDATE RESTRICT ON DELETE CASCADE"))
+	@JoinColumn(name = "userID")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User owner;
 	
 	@Column(name = "timestamp", nullable = false)
@@ -60,7 +66,8 @@ public class Tweet {
 	private int countFavorites;
 	
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
-	@JoinColumn(name = "retweetFrom", foreignKey = @ForeignKey(foreignKeyDefinition = "ON UPDATE RESTRICT ON DELETE CASCADE"))
+	@JoinColumn(name = "retweetFrom")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Tweet retweet;
 	
 	@Transient
@@ -69,6 +76,28 @@ public class Tweet {
 	@Transient
 	private Boolean isFavorited;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="favorites",
+	 joinColumns=@JoinColumn(name="tweetID"),
+	 inverseJoinColumns=@JoinColumn(name="favoriteID")
+	)
+	private Set<User> favorites;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="mentions",
+	 joinColumns=@JoinColumn(name="tweetID"),
+	 inverseJoinColumns=@JoinColumn(name="userID")
+	)
+	private Set<User> mentions;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+//	@JoinTable(name="hashtags",
+//	 joinColumns=@JoinColumn(name="tweetID"),
+//	 inverseJoinColumns=@JoinColumn(name="hashtag"))
+	@CollectionTable(name = "hashtags", 
+	joinColumns=@JoinColumn(name="tweetID"))
+	private Set<String> hashtag;
+	
 	/* default */ Tweet(){
 		
 	}
@@ -225,6 +254,5 @@ public class Tweet {
 	public Boolean getIsFavorited() {
 		return isFavorited;
 	}
-
 
 }
