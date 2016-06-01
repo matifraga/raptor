@@ -1,14 +1,13 @@
 package ar.edu.itba.paw.webapp.viewmodels;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import ar.edu.itba.paw.models.Tweet;
 import org.apache.commons.validator.routines.UrlValidator;
+
+import ar.edu.itba.paw.models.Tweet;
 
 public class TweetViewModel {
 	

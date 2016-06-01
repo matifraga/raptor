@@ -66,15 +66,15 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 		ds.setDriverClassName("org.postgresql.Driver");
 
 		// DB ELEPHANT
-/*		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/rroxiqgx");
+		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/rroxiqgx");
 		ds.setUsername("rroxiqgx");
 		ds.setPassword("IugU760wJ4CcMpk2g-iwyMM8VSyQnjXi");
-*/
+
 
 		// DB TESTING TOMI
-		ds.setUrl("jdbc:postgresql://localhost/tomi");
-		ds.setUsername("Tomi");
- 		ds.setPassword("147852");
+//		ds.setUrl("jdbc:postgresql://localhost/tomi");
+//		ds.setUsername("Tomi");
+// 		ds.setPassword("147852");
 
 		// DB FOR DEPLOY
 		/*ds.setUrl("jdbc:postgresql://localhost/grupo6");

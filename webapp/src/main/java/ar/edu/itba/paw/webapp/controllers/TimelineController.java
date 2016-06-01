@@ -53,7 +53,6 @@ public class TimelineController extends TweetListController {
 	private static final String USER_INFO = "userInfo";
 	private static final String HEADER = "header";
 	private static final String PAGE_INFO = "pageInfo";
-	private static final String FOLLOWING = "following";
 	private final static String REDIRECT = "redirect:";
 	
 	private static final int TRENDING_TOPIC_LIMIT = 5;
