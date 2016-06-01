@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -90,13 +88,13 @@ public class Tweet {
 	)
 	private Set<User> mentions;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-//	@JoinTable(name="hashtags",
-//	 joinColumns=@JoinColumn(name="tweetID"),
-//	 inverseJoinColumns=@JoinColumn(name="hashtag"))
-	@CollectionTable(name = "hashtags", 
-	joinColumns=@JoinColumn(name="tweetID"))
-	private Set<String> hashtag;
+//	@OneToMany(fetch = FetchType.LAZY)
+////	@JoinTable(name="hashtags",
+////	 joinColumns=@JoinColumn(name="tweetID"),
+////	 inverseJoinColumns=@JoinColumn(name="hashtag"))
+//	@CollectionTable(name = "hashtags", 
+//	joinColumns=@JoinColumn(name="tweetID"))
+//	private Set<String> hashtag;
 	
 	/* default */ Tweet(){
 		

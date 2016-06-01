@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
@@ -28,43 +30,69 @@ public class UserHibernateDAO implements UserDAO{
 
 	@Override
 	public User getByUsername(final String username) {
-		TypedQuery<User> query  = em.createQuery("from User as u where u.username = :username", User.class);
-		query.setParameter("username", username);
-		final List<User> list = query.getResultList();
+		List<User> list  = em.createQuery("from User as u where u.username = :username", User.class)
+				.setParameter("username", username)
+				.getResultList();
 		return list.isEmpty()? null : list.get(0);
 	}
 
 	@Override
 	public List<User> searchUsers(final String text, final int resultsPerPage, final int page) {
-		TypedQuery<User> query = em.createQuery("from User as u WHERE UPPER(u.username) LIKE (% || :text || %)", User.class);
-		query.setParameter("text", text).setFirstResult((page-1)*resultsPerPage).setMaxResults(resultsPerPage);
-		final List<User> list = query.getResultList();
+		List<User> list = em.createQuery("from User as u WHERE UPPER(u.username) LIKE :searchText", User.class)
+				.setParameter("searchText", '%' + text + '%')
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 		return list;
 	}
 
 	@Override
 	public Boolean isUsernameAvailable(final String username) {
-		User u = getByUsername(username);
-		return u==null;
+		return getByUsername(username)==null;
 	}
 
 	@Override
 	public User authenticateUser(final String username, final String password) {
-		TypedQuery<User> query = em.createQuery("from User as u where u.username = :username and u.password = :password", User.class);
-		query.setParameter("username", username).setParameter("password", password);
-		List<User> list = query.getResultList();
+		List<User> list = em.createQuery("from User as u where u.username = :username and u.password = :password", User.class)
+				.setParameter("username", username)
+				.setParameter("password", password)
+				.getResultList();
 		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override
 	public List<User> getFollowers(final User user, final int resultsPerPage, final int page) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		List<String> followerIDs = em.createNativeQuery("select followerID from followers where followingID = ?")
+				.setParameter(1, user.getId())
+				.getResultList();
+		
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<User> cq = cb.createQuery(User.class);
+		Root<User> root = cq.from(User.class);
+		cq.where(root.get("userID").in(followerIDs));
+	
+		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 	}
 
 	@Override
 	public List<User> getFollowing(final User user, final int resultsPerPage, final int page) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = ?")
+				.setParameter(1, user.getId())
+				.getResultList();
+		
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<User> cq = cb.createQuery(User.class);
+		Root<User> root = cq.from(User.class);
+		cq.where(root.get("userID").in(followingIDs));
+	
+		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 	}
 }

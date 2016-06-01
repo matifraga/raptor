@@ -1,12 +1,15 @@
 package ar.edu.itba.paw.persistence;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
@@ -40,9 +43,16 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page, final User sessionUser) {
-		TypedQuery<Tweet> query = em.createQuery("from Tweet as t where t.owner = :user", Tweet.class);
-		query.setParameter("user", user).setFirstResult((page-1)*resultsPerPage).setMaxResults(resultsPerPage);
-		List<Tweet> list = query.getResultList();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
+		Root<Tweet> tweet = cq.from(Tweet.class);
+		cq.where(cb.equal(tweet.get("owner"), user))
+			.orderBy(cb.desc(tweet.get("timestamp")));
+		List<Tweet> list = em.createQuery(/*"from Tweet as t where t.owner = :user"*/ cq)
+				//.setParameter("user", user)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 		return list;
 	}
 
@@ -54,31 +64,69 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final int page, final User sessionUser) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		List<String> mentionIDs = em.createNativeQuery("select tweetID from mentions where userID = ?")
+				.setParameter(1, user.getId())
+				.getResultList();
+		
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
+		Root<Tweet> root = cq.from(Tweet.class);
+		cq.where(root.get("id").in(mentionIDs))
+			.orderBy(cb.desc(root.get("timestamp")));
+	
+		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 	}
 
 	@Override
 	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final User sessionUser) {
-		// TODO Auto-generated method stub
-		return null;
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
+		Root<Tweet> root = cq.from(Tweet.class);
+		cq.where(cb.like(cb.upper(root.get("msg")), '%'+text+'%'))
+			.orderBy(cb.desc(root.get("timestamp")));
+	
+		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 	}
 
 	@Override
 	public List<Tweet> getGlobalFeed(final int resultsPerPage, final int page, final User sessionUser) {
-		return null;
+		return em.createQuery("from Tweet as t order by t.timestamp desc", Tweet.class)
+		.setFirstResult((page-1)*resultsPerPage)
+		.setMaxResults(resultsPerPage)
+		.getResultList();
 	}
 
 	@Override
 	public List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final int page) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = ?")
+				.setParameter(1, user.getId())
+				.getResultList();
+		
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
+		Root<Tweet> tweet = cq.from(Tweet.class);
+		cq.where(cb.or(tweet.get("userID").in(followingIDs), cb.equal(tweet.get("owner"),user)))  //TODO fix first get
+			.orderBy(cb.desc(tweet.get("timestamp")));
+	
+		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 	}
 
 	@Override
 	public Integer countTweets(final User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return ((BigInteger) em.createNativeQuery("select count(aux) from (select * from tweets where tweets.userID = :id) as aux")
+				.setParameter("id", user.getId())
+				.getSingleResult()).intValue();
 	}
 
 	@Override
