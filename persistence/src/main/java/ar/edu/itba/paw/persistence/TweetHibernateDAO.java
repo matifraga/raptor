@@ -59,8 +59,23 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page, final User sessionUser) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		List<String> hashtagIDs = em.createNativeQuery("select tweetID from hashtags where UPPER(hashtag) = ?")
+				.setParameter(1, hashtag.toUpperCase())
+				.getResultList();
+		if(hashtagIDs.isEmpty())
+			return new ArrayList<Tweet>();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
+		Root<Tweet> root = cq.from(Tweet.class);
+		cq.where(root.get("id").in(hashtagIDs))
+			.orderBy(cb.desc(root.get("timestamp")));
+	
+		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
+		
 	}
 
 	@Override
@@ -74,7 +89,7 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
-		cq.where(cb.in((root.get("id")).in(mentionIDs)))
+		cq.where(root.get("id").in(mentionIDs))
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)

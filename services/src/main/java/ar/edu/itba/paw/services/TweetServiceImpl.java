@@ -39,14 +39,15 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public void register(final String msg, final User owner) {
+    public Tweet register(final String msg, final User owner) {
         Tweet t = tweetDAO.create(msg, owner);
         if (t == null) {
             //TODO handle null (invalid message)
-        } else {
-            hashtagService.register(t);
-            mentionService.register(t);
+//        } else {
+//            hashtagService.register(t);
+//            mentionService.register(t);
         }
+        return t;
     }
 
 	@Transactional

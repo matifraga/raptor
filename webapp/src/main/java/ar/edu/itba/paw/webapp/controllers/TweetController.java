@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FavoriteService;
+import ar.edu.itba.paw.services.HashtagService;
+import ar.edu.itba.paw.services.MentionService;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
 
@@ -34,6 +36,12 @@ public class TweetController extends RaptorController{
 
 	@Autowired
 	private TweetService tweetService;
+	
+	@Autowired 
+	private HashtagService hashtagService;
+	
+	@Autowired
+	private MentionService mentionService;
 
 	@Autowired
 	private FavoriteService favoriteService;
@@ -46,8 +54,12 @@ public class TweetController extends RaptorController{
 			return REDIRECT + "/";
 		}
 
-		tweetService.register(message,
+		Tweet t = tweetService.register(message,
 				userService.getUserWithUsername(sessionUser().getUsername()));
+		if(t!=null){
+			mentionService.register(t);
+			hashtagService.register(t);
+		}
 
 	    return getPreviousPageByRequest(request).orElse("/user/" + sessionUser().getUsername());
 	}
