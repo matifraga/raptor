@@ -168,7 +168,11 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public Boolean isRetweeted(final Tweet tweet, final User user) {
-		return true;
+		Boolean ans = (Boolean) em.createNativeQuery("SELECT EXISTS( SELECT * FROM tweets WHERE retweetFrom = ? AND userID = ?)")
+				.setParameter(1, tweet.isRetweet() ? tweet.getRetweet().getId() : tweet.getId())
+				.setParameter(2, user.getId())
+				.getSingleResult();
+		return ans;
 	}
 
 	@Override

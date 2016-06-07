@@ -44,7 +44,6 @@ public class FollowerHibernateDAO implements FollowerDAO {
 		Integer ans = ((Number) em.createNativeQuery("select count(followerID) from followers where followingID = ?")
 			.setParameter(1, user.getId())
 			.getSingleResult()).intValue();
-		System.out.println("FOLLOWERS FOR USER " + user.getUsername() + ": " + ans);
 		return ans;
 	}
 
@@ -53,7 +52,6 @@ public class FollowerHibernateDAO implements FollowerDAO {
 		Integer ans = ((Number) em.createNativeQuery("select count(followingID) from followers where followerID = ?")
 				.setParameter(1, user.getId())
 				.getSingleResult()).intValue();
-		System.out.println("FOLLOWING FOR USER " + user.getUsername() + ": " + ans);
 		return ans;
 	}
 }

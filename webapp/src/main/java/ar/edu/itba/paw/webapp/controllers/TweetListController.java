@@ -35,15 +35,11 @@ public abstract class TweetListController extends RaptorController {
         List<TweetViewModel> tweetMList = new ArrayList<>(tweetList.size());
         User sessionUser = sessionUser();
         if(sessionUser == null){
-        	for (Tweet tweet : tweetList) {
-				TweetViewModel tweetView;
-				tweetView = TweetViewModel.transformTweet(tweet, true, true);
-				tweetMList.add(tweetView);
-			}
+        	for (Tweet tweet : tweetList) 
+				tweetMList.add(TweetViewModel.transformTweet(tweet, true, true));
 		} else {
 			for (Tweet tweet : tweetList) {
-				TweetViewModel tweetView;
-				tweetView = TweetViewModel.transformTweet(tweet, favService.isFavorited(tweet, sessionUser),
+				TweetViewModel tweetView = TweetViewModel.transformTweet(tweet, favService.isFavorited(tweet, sessionUser),
 						tweetService.isRetweeted(tweet, sessionUser));
 				tweetMList.add(tweetView);
 			}

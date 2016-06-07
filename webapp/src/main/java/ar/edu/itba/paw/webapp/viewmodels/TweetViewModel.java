@@ -57,7 +57,7 @@ public class TweetViewModel {
     	}
     }
 
-    public static TweetViewModel transformTweet(Tweet tweet, Boolean isRet, Boolean isFav) {
+    public static TweetViewModel transformTweet(Tweet tweet, Boolean isFav, Boolean isRet) {
         return new TweetViewModel(tweet, isRet, isFav);
     }
     

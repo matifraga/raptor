@@ -16,7 +16,7 @@ public class FavoriteHibernateDAO implements FavoriteDAO{
 	
 	@Override
 	public void favorite(final Tweet tweet, final User user) {
-		em.createNativeQuery("INSERT INTO favorites (userID, tweetID) values(?, ?)")
+		em.createNativeQuery("INSERT INTO favorites (favoriteID, tweetID) values(?, ?)")
 			.setParameter(1, user.getId())
 			.setParameter(2, tweet.getId())
 			.executeUpdate(); 	//TODO check if execute update returns >0 to see if deletion was ok
@@ -28,13 +28,12 @@ public class FavoriteHibernateDAO implements FavoriteDAO{
 				.setParameter(1, tweet.isRetweet() ? tweet.getRetweet().getId() : tweet.getId())
 				.setParameter(2, user.getId())
 				.getSingleResult();
-		System.out.println("ISFAVED FOR " + tweet.getId() + ": " + ans);
 		return ans;
 	}
 
 	@Override
 	public void unfavorite(final Tweet tweet, final User user) {
-		em.createNativeQuery("DELETE FROM followers where favoriteID = ? and tweetID = ?")
+		em.createNativeQuery("DELETE FROM favorites where favoriteID = ? and tweetID = ?")
 			.setParameter(1, user.getId())
 			.setParameter(2, tweet.getId())
 			.executeUpdate();		//TODO check if execute update returns >0 to see if deletion was ok
