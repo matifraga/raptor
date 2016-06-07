@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,11 +69,12 @@ public class TweetHibernateDAO implements TweetDAO{
 		List<String> mentionIDs = em.createNativeQuery("select tweetID from mentions where userID = ?")
 				.setParameter(1, user.getId())
 				.getResultList();
-		
+		if(mentionIDs.isEmpty())
+			return new ArrayList<Tweet>();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
-		cq.where(root.get("id").in(mentionIDs))
+		cq.where(cb.in((root.get("id")).in(mentionIDs)))
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
@@ -86,7 +88,7 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
-		cq.where(cb.like(cb.upper(root.get("msg")), '%'+text+'%'))
+		cq.where(cb.like(cb.upper(root.get("msg")), '%'+text.toUpperCase()+'%'))
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
@@ -113,7 +115,7 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
-		cq.where(cb.or(tweet.get("userID").in(followingIDs), cb.equal(tweet.get("owner"),user)))  //TODO fix first get
+		cq.where(followingIDs.isEmpty()?cb.equal(tweet.get("owner"),user) : cb.or(tweet.get("owner").get("id").in(followingIDs), cb.equal(tweet.get("owner"),user)))  //TODO fix first get
 			.orderBy(cb.desc(tweet.get("timestamp")));
 	
 		return em.createQuery(cq)
@@ -131,47 +133,85 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public void increaseFavoriteCount(final Tweet tweet) {
-		// TODO Auto-generated method stub
+		em.createQuery("UPDATE Tweet SET countFavorites = countFavorites+1 WHERE id = :id")
+			.setParameter("id", tweet.getId())
+			.executeUpdate();
 	}
 
 	@Override
 	public void decreaseFavoriteCount(final Tweet tweet) {
-		// TODO Auto-generated method stub
-		
+		em.createQuery("UPDATE Tweet SET countFavorites = countFavorites-1 WHERE id = :id")
+		.setParameter("id", tweet.getId())
+		.executeUpdate();
 	}
 
 	@Override
 	public void increaseRetweetCount(final Tweet tweet) {
-		// TODO Auto-generated method stub
-		
+		em.createQuery("UPDATE Tweet SET countRetweets = countRetweets+1 WHERE id = :id")
+		.setParameter("id", tweet.getId())
+		.executeUpdate();
 	}
 
 	@Override
 	public void decreaseRetweetCount(final Tweet tweet) {
-		// TODO Auto-generated method stub
-		
+		em.createQuery("UPDATE Tweet SET countRetweets = countRetweets-1 WHERE id = :id")
+		.setParameter("id", tweet.getId())
+		.executeUpdate();
 	}
 
 	@Override
 	public Tweet getTweetById(final String tweetID, final User sessionUser) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.createQuery("from Tweet as t where t.id = :tweetID", Tweet.class)
+			.setParameter("tweetID", tweetID)
+			.getSingleResult();
 	}
 
 	@Override
 	public Boolean isRetweeted(final Tweet tweet, final User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	@Override
 	public void unretweet(final Tweet tweet, final User user) {
-		// TODO Auto-generated method stub
+		em.createNativeQuery("DELETE FROM tweets where retweetFrom = ? and userID = ?")
+			.setParameter(1, tweet.getId())
+			.setParameter(2, user.getId())
+			.executeUpdate();
 	}
 
 	@Override
 	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page, final User sessionUser) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		List<String> favoriteTweetIDs = em.createNativeQuery("select tweetID from favorites where favoriteID = ?")
+				.setParameter(1, user.getId()).getResultList();
+		if(favoriteTweetIDs.isEmpty())
+			return new ArrayList<Tweet>();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
+		Root<Tweet> tweet = cq.from(Tweet.class);
+		cq.where(tweet.get("id").in(favoriteTweetIDs)) 
+			.orderBy(cb.desc(tweet.get("timestamp")));
+
+		return em.createQuery(cq)
+				.setFirstResult((page - 1) * resultsPerPage)
+				.setMaxResults(resultsPerPage)
+				.getResultList();
 	}
+	
+//	private List<Tweet> tweetListQueryWrapper(List<Tweet> tweets, User sessionUser){
+//		//List<String> tweetIDs = tweets.stream().map(t->t.getId()).collect(Collectors.toList());
+//		
+//		StringBuilder builder = new StringBuilder("select tweets.tweetID, max((CASE when favoriteID =? and tweets.tweetID = favorites.tweetID then 1 else 0 end)) as isFavorited, max((CASE when tweets2.retweetFrom = tweets.tweetID and tweets2.userID =? then 1 else 0 end)) as isRetweeted from tweets, tweets as  tweets2, favorites where tweets.tweetID in ");
+//		int i;
+//		for(i = 0 ; i < tweets.size()-1; i++) 
+//		    builder.append(tweets.get(i).getId()).append(", ");
+//		builder.append(tweets.get(i).getId()).append(" group by tweets.tweetID");
+//		
+//		List list = em.createNativeQuery(builder.toString()).getResultList();
+//		for(i=0; i<list.size(); i++){
+//			
+//		};
+//		
+//	}
+	
 }

@@ -30,7 +30,7 @@
     </div>
     <div class="panel panel-raptor panel-profile-stats">
         <c:if test="${requestScope.user.followersCount != null}">
-            <a><span class="number">${requestScope.user.followingCount}</span><br/><spring:message code="profileBox.followers"/></a>
+            <a><span class="number">${requestScope.user.followersCount}</span><br/><spring:message code="profileBox.followers"/></a>
         </c:if>
         <c:if test="${requestScope.user.tweetsCount != null}">
             <a><span class="number">${requestScope.user.tweetsCount}</span><br/><spring:message code="profileBox.tweets"/></a>

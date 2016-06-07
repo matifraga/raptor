@@ -7,7 +7,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,7 +19,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
@@ -68,11 +69,11 @@ public class Tweet {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Tweet retweet;
 	
-	@Transient
-	private Boolean isRetweeted;
+//	@Transient
+//	private Boolean isRetweeted;
 	
-	@Transient
-	private Boolean isFavorited;
+//	@Transient
+//	private Boolean isFavorited;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="favorites",
@@ -88,21 +89,19 @@ public class Tweet {
 	)
 	private Set<User> mentions;
 	
-//	@OneToMany(fetch = FetchType.LAZY)
-////	@JoinTable(name="hashtags",
-////	 joinColumns=@JoinColumn(name="tweetID"),
-////	 inverseJoinColumns=@JoinColumn(name="hashtag"))
-//	@CollectionTable(name = "hashtags", 
-//	joinColumns=@JoinColumn(name="tweetID"))
-//	private Set<String> hashtag;
+	@ElementCollection(fetch = FetchType.LAZY)
+	@CollectionTable(name = "hashtags", 
+	joinColumns=@JoinColumn(name="tweetID"))
+	@Column(name="hashtag", length = 100, table = "hashtags", nullable=false)
+	private Set<String> hashtag;
 	
 	/* default */ Tweet(){
 		
 	}
 	
 	public Tweet(final String msg, final User owner, final Timestamp timestamp,
-				 final int countRetweets, final int countFavorites, final Tweet retweet,
-				 final Boolean isRetweeted, final Boolean isFavorited) throws IllegalArgumentException {
+				 final int countRetweets, final int countFavorites, final Tweet retweet/*,
+				 final Boolean isRetweeted, final Boolean isFavorited*/) throws IllegalArgumentException {
 		if (msg != null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
 		}
@@ -112,8 +111,8 @@ public class Tweet {
 		this.countRetweets = countRetweets;
 		this.countFavorites = countFavorites;
 		this.retweet = retweet;
-		this.isFavorited = isFavorited;
-		this.isRetweeted = isRetweeted;
+//		this.isFavorited = isFavorited;
+//		this.isRetweeted = isRetweeted;
 	}
 
 	public Tweet(final User owner, final Timestamp timestamp, final Tweet retweet) {
@@ -123,8 +122,8 @@ public class Tweet {
 		this.countRetweets = 0;
 		this.countFavorites = 0;
 		this.retweet = retweet;
-		this.isFavorited = false;
-		this.isRetweeted = false;
+//		this.isFavorited = false;
+//		this.isRetweeted = false;
 	}
 
 	public Tweet(final String msg, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
@@ -137,8 +136,8 @@ public class Tweet {
 		this.countRetweets = 0;
 		this.countFavorites = 0;
 		this.retweet = null;
-		this.isFavorited = false;
-		this.isRetweeted = false;
+//		this.isFavorited = false;
+//		this.isRetweeted = false;
 	}
 
 	public static int getMaxLength() {
@@ -245,12 +244,49 @@ public class Tweet {
 		return retweet;
 	}
 
-	public Boolean getIsRetweeted() {
-		return isRetweeted;
+//	public Boolean getIsRetweeted() {
+//		return isRetweeted;
+//	}
+//
+//	public Boolean getIsFavorited() {
+//		return isFavorited;
+//	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public Boolean getIsFavorited() {
-		return isFavorited;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void setCountRetweets(int countRetweets) {
+		this.countRetweets = countRetweets;
+	}
+
+	public void setCountFavorites(int countFavorites) {
+		this.countFavorites = countFavorites;
+	}
+
+	public void setRetweet(Tweet retweet) {
+		this.retweet = retweet;
+	}
+
+//	public void setIsRetweeted(Boolean isRetweeted) {
+//		this.isRetweeted = isRetweeted;
+//	}
+//
+//	public void setIsFavorited(Boolean isFavorited) {
+//		this.isFavorited = isFavorited;
+//	}
+
+	
 }

@@ -19,9 +19,12 @@ public class HashtagHibernateDAO implements HashtagDAO {
 	
 	@Override
 	public void create(final String hashtag, final Tweet tweet) {
-		em.createNativeQuery("insert into hashtags (hashtag, tweetID) values(?, ?)")
-			.setParameter(1, hashtag)
-			.setParameter(2, tweet.getId())
+		if (hashtag.length() >= 256) {
+            return;
+        }
+		em.createNativeQuery("insert into hashtags (tweetid, hashtag) values(?, ?)")
+			.setParameter(1, tweet.getId())
+			.setParameter(2, hashtag)
 			.executeUpdate();      //TODO check if execute update returns >0 to see if deletion was ok
 	}
 

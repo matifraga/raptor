@@ -39,7 +39,7 @@ public class UserHibernateDAO implements UserDAO{
 	@Override
 	public List<User> searchUsers(final String text, final int resultsPerPage, final int page) {
 		List<User> list = em.createQuery("from User as u WHERE UPPER(u.username) LIKE :searchText", User.class)
-				.setParameter("searchText", '%' + text + '%')
+				.setParameter("searchText", '%' + text.toUpperCase() + '%')
 				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();

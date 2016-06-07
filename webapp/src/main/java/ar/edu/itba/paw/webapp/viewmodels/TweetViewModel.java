@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.viewmodels;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -31,7 +29,10 @@ public class TweetViewModel {
     private Boolean isFavorited; // is favorited by the logged user
 
 
-    public TweetViewModel(Tweet tweet) {
+    public TweetViewModel(Tweet tweet, Boolean isRet, Boolean isFav) {
+    	this.isFavorited = isFav;
+    	this.isRetweeted = isRet;
+    	
     	if(tweet.isRetweet()){
     		Tweet retweeted = tweet.getRetweet();
     		this.id = retweeted.getId();
@@ -41,8 +42,8 @@ public class TweetViewModel {
             this.timestamp = retweeted.getTimestamp();
             this.countRetweets = retweeted.getCountRetweets();
             this.countFavorites = retweeted.getCountFavorites();
-            this.isFavorited = retweeted.getIsFavorited();
-            this.isRetweeted = retweeted.getIsRetweeted();
+            //this.isFavorited = retweeted.getIsFavorited();
+            //this.isRetweeted = retweeted.getIsRetweeted();
     	} else {
 	        this.id = tweet.getId();
 	        this.msg = parseToHTMLString(tweet.getMsg());
@@ -51,21 +52,15 @@ public class TweetViewModel {
 	        this.countRetweets = tweet.getCountRetweets();
 	        this.countFavorites = tweet.getCountFavorites();
 	        this.retweetedBy = null;
-	        this.isFavorited = tweet.getIsFavorited();
-	        this.isRetweeted = tweet.getIsRetweeted();
+	        //this.isFavorited = tweet.getIsFavorited();
+	        //this.isRetweeted = tweet.getIsRetweeted();
     	}
     }
 
-    public static TweetViewModel transformTweet(Tweet tweet) {
-        return new TweetViewModel(tweet);
+    public static TweetViewModel transformTweet(Tweet tweet, Boolean isRet, Boolean isFav) {
+        return new TweetViewModel(tweet, isRet, isFav);
     }
     
-    public static List<TweetViewModel> transform(List<Tweet> tweetList) {
-        List<TweetViewModel> tweetMList = new ArrayList<>(tweetList.size());
-        tweetMList.addAll(tweetList.stream().map(TweetViewModel::transformTweet).collect(Collectors.toList()));
-        return tweetMList;
-    }
-
     public String getMsg() {
         return msg;
     }

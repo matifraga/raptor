@@ -102,15 +102,20 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 		ds.setPassword("IugU760wJ4CcMpk2g-iwyMM8VSyQnjXi");
 */
 		
-		// DB ELEPHANT 2
-		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/nruingnw");
-		ds.setUsername("nruingnw");
-		ds.setPassword("4cgleDjzN1_qwvsbwzge7-6bwiElxsp3");
+//		// DB ELEPHANT 2
+//		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/nruingnw");
+//		ds.setUsername("nruingnw");
+//		ds.setPassword("4cgleDjzN1_qwvsbwzge7-6bwiElxsp3");
 
 //		// DB TESTING TOMI
 //		ds.setUrl("jdbc:postgresql://localhost/tomi");
 //		ds.setUsername("Tomi");
 // 		ds.setPassword("147852");
+		
+		// DB TESTING LUCAS
+		ds.setUrl("jdbc:postgresql://localhost/lucaspaw");
+		ds.setUsername("postgres");
+		ds.setPassword("123456");
 
 		// DB FOR DEPLOY
 		/*ds.setUrl("jdbc:postgresql://localhost/grupo6");

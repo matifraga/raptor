@@ -176,7 +176,7 @@ public class TimelineController extends TweetListController {
 
 		if(user != null){
 			List<String> trendsList = hashtagService.getTrendingTopics(TRENDING_TOPIC_LIMIT);
-			List<TweetViewModel> tweetViewList = TweetViewModel.transform(tweetList);
+			List<TweetViewModel> tweetViewList = transform(tweetList);
 
 			Map<String, Integer> userInfo = new HashMap<>();
 			userInfo.put(FOLLOWERS_COUNT, followerService.countFollowers(user));
@@ -186,6 +186,7 @@ public class TimelineController extends TweetListController {
 			UserViewModel uvm = new UserViewModel(user, TIMELINE_PIC_SIZE);
 			uvm.setFollowersCount(followerService.countFollowers(user));
 			uvm.setFollowingCount(followerService.countFollowing(user));
+			
 			uvm.setTweetsCount(tweetService.countTweets(user));
 			if (sessionUser() != null) {
 				uvm.setFollowing(followerService.isFollower(sessionUser(), user));
