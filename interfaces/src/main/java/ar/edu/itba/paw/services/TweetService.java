@@ -12,10 +12,8 @@ public interface TweetService {
 	 *
 	 * @param msg   The tweet's message.
 	 * @param owner The user who wrote this tweet.
-	 * 
-	 * @return the created tweet.
 	 */
-	Tweet register(final String msg, final User owner);
+	void register(final String msg, final User owner);
 
 	/**
 	 * Reweets a previous tweet.

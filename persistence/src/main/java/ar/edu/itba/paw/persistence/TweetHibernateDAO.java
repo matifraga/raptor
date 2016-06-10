@@ -31,6 +31,7 @@ public class TweetHibernateDAO implements TweetDAO{
 		Timestamp thisMoment = new Timestamp(new Date().getTime());
         Tweet tweet = new Tweet(msg, owner, thisMoment);
         em.persist(tweet);
+        em.flush();
 		return tweet;
 	}
 
