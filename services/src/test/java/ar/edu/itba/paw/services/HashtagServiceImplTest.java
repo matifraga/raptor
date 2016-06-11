@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 public class HashtagServiceImplTest {
 
 
-    private static final String MESSAGE = "tweet #test #hola #jajaj", ID = "12345";
+    private static final String MESSAGE = "tweet #test #hola #jajaj";
     private static final String USERNAME = "@testUser", EMAIL = "testUser@gmail.com",
             FIRSTNAME = "test", LASTNAME = "user", UID = "12345abcd";
     private static Tweet t;
@@ -31,7 +31,7 @@ public class HashtagServiceImplTest {
     public static void setUpBeforeClass() throws Exception {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         User u = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, UID, false);
-        t = new Tweet(MESSAGE, ID, u, timestamp);
+        t = new Tweet(MESSAGE, u, timestamp);
     }
 
     @AfterClass
@@ -56,10 +56,10 @@ public class HashtagServiceImplTest {
 
         Set<String> hashtags = t.getHashtags();
 
-        verify(hashtagDAO, times(hashtags.size())).create(any(String.class), any(String.class));
+        verify(hashtagDAO, times(hashtags.size())).create(any(String.class), any(Tweet.class));
 
         for (String string : hashtags) {
-            verify(hashtagDAO).create(eq(string), eq(ID));
+            verify(hashtagDAO).create(eq(string), eq(t));
         }
 
     }

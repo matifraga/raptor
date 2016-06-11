@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package oldDAOs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+
+import ar.edu.itba.paw.persistence.HashtagDAO;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -74,10 +76,8 @@ public class HashtagJDBC implements HashtagDAO {
 
         try {
             Timestamp timestamp = new Timestamp(new Date().getTime());
-
             return jdbcTemplate.query(SQL_GET_TRENDINGS, hashtagRowMapper, timestamp, count); // new Timestamp(new Date().getTime()),
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return null;
         } //DataAccessException or SQLException
     }

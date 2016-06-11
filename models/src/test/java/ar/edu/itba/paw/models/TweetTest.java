@@ -44,7 +44,7 @@ public class TweetTest {
     @Test
     public void validTweetTest() {
 
-        Tweet t = new Tweet(MESSAGE, ID, owner, time);
+        Tweet t = new Tweet(MESSAGE, owner, time);
 
         assert (t.getMsg().equals(MESSAGE));
         assert (t.getId().equals(ID));
@@ -55,12 +55,12 @@ public class TweetTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void invalidTweetTest() {
-        new Tweet(INVALIDMESSAGE, ID, owner, time);
+        new Tweet(INVALIDMESSAGE, owner, time);
     }
 
     @Test
     public void getHashtagsTest() {
-        Tweet t = new Tweet(HASHTAGS, ID, owner, time);
+        Tweet t = new Tweet(HASHTAGS, owner, time);
         Set<String> hashtagSet = new HashSet<>();
         hashtagSet.add("test");
         hashtagSet.add("test");

@@ -56,20 +56,20 @@ public interface UserService {
 	/**
 	 * Get a list of followers for a user.
 	 *
-	 * @param userId         The user's id.
+	 * @param user         The user.
 	 * @param resultsPerPage Limit number of users per page.
 	 * @param page           Number of page needed.
 	 * @return The recovered list.
 	 */
-	List<User> getFollowers(final String userId, final int resultsPerPage, final int page);
+	List<User> getFollowers(final User user, final int resultsPerPage, final int page);
 
 	/**
 	 * Get a list of users being followed by a user.
 	 *
-	 * @param userId         The user's id.
+	 * @param user         The user.
 	 * @param resultsPerPage Limit number of users per page.
 	 * @param page           Number of page needed.
 	 * @return The recovered list.
 	 */
-	List<User> getFollowing(final String userId, final int resultsPerPage, final int page);
+	List<User> getFollowing(final User user, final int resultsPerPage, final int page);
 }

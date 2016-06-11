@@ -1,12 +1,9 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.FollowerService;
-import ar.edu.itba.paw.services.HashtagService;
-import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
-import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.FollowerService;
+import ar.edu.itba.paw.services.HashtagService;
+import ar.edu.itba.paw.services.UserService;
+import ar.edu.itba.paw.webapp.viewmodels.TweetViewModel;
+import ar.edu.itba.paw.webapp.viewmodels.UserViewModel;
 
 @Controller
 @RequestMapping(value="/user")
@@ -117,7 +117,7 @@ public class TimelineController extends TweetListController {
 		List<Tweet> tweetList = null;
 
 		if(u != null) {
-			tweetList = tweetService.getTimeline(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
+			tweetList = tweetService.getTimeline(u, TIMELINE_SIZE, page);
 		}
 
 		return buildMav(tweetList, u, page, "timeline", "");
@@ -141,7 +141,7 @@ public class TimelineController extends TweetListController {
 		List<Tweet> tweetList = null;
 
 		if(u != null) {
-			tweetList = tweetService.getMentions(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
+			tweetList = tweetService.getMentions(u, TIMELINE_SIZE, page);
 		}
 
 		return buildMav(tweetList, u, page, "mentions", MENTIONS);
@@ -165,7 +165,7 @@ public class TimelineController extends TweetListController {
 		List<Tweet> tweetList = null;
 
 		if(u != null) {
-			tweetList = tweetService.getFavorites(u.getId(), TIMELINE_SIZE, page, (sessionUser()==null)?null:sessionUser().getId());
+			tweetList = tweetService.getFavorites(u, TIMELINE_SIZE, page);
 		}
 
 		return buildMav(tweetList, u, page, "favorites", FAVORITES);
@@ -186,6 +186,7 @@ public class TimelineController extends TweetListController {
 			UserViewModel uvm = new UserViewModel(user, TIMELINE_PIC_SIZE);
 			uvm.setFollowersCount(followerService.countFollowers(user));
 			uvm.setFollowingCount(followerService.countFollowing(user));
+			
 			uvm.setTweetsCount(tweetService.countTweets(user));
 			if (sessionUser() != null) {
 				uvm.setFollowing(followerService.isFollower(sessionUser(), user));

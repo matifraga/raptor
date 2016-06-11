@@ -22,13 +22,13 @@ public class FollowerServiceImpl implements FollowerService {
     @Override
     public void follow(final User follower, final User following) {
         if (follower.equals(following)) return;
-        followerDAO.follow(follower.getId(), following.getId());
+        followerDAO.follow(follower, following);
     }
 
 	@Transactional
     @Override
     public Boolean isFollower(final User follower, final User following) {
-        Boolean ans = followerDAO.isFollower(follower.getId(), following.getId());
+        Boolean ans = followerDAO.isFollower(follower, following);
         if (ans == null) {
             //TODO handle DB error
         }
@@ -38,13 +38,13 @@ public class FollowerServiceImpl implements FollowerService {
 	@Transactional
     @Override
     public void unfollow(final User follower, final User following) {
-        followerDAO.unfollow(follower.getId(), following.getId());
+        followerDAO.unfollow(follower, following);
     }
 
 	@Transactional
     @Override
     public Integer countFollowers(final User user) {
-        Integer ans = followerDAO.countFollowers(user.getId());
+        Integer ans = followerDAO.countFollowers(user);
         if (ans == null) {
             //TODO handle DB error
         }
@@ -54,7 +54,7 @@ public class FollowerServiceImpl implements FollowerService {
 	@Transactional
     @Override
     public Integer countFollowing(final User user) {
-        Integer ans = followerDAO.countFollowing(user.getId());
+        Integer ans = followerDAO.countFollowing(user);
         if (ans == null) {
             //TODO handle DB error
         }

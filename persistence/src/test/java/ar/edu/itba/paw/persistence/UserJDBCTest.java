@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.User;
+import oldDAOs.FollowerJDBC;
+import oldDAOs.UserJDBC;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +77,6 @@ public class UserJDBCTest {
                 LASTNAME);
         User other = userJDBC.getByUsername(USERNAME2);
 
-        System.out.println(u);
-        System.out.println(other);
 
         assert (u.getUsername().equals(USERNAME2));
         assert (u.getEmail().equals(EMAIL));

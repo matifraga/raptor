@@ -1,10 +1,12 @@
-package ar.edu.itba.paw.persistence;
+package oldDAOs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+
+import ar.edu.itba.paw.persistence.FollowerDAO;
 
 import javax.sql.DataSource;
 import java.util.HashMap;

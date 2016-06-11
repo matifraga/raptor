@@ -1,8 +1,10 @@
-package ar.edu.itba.paw.persistence;
+package oldDAOs;
 
 
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.TweetDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,12 +18,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 
-import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITES;
-import static ar.edu.itba.paw.persistence.FavoriteJDBC.FAVORITE_ID;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAG;
-import static ar.edu.itba.paw.persistence.HashtagJDBC.HASHTAGS;
-import static ar.edu.itba.paw.persistence.MentionJDBC.MENTIONS;
-import static ar.edu.itba.paw.persistence.UserJDBC.*;
+import static oldDAOs.FavoriteJDBC.FAVORITES;
+import static oldDAOs.FavoriteJDBC.FAVORITE_ID;
+import static oldDAOs.HashtagJDBC.HASHTAG;
+import static oldDAOs.HashtagJDBC.HASHTAGS;
+import static oldDAOs.MentionJDBC.MENTIONS;
+import static oldDAOs.UserJDBC.*;
 
 /**
  * Testing model
@@ -124,7 +126,7 @@ public class TweetJDBC implements TweetDAO {
     }
 
     @Override
-    public List<Tweet> getTweetsByUserID(final String id, final int resultsPerPage, final int page, final String sessionID) { 
+    public List<Tweet> getTweetsForUser(final String id, final int resultsPerPage, final int page, final String sessionID) { 
         try {
             return jdbcTemplate.query(SQL_GET_TWEETS + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
         } catch (Exception e) {
@@ -156,7 +158,6 @@ public class TweetJDBC implements TweetDAO {
         try {
             return jdbcTemplate.query(SQL_GET_TWEETS_WITH_HASHTAG + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, hashtag.toUpperCase());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return null;
         } //DataAccessException or SQLException
     }
@@ -245,7 +246,7 @@ public class TweetJDBC implements TweetDAO {
         String id = randomTweetId();
         Timestamp thisMoment = new Timestamp(new Date().getTime());
         try {
-            ans = new Tweet(id, user, thisMoment, tweetID);
+            ans = new Tweet(id, user, thisMoment, /*TODO temporary fix*/ null); 
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -263,7 +264,7 @@ public class TweetJDBC implements TweetDAO {
     }
 
     @Override
-    public Tweet getTweet(final String tweetID, final String sessionID) {
+    public Tweet getTweetById(final String tweetID, final String sessionID) {
         if (tweetID == null)
             return null;
         try {
@@ -311,7 +312,7 @@ public class TweetJDBC implements TweetDAO {
             Boolean isFavorited = (rs.getInt(IS_FAVORITED) == 1);
             return new Tweet(rs.getString(MESSAGE), rs.getString(TWEET_ID),
                     new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID), rs.getBoolean(VERIFIED)),
-                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), rs.getString(RETWEET_FROM), isRetweeted, isFavorited);
+                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), /*TODO temporary fix rs.getString(RETWEET_FROM)*/ null, isRetweeted, isFavorited);
         }
 
     }

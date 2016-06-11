@@ -44,9 +44,9 @@ public class FollowerServiceImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(followerDAO.isFollower(any(String.class), any(String.class))).thenReturn(true);
-        when(followerDAO.countFollowers(any(String.class))).thenReturn(1);
-        when(followerDAO.countFollowing(any(String.class))).thenReturn(1);
+        when(followerDAO.isFollower(any(User.class), any(User.class))).thenReturn(true);
+        when(followerDAO.countFollowers(any(User.class))).thenReturn(1);
+        when(followerDAO.countFollowing(any(User.class))).thenReturn(1);
         followerService = new FollowerServiceImpl();
         followerService.setFollowerDAO(followerDAO);
 
@@ -59,7 +59,7 @@ public class FollowerServiceImplTest {
     @Test
     public void followTest() {
         followerService.follow(juan, pepe);
-        verify(followerDAO).follow(eq(juan.getId()), eq(pepe.getId()));
+        verify(followerDAO).follow(eq(juan), eq(pepe));
     }
 
     @Test
@@ -72,26 +72,26 @@ public class FollowerServiceImplTest {
     public void isFollowerTest() {
         boolean follower = followerService.isFollower(juan, pepe);
         assert (follower);
-        verify(followerDAO).isFollower(eq(juan.getId()), eq(pepe.getId()));
+        verify(followerDAO).isFollower(eq(juan), eq(pepe));
     }
 
     @Test
     public void unfollowTest() {
         followerService.unfollow(juan, pepe);
-        verify(followerDAO).unfollow(eq(juan.getId()), eq(pepe.getId()));
+        verify(followerDAO).unfollow(eq(juan), eq(pepe));
     }
 
     @Test
     public void countFollowersTest() {
         int followers = followerService.countFollowers(juan);
         assertEquals(followers, 1);
-        verify(followerDAO).countFollowers(eq(juan.getId()));
+        verify(followerDAO).countFollowers(eq(juan));
     }
 
     @Test
     public void countFollowingTest() {
         int following = followerService.countFollowing(juan);
         assertEquals(following, 1);
-        verify(followerDAO).countFollowing(eq(juan.getId()));
+        verify(followerDAO).countFollowing(eq(juan));
     }
 }

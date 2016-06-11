@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 public class MentionServiceImplTest {
 
-    private static final String MESSAGE = "tweet @hola @pepe @jajaj", ID = "12345";
+    private static final String MESSAGE = "tweet @hola @pepe @jajaj";
     private static final String USERNAME = "@testUser", EMAIL = "testUser@gmail.com",
             FIRSTNAME = "test", LASTNAME = "user", UID = "12345abcd";
     private static User u;
@@ -30,7 +30,7 @@ public class MentionServiceImplTest {
     public static void setUpBeforeClass() throws Exception {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         u = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, UID, false);
-        t = new Tweet(MESSAGE, ID, u, timestamp);
+        t = new Tweet(MESSAGE, u, timestamp);
     }
 
     @AfterClass
@@ -55,7 +55,7 @@ public class MentionServiceImplTest {
         ms.register(t);
         Set<String> mentions = t.getMentions();
         verify(userDAO, times(mentions.size())).getByUsername(any(String.class));
-        verify(mentionDAO, times(mentions.size())).create(any(String.class), any(String.class));
+        verify(mentionDAO, times(mentions.size())).create(any(User.class), any(Tweet.class));
 
         for (String string : mentions) {
             verify(userDAO).getByUsername(eq(string));

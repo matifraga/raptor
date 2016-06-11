@@ -1,6 +1,8 @@
-package ar.edu.itba.paw.persistence;
+package oldDAOs;
 
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.UserDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,15 +11,16 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+
+import static oldDAOs.FollowerJDBC.SQL_GET_FOLLOWER_IDS;
+import static oldDAOs.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWER_IDS;
-import static ar.edu.itba.paw.persistence.FollowerJDBC.SQL_GET_FOLLOWING_IDS;
 
 /**
  * Testing model

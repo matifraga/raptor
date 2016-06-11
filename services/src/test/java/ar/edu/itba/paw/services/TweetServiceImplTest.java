@@ -1,36 +1,43 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.TweetDAO;
-import org.junit.*;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.TweetDAO;
+
 public class TweetServiceImplTest {
 
     private static final String MESSAGE = "hola soy un tweet";
-    private static final String ID = "12345";
 
     private static final String USERNAME = "@testUser", EMAIL = "testUser@gmail.com",
-            FIRSTNAME = "test", LASTNAME = "user", UID = "12345abcd";
+            FIRSTNAME = "test", LASTNAME = "user", PASSWORD = "password";
+
+//    private static final String SESSION_USERNAME = "@testUser", SESSION_EMAIL = "testUser@gmail.com",
+//    		SESSION_FIRSTNAME = "test", SESSION_LASTNAME = "user", SESSION_PASSWORD = "password";
 
     private static final String HASHTAG = "#test";
 
     private static final String SEARCH = "search";
-    private static final String SESSION_ID = "session";
 
     private static final int RESULTSPERPAGE = 1, PAGE = 1;
 
     private static User owner;
+//    private static User sessionUser;
     private static Tweet tweet;
 
     private TweetServiceImpl ts;
@@ -46,8 +53,8 @@ public class TweetServiceImplTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        owner = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, UID, false);
-        tweet = new Tweet(ID, MESSAGE, owner, timestamp);
+        owner = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, PASSWORD, false);
+        tweet = new Tweet(MESSAGE, owner, timestamp);
     }
 
     @AfterClass
@@ -61,13 +68,13 @@ public class TweetServiceImplTest {
         ts = new TweetServiceImpl();
         ts.setTweetDAO(tweetDAO);
         when(tweetDAO.create(MESSAGE, owner)).thenReturn(tweet);
-        when(tweetDAO.getGlobalFeed(any(Integer.class), any(Integer.class), any(String.class))).thenReturn(arrayList);
-        when(tweetDAO.getLogedInFeed(any(String.class), any(Integer.class), any(Integer.class))).thenReturn(arrayList);
-        when(tweetDAO.getTweetsByUserID(any(String.class), any(Integer.class), any(Integer.class), any(String.class))).thenReturn(arrayList);
-        when(tweetDAO.countTweets(any(String.class))).thenReturn(1);
-        when(tweetDAO.isRetweeted(any(String.class), any(String.class))).thenReturn(true);
-        when(tweetDAO.getTweet(tweet.getId(), SESSION_ID)).thenReturn(tweet);
-        when(tweetDAO.retweet(eq(tweet.getId()), any(User.class))).thenReturn(tweet);
+        when(tweetDAO.getGlobalFeed(any(Integer.class), any(Integer.class))).thenReturn(arrayList);
+        when(tweetDAO.getLogedInFeed(any(User.class), any(Integer.class), any(Integer.class))).thenReturn(arrayList);
+        when(tweetDAO.getTweetsForUser(any(User.class), any(Integer.class), any(Integer.class))).thenReturn(arrayList);
+        when(tweetDAO.countTweets(any(User.class))).thenReturn(1);
+        when(tweetDAO.isRetweeted(any(Tweet.class), any(User.class))).thenReturn(true);
+        when(tweetDAO.getTweetById(tweet.getId())).thenReturn(tweet);
+        when(tweetDAO.retweet(eq(tweet), any(User.class))).thenReturn(tweet);
 
         ts.setHashtagService(hashtagService);
         ts.setMentionService(mentionService);
@@ -92,105 +99,105 @@ public class TweetServiceImplTest {
     @Test
     public void getHashtagsTest() {
 
-        ts.getHashtag(HASHTAG, RESULTSPERPAGE, PAGE, SESSION_ID);
-        verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(PAGE), eq(SESSION_ID));
+        ts.getHashtag(HASHTAG, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(PAGE));
 
     }
 
     @Test
     public void searchTweetsTest() {
 
-        ts.searchTweets(SEARCH, RESULTSPERPAGE, PAGE, SESSION_ID);
-        verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(PAGE), eq(SESSION_ID));
+        ts.searchTweets(SEARCH, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
     @Test
     public void getMentionsTest() {
-        ts.getMentions(UID, RESULTSPERPAGE, PAGE, SESSION_ID);
-        verify(tweetDAO).getTweetsByMention(eq(UID), eq(RESULTSPERPAGE), eq(PAGE), eq(SESSION_ID));
+        ts.getMentions(owner, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getTweetsByMention(eq(owner), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 
     @Test
     public void globalFeedTest() {
-        ts.globalFeed(RESULTSPERPAGE, PAGE, SESSION_ID);
-        verify(tweetDAO).getGlobalFeed(eq(RESULTSPERPAGE), eq(PAGE), eq(SESSION_ID));
+        ts.globalFeed(RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getGlobalFeed(eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 
     @Test
     public void currentSessionFeedTest() {
-        ts.currentSessionFeed(owner.getId(), RESULTSPERPAGE, PAGE);
-        verify(tweetDAO).getLogedInFeed(eq(owner.getId()), eq(RESULTSPERPAGE), eq(PAGE));
+        ts.currentSessionFeed(owner, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getLogedInFeed(eq(owner), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
     @Test
     public void countTweetsTest() {
         ts.countTweets(owner);
-        verify(tweetDAO).countTweets(eq(owner.getId()));
+        verify(tweetDAO).countTweets(eq(owner));
     }
 
     @Test
     public void increaseFavoriteCount() {
-        ts.increaseFavoriteCount(tweet.getId());
-        verify(tweetDAO).increaseFavoriteCount(eq(tweet.getId()));
+        ts.increaseFavoriteCount(tweet);
+        verify(tweetDAO).increaseFavoriteCount(eq(tweet));
     }
 
     @Test
     public void decreaseFavoriteCount() {
-        ts.decreaseFavoriteCount(tweet.getId());
-        verify(tweetDAO).decreaseFavoriteCount(eq(tweet.getId()));
+        ts.decreaseFavoriteCount(tweet);
+        verify(tweetDAO).decreaseFavoriteCount(eq(tweet));
     }
 
     @Test
     public void increaseRetweetCount() {
-        ts.increaseRetweetCount(tweet.getId());
-        verify(tweetDAO).increaseRetweetCount(eq(tweet.getId()));
+        ts.increaseRetweetCount(tweet);
+        verify(tweetDAO).increaseRetweetCount(eq(tweet));
     }
 
     @Test
     public void decreaseRetweetCount() {
-        ts.decreaseRetweetCount(tweet.getId());
-        verify(tweetDAO).decreaseRetweetCount(eq(tweet.getId()));
+        ts.decreaseRetweetCount(tweet);
+        verify(tweetDAO).decreaseRetweetCount(eq(tweet));
     }
 
     @Test
     public void getTimelineTest() {
-        ts.getTimeline(owner.getId(), RESULTSPERPAGE, PAGE, SESSION_ID);
-        verify(tweetDAO).getTweetsByUserID(eq(owner.getId()), eq(RESULTSPERPAGE), eq(PAGE), eq(SESSION_ID));
+        ts.getTimeline(owner, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getTweetsForUser(eq(owner), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 
     @Test
     public void isRetweetedTest() {
-        ts.isRetweeted(tweet.getId(), owner);
-        verify(tweetDAO).isRetweeted(eq(tweet.getId()), eq(owner.getId()));
+        ts.isRetweeted(tweet, owner);
+        verify(tweetDAO).isRetweeted(eq(tweet), eq(owner));
     }
 
     @Test
     public void unreTweetTest() {
-        ts.unretweet(tweet.getId(), owner);
-        verify(tweetDAO).unretweet(eq(tweet.getId()), eq(owner.getId()));
-        verify(tweetDAO).decreaseRetweetCount(eq(tweet.getId()));
+        ts.unretweet(tweet, owner);
+        verify(tweetDAO).unretweet(eq(tweet), eq(owner));
+        verify(tweetDAO).decreaseRetweetCount(eq(tweet));
     }
 
     @Test
     public void getTweetTest() {
-        ts.getTweet(tweet.getId(), SESSION_ID);
-        verify(tweetDAO).getTweet(eq(tweet.getId()), eq(SESSION_ID));
+        ts.getTweet(tweet.getId());
+        verify(tweetDAO).getTweetById(eq(tweet.getId()));
     }
 
     @Test
     public void retweetTest() {
-        ts.retweet(tweet.getId(), owner);
-        verify(tweetDAO).retweet(eq(tweet.getId()), eq(owner));
-        verify(tweetDAO).increaseRetweetCount(eq(tweet.getId()));
+        ts.retweet(tweet, owner);
+        verify(tweetDAO).retweet(eq(tweet), eq(owner));
+        verify(tweetDAO).increaseRetweetCount(eq(tweet));
     }
 
     @Test
     public void getFavoritesTest() {
-        ts.getFavorites(tweet.getId(), RESULTSPERPAGE, PAGE, SESSION_ID);
-        verify(tweetDAO).getFavorites(eq(tweet.getId()), eq(RESULTSPERPAGE), eq(PAGE), eq(SESSION_ID));
+        ts.getFavorites(owner, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getFavorites(eq(owner), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 }

@@ -29,38 +29,38 @@ public class TweetViewModel {
     private Boolean isFavorited; // is favorited by the logged user
 
 
-    public TweetViewModel(Tweet tweet) {
-        this.id = tweet.getId();
-        this.msg = parseToHTMLString(tweet.getMsg());
-        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
-        this.timestamp = tweet.getTimestamp();
-        this.countRetweets = tweet.getCountRetweets();
-        this.countFavorites = tweet.getCountFavorites();
-        this.retweetedBy = null;
-        this.isFavorited = tweet.getIsFavorited();
-        this.isRetweeted = tweet.getIsRetweeted();
+    public TweetViewModel(Tweet tweet, Boolean isRet, Boolean isFav) {
+    	this.isFavorited = isFav;
+    	this.isRetweeted = isRet;
+    	
+    	if(tweet.isRetweet()){
+    		Tweet retweeted = tweet.getRetweet();
+    		this.id = retweeted.getId();
+            this.msg = parseToHTMLString(retweeted.getMsg());
+            this.retweetedBy = new StringBuilder(tweet.getOwner().getFirstName()).append(" ").append(tweet.getOwner().getLastName()).toString();
+            this.owner = new UserViewModel(retweeted.getOwner(), PIC_SIZE);
+            this.timestamp = retweeted.getTimestamp();
+            this.countRetweets = retweeted.getCountRetweets();
+            this.countFavorites = retweeted.getCountFavorites();
+            //this.isFavorited = retweeted.getIsFavorited();
+            //this.isRetweeted = retweeted.getIsRetweeted();
+    	} else {
+	        this.id = tweet.getId();
+	        this.msg = parseToHTMLString(tweet.getMsg());
+	        this.owner = new UserViewModel(tweet.getOwner(), PIC_SIZE);
+	        this.timestamp = tweet.getTimestamp();
+	        this.countRetweets = tweet.getCountRetweets();
+	        this.countFavorites = tweet.getCountFavorites();
+	        this.retweetedBy = null;
+	        //this.isFavorited = tweet.getIsFavorited();
+	        //this.isRetweeted = tweet.getIsRetweeted();
+    	}
     }
 
-    public TweetViewModel(Tweet tweet, Tweet retweeted) {
-        this.id = retweeted.getId();
-        this.msg = parseToHTMLString(retweeted.getMsg());
-        this.retweetedBy = new StringBuilder(tweet.getOwner().getFirstName()).append(" ").append(tweet.getOwner().getLastName()).toString();
-        this.owner = new UserViewModel(retweeted.getOwner(), PIC_SIZE);
-        this.timestamp = retweeted.getTimestamp();
-        this.countRetweets = retweeted.getCountRetweets();
-        this.countFavorites = retweeted.getCountFavorites();
-        this.isFavorited = retweeted.getIsFavorited();
-        this.isRetweeted = retweeted.getIsRetweeted();
+    public static TweetViewModel transformTweet(Tweet tweet, Boolean isFav, Boolean isRet) {
+        return new TweetViewModel(tweet, isRet, isFav);
     }
-
-    public static TweetViewModel transformTweet(Tweet tweet) {
-        return new TweetViewModel(tweet);
-    }
-
-    public static TweetViewModel transformTweet(Tweet tweet, Tweet retweeted) {
-        return new TweetViewModel(tweet, retweeted);
-    }
-
+    
     public String getMsg() {
         return msg;
     }
