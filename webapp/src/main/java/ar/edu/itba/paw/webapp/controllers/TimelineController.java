@@ -117,7 +117,7 @@ public class TimelineController extends TweetListController {
 		List<Tweet> tweetList = null;
 
 		if(u != null) {
-			tweetList = tweetService.getTimeline(u, TIMELINE_SIZE, page, sessionUser());
+			tweetList = tweetService.getTimeline(u, TIMELINE_SIZE, page);
 		}
 
 		return buildMav(tweetList, u, page, "timeline", "");
@@ -141,7 +141,7 @@ public class TimelineController extends TweetListController {
 		List<Tweet> tweetList = null;
 
 		if(u != null) {
-			tweetList = tweetService.getMentions(u, TIMELINE_SIZE, page, sessionUser());
+			tweetList = tweetService.getMentions(u, TIMELINE_SIZE, page);
 		}
 
 		return buildMav(tweetList, u, page, "mentions", MENTIONS);
@@ -165,7 +165,7 @@ public class TimelineController extends TweetListController {
 		List<Tweet> tweetList = null;
 
 		if(u != null) {
-			tweetList = tweetService.getFavorites(u, TIMELINE_SIZE, page, sessionUser());
+			tweetList = tweetService.getFavorites(u, TIMELINE_SIZE, page);
 		}
 
 		return buildMav(tweetList, u, page, "favorites", FAVORITES);

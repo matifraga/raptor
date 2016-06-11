@@ -27,8 +27,8 @@ public class TweetServiceImplTest {
     private static final String USERNAME = "@testUser", EMAIL = "testUser@gmail.com",
             FIRSTNAME = "test", LASTNAME = "user", PASSWORD = "password";
 
-    private static final String SESSION_USERNAME = "@testUser", SESSION_EMAIL = "testUser@gmail.com",
-    		SESSION_FIRSTNAME = "test", SESSION_LASTNAME = "user", SESSION_PASSWORD = "password";
+//    private static final String SESSION_USERNAME = "@testUser", SESSION_EMAIL = "testUser@gmail.com",
+//    		SESSION_FIRSTNAME = "test", SESSION_LASTNAME = "user", SESSION_PASSWORD = "password";
 
     private static final String HASHTAG = "#test";
 
@@ -37,7 +37,7 @@ public class TweetServiceImplTest {
     private static final int RESULTSPERPAGE = 1, PAGE = 1;
 
     private static User owner;
-    private static User sessionUser;
+//    private static User sessionUser;
     private static Tweet tweet;
 
     private TweetServiceImpl ts;
@@ -54,7 +54,6 @@ public class TweetServiceImplTest {
     public static void setUpBeforeClass() throws Exception {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         owner = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, PASSWORD, false);
-        sessionUser = new User(SESSION_USERNAME, SESSION_EMAIL, SESSION_FIRSTNAME, SESSION_LASTNAME, SESSION_PASSWORD, false);
         tweet = new Tweet(MESSAGE, owner, timestamp);
     }
 
@@ -69,12 +68,12 @@ public class TweetServiceImplTest {
         ts = new TweetServiceImpl();
         ts.setTweetDAO(tweetDAO);
         when(tweetDAO.create(MESSAGE, owner)).thenReturn(tweet);
-        when(tweetDAO.getGlobalFeed(any(Integer.class), any(Integer.class), any(User.class))).thenReturn(arrayList);
+        when(tweetDAO.getGlobalFeed(any(Integer.class), any(Integer.class))).thenReturn(arrayList);
         when(tweetDAO.getLogedInFeed(any(User.class), any(Integer.class), any(Integer.class))).thenReturn(arrayList);
-        when(tweetDAO.getTweetsForUser(any(User.class), any(Integer.class), any(Integer.class), any(User.class))).thenReturn(arrayList);
+        when(tweetDAO.getTweetsForUser(any(User.class), any(Integer.class), any(Integer.class))).thenReturn(arrayList);
         when(tweetDAO.countTweets(any(User.class))).thenReturn(1);
         when(tweetDAO.isRetweeted(any(Tweet.class), any(User.class))).thenReturn(true);
-        when(tweetDAO.getTweetById(tweet.getId(), sessionUser)).thenReturn(tweet);
+        when(tweetDAO.getTweetById(tweet.getId())).thenReturn(tweet);
         when(tweetDAO.retweet(eq(tweet), any(User.class))).thenReturn(tweet);
 
         ts.setHashtagService(hashtagService);
@@ -100,29 +99,29 @@ public class TweetServiceImplTest {
     @Test
     public void getHashtagsTest() {
 
-        ts.getHashtag(HASHTAG, RESULTSPERPAGE, PAGE, sessionUser);
-        verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(PAGE), eq(sessionUser));
+        ts.getHashtag(HASHTAG, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(PAGE));
 
     }
 
     @Test
     public void searchTweetsTest() {
 
-        ts.searchTweets(SEARCH, RESULTSPERPAGE, PAGE, sessionUser);
-        verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(PAGE), eq(sessionUser));
+        ts.searchTweets(SEARCH, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
     @Test
     public void getMentionsTest() {
-        ts.getMentions(owner, RESULTSPERPAGE, PAGE, sessionUser);
-        verify(tweetDAO).getTweetsByMention(eq(owner), eq(RESULTSPERPAGE), eq(PAGE), eq(sessionUser));
+        ts.getMentions(owner, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getTweetsByMention(eq(owner), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 
     @Test
     public void globalFeedTest() {
-        ts.globalFeed(RESULTSPERPAGE, PAGE, sessionUser);
-        verify(tweetDAO).getGlobalFeed(eq(RESULTSPERPAGE), eq(PAGE), eq(sessionUser));
+        ts.globalFeed(RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getGlobalFeed(eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 
@@ -164,8 +163,8 @@ public class TweetServiceImplTest {
 
     @Test
     public void getTimelineTest() {
-        ts.getTimeline(owner, RESULTSPERPAGE, PAGE, sessionUser);
-        verify(tweetDAO).getTweetsForUser(eq(owner), eq(RESULTSPERPAGE), eq(PAGE), eq(sessionUser));
+        ts.getTimeline(owner, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getTweetsForUser(eq(owner), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 
@@ -184,8 +183,8 @@ public class TweetServiceImplTest {
 
     @Test
     public void getTweetTest() {
-        ts.getTweet(tweet.getId(), sessionUser);
-        verify(tweetDAO).getTweetById(eq(tweet.getId()), eq(sessionUser));
+        ts.getTweet(tweet.getId());
+        verify(tweetDAO).getTweetById(eq(tweet.getId()));
     }
 
     @Test
@@ -197,8 +196,8 @@ public class TweetServiceImplTest {
 
     @Test
     public void getFavoritesTest() {
-        ts.getFavorites(owner, RESULTSPERPAGE, PAGE, sessionUser);
-        verify(tweetDAO).getFavorites(eq(owner), eq(RESULTSPERPAGE), eq(PAGE), eq(sessionUser));
+        ts.getFavorites(owner, RESULTSPERPAGE, PAGE);
+        verify(tweetDAO).getFavorites(eq(owner), eq(RESULTSPERPAGE), eq(PAGE));
     }
 
 }

@@ -44,7 +44,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page, final User sessionUser) {
+	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
@@ -59,7 +59,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page, final User sessionUser) {
+	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> hashtagIDs = em.createNativeQuery("select tweetID from hashtags where UPPER(hashtag) = ?")
 				.setParameter(1, hashtag.toUpperCase())
@@ -80,7 +80,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final int page, final User sessionUser) {
+	public List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> mentionIDs = em.createNativeQuery("select tweetID from mentions where userID = ?")
 				.setParameter(1, user.getId())
@@ -100,7 +100,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final User sessionUser) {
+	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
@@ -114,7 +114,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getGlobalFeed(final int resultsPerPage, final int page, final User sessionUser) {
+	public List<Tweet> getGlobalFeed(final int resultsPerPage, final int page) {
 		return em.createQuery("from Tweet as t order by t.timestamp desc", Tweet.class)
 		.setFirstResult((page-1)*resultsPerPage)
 		.setMaxResults(resultsPerPage)
@@ -176,7 +176,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public Tweet getTweetById(final String tweetID, final User sessionUser) {
+	public Tweet getTweetById(final String tweetID) {
 		return em.createQuery("from Tweet as t where t.id = :tweetID", Tweet.class)
 			.setParameter("tweetID", tweetID)
 			.getSingleResult();
@@ -200,7 +200,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page, final User sessionUser) {
+	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> favoriteTweetIDs = em.createNativeQuery("select tweetID from favorites where favoriteID = ?")
 				.setParameter(1, user.getId()).getResultList();

@@ -31,32 +31,29 @@ public interface TweetDAO {
 	 * @param user           The user.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page           Number of page needed.
-	 * @param sessionUser    The user that is logged in.
 	 * @return The user's list of tweets.
 	 */
-	List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page, final User sessionUser);
+	List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page);
 
 	/**
 	 * Get a list of Tweets with a hashtag.
 	 *
 	 * @param hashtag		 The searched hashtag.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param sessionUser    The user that is logged in.
 	 * @param page           Number of page needed.
 	 * @return 				 The list of tweets containing the hashtag.
 	 */
-	List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page, final User sessionUser);
+	List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page);
 
 	/**
 	 * Get a list of Tweets mentioning a user.
 	 *
 	 * @param user         		The user.
 	 * @param resultsPerPage 	Limit number of tweets per page.
-	 * @param sessionUser      	The user that is logged in.
 	 * @param page           	Number of page needed.
 	 * @return 					the list of tweets containing the mention.
 	 */
-	List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final int page, final User sessionUser);
+	List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final int page);
 
 	/**
 	 * Search for tweets.
@@ -64,20 +61,18 @@ public interface TweetDAO {
 	 * @param text           	The searched text.
 	 * @param resultsPerPage 	Limit number of tweets per page.
 	 * @param page           	Number of page needed.
-	 * @param sessionUser       The user that is logged in.
 	 * @return the list of tweets containing the text.
      */
-    List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final User sessionUser);
+    List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page);
 
 	/**
 	 * Get a list of the latest tweets in the whole network.
 	 *
 	 * @param resultsPerPage 	Limit number of tweets per page.
-	 * @param sessionUser       The user that is logged in.
 	 * @param page           	Number of page needed.
 	 * @return The list of tweets.
      */
-	List<Tweet> getGlobalFeed(final int resultsPerPage, final int page, final User sessionUser);
+	List<Tweet> getGlobalFeed(final int resultsPerPage, final int page);
 
 	/**
 	 * Get a list of the latest tweets from the users you follow.
@@ -129,10 +124,9 @@ public interface TweetDAO {
 	 * Get a tweet.
 	 *
 	 * @param tweetID   The tweet's ID.
-	 * @param sessionUser The user that is logged in.
 	 * @return The recovered tweet.
 	 */
-	Tweet getTweetById(final String tweetID, final User sessionUser);
+	Tweet getTweetById(final String tweetID);
 
 	/**
 	 * Returns whether a user retweeted a tweet or not.
@@ -157,9 +151,8 @@ public interface TweetDAO {
 	 * @param user             The user.
 	 * @param resultsPerPage Limit number of tweets per page.
 	 * @param page           Number of page needed.
-	 * @param sessionUser      The user that is logged in.
 	 * @return The recovered favorites.
 	 */
-	List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page, final User sessionUser);
+	List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page);
 
 }

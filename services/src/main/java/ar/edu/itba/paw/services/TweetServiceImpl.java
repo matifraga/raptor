@@ -51,10 +51,10 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public Tweet getTweet(final String tweetID, final User sessionUser) {
+    public Tweet getTweet(final String tweetID) {
         if (tweetID == null)
             return null;
-        Tweet t = tweetDAO.getTweetById(tweetID, sessionUser);
+        Tweet t = tweetDAO.getTweetById(tweetID);
         if (t == null) {
             //TODO handle null
         }
@@ -63,8 +63,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getTimeline(final User user, final int resultsPerPage, final int page, final User sessionUser) {
-        List<Tweet> ans = tweetDAO.getTweetsForUser(user, resultsPerPage, page, sessionUser);
+    public List<Tweet> getTimeline(final User user, final int resultsPerPage, final int page) {
+        List<Tweet> ans = tweetDAO.getTweetsForUser(user, resultsPerPage, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -84,8 +84,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getMentions(final User user, final int resultsPerPage, final int page, final User sessionUser) {
-        List<Tweet> ans = tweetDAO.getTweetsByMention(user, resultsPerPage, page, sessionUser);
+    public List<Tweet> getMentions(final User user, final int resultsPerPage, final int page) {
+        List<Tweet> ans = tweetDAO.getTweetsByMention(user, resultsPerPage, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -94,8 +94,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page, final User sessionUser) {
-        List<Tweet> ans = tweetDAO.getFavorites(user, resultsPerPage, page, sessionUser);
+    public List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page) {
+        List<Tweet> ans = tweetDAO.getFavorites(user, resultsPerPage, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -104,8 +104,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final int page, final User sessionUser) {
-        List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, page, sessionUser);
+    public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final int page) {
+        List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -114,8 +114,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page, final User sessionUser) {
-        List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, page, sessionUser);
+	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page) {
+        List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, page);
         if (ans == null) {
             //TODO handle null
         }
@@ -124,8 +124,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
 	@Override 
-    public List<Tweet> globalFeed(int resultsPerPage, int page, final User sessionUser) {
-        List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, page, sessionUser);
+    public List<Tweet> globalFeed(int resultsPerPage, int page) {
+        List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, page);
         if (ans == null) {
             // TODO handle null
         }

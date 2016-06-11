@@ -58,7 +58,7 @@ public class TweetController extends RaptorController{
 								@RequestParam(value = RETWEET) Boolean retweet) {
 
 		User sessionUser = sessionUser();
-		Tweet tweet = tweetService.getTweet(tweetId, sessionUser);
+		Tweet tweet = tweetService.getTweet(tweetId);
 		if(sessionUser != null) {
 			if (retweet) {
 				tweetService.retweet(tweet, sessionUser);
@@ -77,7 +77,7 @@ public class TweetController extends RaptorController{
 									  @RequestParam(value = FAVORITE) Boolean favorite) {
 
 		User sessionUser = sessionUser();
-		Tweet tweet = tweetService.getTweet(tweetId, sessionUser);
+		Tweet tweet = tweetService.getTweet(tweetId);
 		if(sessionUser != null) {
 			if (favorite) {
 				favoriteService.favorite(tweet, sessionUser);
