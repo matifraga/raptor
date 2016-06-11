@@ -17,7 +17,7 @@ import ar.edu.itba.paw.models.User;
  */
 @Repository
 public class UserHibernateDAO implements UserDAO{
-
+ 
 	@PersistenceContext
 	private EntityManager em;
 
@@ -59,13 +59,14 @@ public class UserHibernateDAO implements UserDAO{
 				.getResultList();
 		return list.isEmpty() ? null : list.get(0);
 	}
-
+	
 	@Override
 	public List<User> getFollowers(final User user, final int resultsPerPage, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> followerIDs = em.createNativeQuery("select followerID from followers where followingID = ?")
 				.setParameter(1, user.getId())
 				.getResultList();
+		
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<User> cq = cb.createQuery(User.class);
@@ -95,4 +96,5 @@ public class UserHibernateDAO implements UserDAO{
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
+	
 }
