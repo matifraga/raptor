@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.itba.paw.models.NotificationType;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.FavoriteDAO;
@@ -16,6 +17,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Autowired
 	private TweetService tweetService;
+	
+	@Autowired
+	private NotificationService notificationService;
 
 	//test
 	void setFavoriteDAO(FavoriteDAO favoriteDAO) {
@@ -31,6 +35,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	public void favorite(final Tweet tweet, final User user) {
 		tweetService.increaseFavoriteCount(tweet);
 		favoriteDAO.favorite(tweet, user);
+		notificationService.register(user, tweet.getOwner(), NotificationType.FAVORITE, tweet);
 	}
 
 	@Transactional

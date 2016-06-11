@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.models.NotificationType;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.FollowerDAO;
 
@@ -12,6 +13,9 @@ public class FollowerServiceImpl implements FollowerService {
 
     @Autowired
     private FollowerDAO followerDAO;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     //test
     void setFollowerDAO(FollowerDAO followerDAO) {
@@ -23,6 +27,7 @@ public class FollowerServiceImpl implements FollowerService {
     public void follow(final User follower, final User following) {
         if (follower.equals(following)) return;
         followerDAO.follow(follower, following);
+        notificationService.register(follower, following, NotificationType.FOLLOW, null);
     }
 
 	@Transactional
@@ -39,6 +44,7 @@ public class FollowerServiceImpl implements FollowerService {
     @Override
     public void unfollow(final User follower, final User following) {
         followerDAO.unfollow(follower, following);
+        notificationService.register(follower, following, NotificationType.UNFOLLOW, null);
     }
 
 	@Transactional

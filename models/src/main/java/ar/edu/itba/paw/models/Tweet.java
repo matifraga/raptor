@@ -68,12 +68,6 @@ public class Tweet {
 	@JoinColumn(name = "retweetFrom")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Tweet retweet;
-	
-//	@Transient
-//	private Boolean isRetweeted;
-	
-//	@Transient
-//	private Boolean isFavorited;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="favorites",

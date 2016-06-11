@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.models.NotificationType;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.MentionDAO;
@@ -19,6 +20,9 @@ public class MentionServiceImpl implements MentionService {
 
     @Autowired
     private UserDAO userDAO;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     //test
     void setUserDAO(UserDAO userDAO) {
@@ -36,8 +40,10 @@ public class MentionServiceImpl implements MentionService {
         Set<String> mentions = tweet.getMentions();
         for (String ment : mentions) {
             User user = userDAO.getByUsername(ment);
-            if (user != null)
-                mentionDAO.create(user, tweet);
+			if (user != null) {
+				mentionDAO.create(user, tweet);
+				notificationService.register(tweet.getOwner(), user, NotificationType.MENTION, tweet);
+			}
         }
     }
 

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.models.NotificationType;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.TweetDAO;
@@ -21,6 +22,9 @@ public class TweetServiceImpl implements TweetService {
 
     @Autowired
     private MentionService mentionService;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     //test
     void setTweetDAO(TweetDAO tweetDAO) {
@@ -75,6 +79,7 @@ public class TweetServiceImpl implements TweetService {
     @Override
     public void retweet(final Tweet tweet, final User owner) {
         Tweet t = tweetDAO.retweet(tweet, owner);
+        notificationService.register(owner, tweet.getOwner(), NotificationType.RETWEET, tweet);
         if (t == null) {
             //TODO handle null
         } else {
