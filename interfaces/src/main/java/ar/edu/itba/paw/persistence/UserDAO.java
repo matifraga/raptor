@@ -43,6 +43,14 @@ public interface UserDAO {
      * @return True if username can be used by new user, false if not.
      */
     Boolean isUsernameAvailable(final String username);
+    
+    /**
+     * Checks if a certain email is available.
+     * 
+     * @param username The tested email.
+     * @return True if email can be used by new user, false if not.
+     */
+    Boolean isEmailAvailable(final String email);
 
     /**
      * Check if user exists and the password is correct.

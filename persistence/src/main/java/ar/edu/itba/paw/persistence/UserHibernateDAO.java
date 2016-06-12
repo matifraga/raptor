@@ -23,9 +23,12 @@ public class UserHibernateDAO implements UserDAO{
 
 	@Override
 	public User create(final String username, final String password, final String email, final String firstName, final String lastName) {
-		final User u = new User(username, email, firstName, lastName, password, false);
-		em.persist(u);
-		return u;
+		if(isUsernameAvailable(username) && isEmailAvailable(email)){
+			final User u = new User(username, email, firstName, lastName, password, false);
+			em.persist(u);
+			return u;
+		} else 
+			return null;
 	}
 
 	@Override
@@ -49,6 +52,15 @@ public class UserHibernateDAO implements UserDAO{
 	@Override
 	public Boolean isUsernameAvailable(final String username) {
 		return getByUsername(username)==null;
+	}
+	
+	@Override
+	public Boolean isEmailAvailable(final String email) {
+		List<User> list  = em.createQuery("from User as u where u.email = :email", User.class)
+				.setParameter("email", email)
+				.getResultList();
+		User u = list.isEmpty()? null : list.get(0);
+		return u==null;
 	}
 
 	@Override
