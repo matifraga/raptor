@@ -37,8 +37,10 @@ public interface NotificationDAO {
 	 * Get a user's notifications.
 	 * 
 	 * @param user The user.
+	 * @param resultsPerPage Limit number of notifications per page.
+	 * @param page           Number of page needed.
 	 * @return	The list of notifications for the user.
 	 */
-	List<Notification> getNotifications(final User user);
+	List<Notification> getNotifications(final User user, final int resultsPerPage, final int page);
 
 }

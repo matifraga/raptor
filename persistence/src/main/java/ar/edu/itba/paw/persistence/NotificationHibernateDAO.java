@@ -47,7 +47,7 @@ public class NotificationHibernateDAO implements NotificationDAO {
 	}
 
 	@Override
-	public List<Notification> getNotifications(User user) {
+	public List<Notification> getNotifications(User user, int resultsPerPage, int page) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Notification> cq = cb.createQuery(Notification.class);
 		Root<Notification> notif = cq.from(Notification.class);
@@ -55,6 +55,8 @@ public class NotificationHibernateDAO implements NotificationDAO {
 			.orderBy(cb.desc(notif.get("timestamp")));
 		
 		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
+				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
 
