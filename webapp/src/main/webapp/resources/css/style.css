@@ -254,7 +254,7 @@ a.navbar-text {
     font-weight: 500;
     padding: 0;
     width: auto;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
 
