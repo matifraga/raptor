@@ -37,7 +37,7 @@ public class Tweet {
 
 	private final static String DATE_FORMAT = "h:mm a - d MMMM yyyy";
 
-	private final static String ERROR_LENGTH = "A tweet can not have more than " + MAX_LENGTH + " or 0 characters.";
+	private final static String ERROR_LENGTH = "A tweet can not have more than " + MAX_LENGTH + " characters.";
 
 	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
