@@ -29,10 +29,16 @@ public class TweetHibernateDAO implements TweetDAO{
 	@Override
 	public Tweet create(final String msg, final User owner) {
 		Timestamp thisMoment = new Timestamp(new Date().getTime());
-        Tweet tweet = new Tweet(msg, owner, thisMoment);
-        em.persist(tweet);
-        em.flush();
-		return tweet;
+		Tweet tweet;
+		try {
+			tweet = new Tweet(msg, owner, thisMoment);
+	        em.persist(tweet);
+	        em.flush();
+	        return tweet;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
 	}
 
 	@Override
@@ -217,21 +223,4 @@ public class TweetHibernateDAO implements TweetDAO{
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
-	
-//	private List<Tweet> tweetListQueryWrapper(List<Tweet> tweets, User sessionUser){
-//		//List<String> tweetIDs = tweets.stream().map(t->t.getId()).collect(Collectors.toList());
-//		
-//		StringBuilder builder = new StringBuilder("select tweets.tweetID, max((CASE when favoriteID =? and tweets.tweetID = favorites.tweetID then 1 else 0 end)) as isFavorited, max((CASE when tweets2.retweetFrom = tweets.tweetID and tweets2.userID =? then 1 else 0 end)) as isRetweeted from tweets, tweets as  tweets2, favorites where tweets.tweetID in ");
-//		int i;
-//		for(i = 0 ; i < tweets.size()-1; i++) 
-//		    builder.append(tweets.get(i).getId()).append(", ");
-//		builder.append(tweets.get(i).getId()).append(" group by tweets.tweetID");
-//		
-//		List list = em.createNativeQuery(builder.toString()).getResultList();
-//		for(i=0; i<list.size(); i++){
-//			
-//		};
-//		
-//	}
-	
 }
