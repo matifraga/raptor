@@ -61,13 +61,7 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 	private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.hbm2ddl.auto", "update");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
-        
-        // TODO NO VA EN PRODUCCION
-        properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.format_sql", "true");        
-        // FIN DE TODO
-        
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");        
         return properties;        
     }
 	
