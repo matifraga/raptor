@@ -173,7 +173,18 @@
 	            <groupId>org.hibernate</groupId>
 	            <artifactId>hibernate-core</artifactId>
 	            <version>${org.hibernate.version}</version>
-        	</dependency>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.18.1-GA</version>
+            </dependency>
         	<dependency>
         		<groupId>org.hibernate</groupId>
         		<artifactId>hibernate-entitymanager</artifactId>
@@ -184,6 +195,11 @@
             	<artifactId>spring-orm</artifactId>
             	<version>${org.springframework.version}</version>
         	</dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>3.3.0.Final</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
