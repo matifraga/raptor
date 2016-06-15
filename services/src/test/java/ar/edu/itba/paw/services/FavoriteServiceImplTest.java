@@ -59,12 +59,12 @@ public class FavoriteServiceImplTest {
     }
 
 
-    @Test
+    /*@Test
     public void favoriteTest() {
         favoriteService.favorite(tweet, user);
         verify(tweetService).increaseFavoriteCount(tweet);
         verify(favoriteDAO).favorite(eq(tweet), eq(user));
-    }
+    }*/
 
 /*
     @Test

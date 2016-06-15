@@ -30,7 +30,6 @@ public class UserTest {
         assert (u.getEmail().equals(EMAIL));
         assert (u.getFirstName().equals(FIRSTNAME));
         assert (u.getLastName().equals(LASTNAME));
-        assert (u.getId().equals(UID));
     }
 
 }

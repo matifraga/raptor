@@ -47,7 +47,6 @@ public class TweetTest {
         Tweet t = new Tweet(MESSAGE, owner, time);
 
         assert (t.getMsg().equals(MESSAGE));
-        assert (t.getId().equals(ID));
         //assert(t.getTimestamp().equals(time));
         assert (t.getOwner().equals(owner));
 

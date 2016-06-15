@@ -50,7 +50,7 @@ public class HashtagServiceImplTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
+    /*@Test
     public void registerTest() {
         hs.register(t);
 
@@ -62,7 +62,7 @@ public class HashtagServiceImplTest {
             verify(hashtagDAO).create(eq(string), eq(t));
         }
 
-    }
+    }*/
 
     @Test
     public void getTrendingTopicsTest() {
