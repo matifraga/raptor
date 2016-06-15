@@ -177,6 +177,15 @@ public class UserJDBC implements UserDAO {
 	}
 
 	@Override
+	public List<User> getFollowers(User user, int resultsPerPage, int page) {
+		return null;
+	}
+
+	@Override
+	public List<User> getFollowing(User user, int resultsPerPage, int page) {
+		return null;
+	}
+
 	public List<User> getFollowers(final String userId,
 								   final int resultsPerPage, final int page) {
 		try {
@@ -189,7 +198,6 @@ public class UserJDBC implements UserDAO {
 		} // SQLException or DataAccessException
 	}
 
-	@Override
 	public List<User> getFollowing(final String userId,
 								   final int resultsPerPage, final int page) {
 		try {

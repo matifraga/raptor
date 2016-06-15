@@ -75,6 +75,7 @@
                                     </button>
                                 </form>
                             </li>
+                            <jsp:include page="notificationPanel.jsp"></jsp:include>
                             <li class="dropdown"><a href="user/${navbarViewUser.username}" style="color: #4A4A4A;">${navbarViewUser.firstName} <c:if test="${navbarViewUser.verified == true}"><span class="glyphicon glyphicon-ok-sign" style="color:#3C8BED" /></c:if><span style="color: #4A4A4A;" class="caret hidden-sm"/></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="logout" style="color: #4A4A4A; text-align: center">Log out</a></li>

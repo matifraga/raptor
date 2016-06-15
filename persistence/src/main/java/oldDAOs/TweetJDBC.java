@@ -104,7 +104,7 @@ public class TweetJDBC implements TweetDAO {
         String id = randomTweetId();
         Timestamp thisMoment = new Timestamp(new Date().getTime());
         try {
-            ans = new Tweet(msg, id, owner, thisMoment);
+            ans = null;
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -125,183 +125,88 @@ public class TweetJDBC implements TweetDAO {
         return ans;
     }
 
-    @Override
-    public List<Tweet> getTweetsForUser(final String id, final int resultsPerPage, final int page, final String sessionID) { 
-        try {
-            return jdbcTemplate.query(SQL_GET_TWEETS + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
-        } catch (Exception e) {
-            return null;
-        } //DataAccessException or SQLException
-    }
-
-    /**
-     * Generates random tweet ID.
-     *
-     * @return Tweet ID.
-     */
     private String randomTweetId() {
-        char[] characterArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-        char[] id = new char[TWEET_ID_LENGTH];
-        Random rand = new Random();
-
-        int i = TWEET_ID_LENGTH - 1;
-        while (i >= 0) {
-            id[i] = characterArray[rand.nextInt(characterArray.length)];
-            i--;
-        }
-
-        return new String(id);
+        return "hola";
     }
 
     @Override
-    public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page, final String sessionID) {
-        try {
-            return jdbcTemplate.query(SQL_GET_TWEETS_WITH_HASHTAG + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, hashtag.toUpperCase());
-        } catch (Exception e) {
-            return null;
-        } //DataAccessException or SQLException
+    public Tweet retweet(Tweet tweet, User user) {
+        return null;
     }
 
     @Override
-    public List<Tweet> getTweetsByMention(final String userID, final int resultsPerPage, final int page, final String sessionID) {
-        try {
-            return jdbcTemplate.query(SQL_GET_TWEETS_WITH_MENTION + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, userID);
-        } catch (Exception e) {
-            return null;
-        } //DataAccessException or SQLException
+    public List<Tweet> getTweetsForUser(User user, int resultsPerPage, int page) {
+        return null;
     }
 
     @Override
-    public List<Tweet> searchTweets(String text, final int resultsPerPage, final int page, final String sessionID) {
-        try {
-            return jdbcTemplate.query(SQL_GET_TWEETS_CONTAINING + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, text.toUpperCase());
-        } catch (Exception e) {
-            return null;
-        } //SQLException or DataAccessException
+    public List<Tweet> getTweetsByHashtag(String hashtag, int resultsPerPage, int page) {
+        return null;
     }
 
     @Override
-    public List<Tweet> getGlobalFeed(final int resultsPerPage, final int page, final String sessionID) {
-        try {
-            return jdbcTemplate.query(SQL_GET_GLOBAL_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID);
-        } catch (Exception e) {
-            return null;
-        } //SQLException or DataAccessException
+    public List<Tweet> getTweetsByMention(User user, int resultsPerPage, int page) {
+        return null;
     }
 
     @Override
-    public List<Tweet> getLogedInFeed(final String userID, final int resultsPerPage, final int page) {
-        try {
-            return jdbcTemplate.query(SQL_LOGGED_IN_FEED + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, userID, userID, userID, userID);
-        } catch (Exception e) {
-            return null;
-        } //SQLException or DataAccessException
+    public List<Tweet> searchTweets(String text, int resultsPerPage, int page) {
+        return null;
     }
 
     @Override
-    public Integer countTweets(final String userID) {
-        try {
-            return jdbcTemplate.queryForObject(SQL_COUNT_TWEETS, Integer.class, userID);
-        } catch (Exception e) {
-            return null;
-        } //SQLException or DataAccessException
+    public List<Tweet> getGlobalFeed(int resultsPerPage, int page) {
+        return null;
     }
 
     @Override
-    public void increaseFavoriteCount(final String tweetID) {
-        try {
-            jdbcTemplate.update(SQL_INCREASE_FAVORITES, tweetID);
-        } catch (DataAccessException e) {
-        } //SQLException or DataAccessException
+    public List<Tweet> getLogedInFeed(User user, int resultsPerPage, int page) {
+        return null;
     }
 
     @Override
-    public void decreaseFavoriteCount(final String tweetID) {
-        try {
-            jdbcTemplate.update(SQL_DECREASE_FAVORITES, tweetID);
-        } catch (DataAccessException e) {
-        } //SQLException or DataAccessException
+    public Integer countTweets(User user) {
+        return null;
     }
 
     @Override
-    public void increaseRetweetCount(final String tweetID) {
-        try {
-            jdbcTemplate.update(SQL_INCREASE_RETWEETS, tweetID);
-        } catch (DataAccessException e) {
-        } //SQLException or DataAccessException
+    public void increaseFavoriteCount(Tweet tweet) {
+
     }
 
     @Override
-    public void decreaseRetweetCount(final String tweetID) {
-        try {
-            jdbcTemplate.update(SQL_DECREASE_RETWEETS, tweetID);
-        } catch (DataAccessException e) {
-        } //SQLException or DataAccessException
+    public void decreaseFavoriteCount(Tweet tweet) {
+
     }
 
     @Override
-    public Tweet retweet(final String tweetID, final User user) {
-        final Map<String, Object> args = new HashMap<>();
-        Tweet ans;
-        String id = randomTweetId();
-        Timestamp thisMoment = new Timestamp(new Date().getTime());
-        try {
-            ans = new Tweet(id, user, thisMoment, /*TODO temporary fix*/ null); 
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-        args.put(TWEET_ID, id);
-        args.put(MESSAGE, null);
-        args.put(USER_ID, user.getId());
-        args.put(TIMESTAMP, thisMoment);
-        args.put(COUNT_FAVORITES, 0); //TODO nulls & check
-        args.put(COUNT_RETWEETS, 0); //TODO nulls & check
-        args.put(REPLY_FROM, null);
-        args.put(REPLY_TO, null);
-        args.put(RETWEET_FROM, tweetID);
-        jdbcInsert.execute(args);
-        return ans;
+    public void increaseRetweetCount(Tweet tweet) {
+
     }
 
     @Override
-    public Tweet getTweetById(final String tweetID, final String sessionID) {
-        if (tweetID == null)
-            return null;
-        try {
-            final List<Tweet> list = jdbcTemplate.query(SQL_GET_BY_ID, tweetRowMapper, sessionID, sessionID, tweetID);
-            if (list.isEmpty()) {
-                return null; // TODO difference between no tweet found and DataAccessException pending
-            }
-            return list.get(0);
-        } catch (Exception e) {
-            return null;
-        } // SQLException or DataAccessException
+    public void decreaseRetweetCount(Tweet tweet) {
+
     }
 
     @Override
-    public Boolean isRetweeted(final String tweetID, final String userID) {
-        try {
-            return jdbcTemplate.queryForObject(SQL_IS_RETWEETED, Boolean.class, tweetID, userID);
-        } catch (Exception e) {
-            return null;
-        } //SQLException or DataAccessException
+    public Tweet getTweetById(String tweetID) {
+        return null;
     }
 
     @Override
-    public void unretweet(final String tweetID, final String userID) {
-        try {
-            jdbcTemplate.update(SQL_UNRETWEET, tweetID, userID);
-        } catch (DataAccessException e) {
-        } //SQLException or DataAccessException
+    public Boolean isRetweeted(Tweet tweet, User user) {
+        return null;
     }
 
     @Override
-    public List<Tweet> getFavorites(String id, int resultsPerPage, int page, final String sessionID) {
-        try {
-            return jdbcTemplate.query(SQL_GET_FAVORITES + " LIMIT " + resultsPerPage + " OFFSET " + (page - 1) * resultsPerPage, tweetRowMapper, sessionID, sessionID, id);
-        } catch (Exception e) {
-            return null;
-        } //SQLException or DataAccessException
+    public void unretweet(Tweet tweet, User user) {
+
+    }
+
+    @Override
+    public List<Tweet> getFavorites(User user, int resultsPerPage, int page) {
+        return null;
     }
 
     private static class TweetRowMapper implements RowMapper<Tweet> {
@@ -310,9 +215,7 @@ public class TweetJDBC implements TweetDAO {
         public Tweet mapRow(ResultSet rs, int rowNum) throws SQLException {
             Boolean isRetweeted = (rs.getInt(IS_RETWEETED) == 1);
             Boolean isFavorited = (rs.getInt(IS_FAVORITED) == 1);
-            return new Tweet(rs.getString(MESSAGE), rs.getString(TWEET_ID),
-                    new User(rs.getString(USERNAME), rs.getString(EMAIL), rs.getString(FIRST_NAME), rs.getString(LAST_NAME), rs.getString(USER_ID), rs.getBoolean(VERIFIED)),
-                    rs.getTimestamp(TIMESTAMP), rs.getInt(COUNT_RETWEETS), rs.getInt(COUNT_FAVORITES), /*TODO temporary fix rs.getString(RETWEET_FROM)*/ null, isRetweeted, isFavorited);
+            return null;
         }
 
     }

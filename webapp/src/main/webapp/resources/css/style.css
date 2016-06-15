@@ -27,9 +27,6 @@ h5 {
     margin-top: 12px;
 }
 
-.section-navbar p, a {
-    color: #008DEB;
-}
 
 input[type="text"], input[type="password"] {
     border-radius: 20px;
@@ -90,6 +87,30 @@ input[type="text"], input[type="password"] {
     box-shadow: none;
     padding: 5px 10px 10px 10px;
     text-align: center;
+}
+
+.navbar .notifications-toggle {
+    color: #4A4A4A;
+    font-size: 20px;
+}
+
+.dropdown-menu.panel-notifications {
+    min-width: 280px;
+    margin-top: 6px !important;
+}
+
+.panel-rawr.panel-notifications {
+    background-color: transparent;
+}
+
+.panel-rawr.no-line {
+    border-bottom-width: 0px;
+}
+
+
+.notifications-pic {
+    width: 40px !important;
+    height: 40px !important;
 }
 
 .section-navbar .search-input {
