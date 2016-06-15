@@ -1,5 +1,7 @@
 package oldDAOs;
 
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,7 +39,6 @@ public class FavoriteJDBC implements FavoriteDAO {
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(FAVORITES);
 	}
 
-	@Override
 	public void favorite(final String tweetID, final String userID) {
 		final Map<String, Object> args = new HashMap<>();
 		args.put(TWEET_ID, tweetID);
@@ -48,7 +49,6 @@ public class FavoriteJDBC implements FavoriteDAO {
 		}
 	}
 
-	@Override
 	public Boolean isFavorited(final String tweetID, final String userID) {
 		try {
 			return jdbcTemplate.queryForObject(SQL_IS_FAVORITE, Boolean.class, tweetID, userID);
@@ -57,11 +57,24 @@ public class FavoriteJDBC implements FavoriteDAO {
 		} //SQLException or DataAccessException
 	}
 
-	@Override
 	public void unfavorite(final String tweetID, final String userID) {
 		try {
 			jdbcTemplate.update(SQL_UNFAVORITE, tweetID, userID);
 		} catch (DataAccessException e) {
 		}
+	}
+
+	public void favorite(Tweet tweet, User user) {
+
+	}
+
+	@Override
+	public Boolean isFavorited(Tweet tweet, User user) {
+		return null;
+	}
+
+	@Override
+	public void unfavorite(Tweet tweet, User user) {
+
 	}
 }

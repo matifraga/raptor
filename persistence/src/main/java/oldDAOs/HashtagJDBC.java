@@ -1,5 +1,6 @@
 package oldDAOs;
 
+import ar.edu.itba.paw.models.Tweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ar.edu.itba.paw.persistence.TweetJDBC.TIMESTAMP;
-import static ar.edu.itba.paw.persistence.TweetJDBC.TWEETS;
+import static oldDAOs.TweetJDBC.TIMESTAMP;
+import static oldDAOs.TweetJDBC.TWEETS;
 
 /**
  * Testing model
@@ -57,7 +58,6 @@ public class HashtagJDBC implements HashtagDAO {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(HASHTAGS);
     }
 
-    @Override
     public void create(final String hashtag, final String tweetID) {
         if (hashtag.length() >= 256) {
             return;
@@ -69,6 +69,11 @@ public class HashtagJDBC implements HashtagDAO {
             jdbcInsert.execute(args);
         } catch (DataAccessException e) {
         }
+    }
+
+    @Override
+    public void create(String hashtag, Tweet tweet) {
+
     }
 
     @Override

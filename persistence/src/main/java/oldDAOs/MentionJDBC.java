@@ -1,5 +1,7 @@
 package oldDAOs;
 
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,7 +32,6 @@ public class MentionJDBC implements MentionDAO {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MENTIONS);
     }
 
-    @Override
     public void create(final String userID, final String tweetID) {
 
         final Map<String, Object> args = new HashMap<>();
@@ -39,5 +40,10 @@ public class MentionJDBC implements MentionDAO {
         try {
             jdbcInsert.execute(args);
         } catch (DataAccessException e) {}
+    }
+
+    @Override
+    public void create(User user, Tweet tweet) {
+
     }
 }

@@ -1,9 +1,12 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ar.edu.itba.paw.services.NotificationService;
+import ar.edu.itba.paw.webapp.viewmodels.NotificationViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
@@ -28,6 +31,9 @@ public abstract class RaptorController {
 	@Autowired
 	protected UserService userService;
 
+	@Autowired
+	protected NotificationService notificationService;
+
 	@ModelAttribute("sessionUser")
     public User sessionUser() {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -44,6 +50,12 @@ public abstract class RaptorController {
 		if(u == null) return null;
 		
 		return new UserViewModel(u, 50);
+	}
+
+	@ModelAttribute("notifications")
+	public List<NotificationViewModel> notifications(){
+		List<NotificationViewModel> noti = NotificationViewModel.transform(notificationService.getNotifications(sessionUser()));
+		return noti;
 	}
 
 	protected Optional<String> getPreviousPageByRequest(HttpServletRequest request)

@@ -1,5 +1,6 @@
 package oldDAOs;
 
+import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +42,6 @@ public class FollowerJDBC implements FollowerDAO {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName(FOLLOWERS);
     }
 
-    @Override
     public void follow(final String followerID, final String followingID) {
         final Map<String, Object> args = new HashMap<>();
         args.put(FOLLOWER_ID, followerID);
@@ -52,7 +52,6 @@ public class FollowerJDBC implements FollowerDAO {
         }
     }
 
-    @Override
     public Boolean isFollower(final String followerID, final String followingID) {
         try {
             return jdbcTemplate.queryForObject(SQL_IS_FOLLOWER, Boolean.class, followerID, followingID);
@@ -61,7 +60,6 @@ public class FollowerJDBC implements FollowerDAO {
         } //SQLException or DataAccessException
     }
 
-    @Override
     public void unfollow(final String followerID, final String followingID) {
         try {
             jdbcTemplate.update(SQL_UNFOLLOW, followerID, followingID);
@@ -69,7 +67,6 @@ public class FollowerJDBC implements FollowerDAO {
         }
     }
 
-    @Override
     public Integer countFollowers(final String userID) {
         try {
             return jdbcTemplate.queryForObject(SQL_COUNT_FOLLOWERS, Integer.class, userID);
@@ -78,12 +75,36 @@ public class FollowerJDBC implements FollowerDAO {
         } //SQLException or DataAccessException
     }
 
-    @Override
     public Integer countFollowing(final String userID) {
         try {
             return jdbcTemplate.queryForObject(SQL_COUNT_FOLLOWING, Integer.class, userID);
         } catch (Exception e) {
             return null;
         } //SQLException or DataAccessException
+    }
+
+    @Override
+    public void follow(User follower, User following) {
+
+    }
+
+    @Override
+    public Boolean isFollower(User follower, User following) {
+        return null;
+    }
+
+    @Override
+    public void unfollow(User follower, User following) {
+
+    }
+
+    @Override
+    public Integer countFollowers(User user) {
+        return null;
+    }
+
+    @Override
+    public Integer countFollowing(User user) {
+        return null;
     }
 }
