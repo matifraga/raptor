@@ -19,7 +19,7 @@ public class NotificationViewModel {
     private final NotificationType type;
     private final Timestamp timestamp;
     private final TweetViewModel tweet;
-    private final String message;
+    private final String messageCode;
 
     public NotificationViewModel(Notification notification) {
         this.from = UserViewModel.transformUser(notification.getFrom(), 50);
@@ -30,35 +30,26 @@ public class NotificationViewModel {
          this.tweet = TweetViewModel.transformTweet(notification.getTweet(), false,false);
         else this.tweet = null;
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(notification.getFrom().getFirstName());
-        sb.append(" ");
-
         switch (type) {
             case MENTION:
-                sb.append("<strong>mentioned</strong> you.");
+                this.messageCode = "notifications.mention";
                 break;
             case RETWEET:
-                sb.append("<strong>rerawred</strong> your tweet.");
+                this.messageCode = "notifications.rerawr";
                 break;
             case FOLLOW:
-                sb.append("<strong>followed</strong> you.");
+                this.messageCode = "notifications.followed";
                 break;
             case UNFOLLOW:
-                sb.append("<strong>unfollowed</strong> you.");
+                this.messageCode = "notifications.unfollowed";
                 break;
             case FAVORITE:
-                sb.append("<strong>liked</strong> your tweet.");
+                this.messageCode = "notifications.liked";
                 break;
             default:
+                this.messageCode = null;
                 break;
         }
-
-        this.message = sb.toString();
-        System.out.println(this.message);
-
-        // xxx has tttt you.
-        // xxx has tttt your tweet.
 
     }
 
@@ -92,7 +83,7 @@ public class NotificationViewModel {
         return tweet;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMessageCode() {
+        return messageCode;
     }
 }
