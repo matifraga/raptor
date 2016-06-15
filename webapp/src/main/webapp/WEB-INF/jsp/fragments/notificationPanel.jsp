@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-xs-8 col-sm-10 col-md-10">
                         <div class="rawr-top-bar">
-                            <p>${noti.from.firstName} <spring:message code="${noti.messageCode}"/></p>
+                            <p><spring:message code="${noti.messageCode}" arguments="${noti.from.firstName};${user.lastName}" htmlEscape="false" argumentSeparator=";"/></p>
                         </div>
                     </div>
                 </div>

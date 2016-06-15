@@ -1,13 +1,12 @@
 package ar.edu.itba.paw.webapp.viewmodels;
 
-import ar.edu.itba.paw.models.Notification;
-import ar.edu.itba.paw.models.NotificationType;
-import ar.edu.itba.paw.models.User;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ar.edu.itba.paw.models.Notification;
+import ar.edu.itba.paw.models.NotificationType;
 
 /**
  * Created by Tomi on 6/11/16.
