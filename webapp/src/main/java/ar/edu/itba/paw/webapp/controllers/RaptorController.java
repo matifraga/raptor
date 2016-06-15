@@ -54,7 +54,7 @@ public abstract class RaptorController {
 
 	@ModelAttribute("notifications")
 	public List<NotificationViewModel> notifications(){
-		List<NotificationViewModel> noti = NotificationViewModel.transform(notificationService.getNotifications(sessionUser()));
+		List<NotificationViewModel> noti = NotificationViewModel.transform(notificationService.getNotifications(sessionUser(), 5, 1));
 		return noti;
 	}
 
