@@ -86,7 +86,7 @@ public class Tweet {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "hashtags", 
 	joinColumns=@JoinColumn(name="tweetID"))
-	@Column(name="hashtag", length = 100, table = "hashtags", nullable=false)
+	@Column(name="hashtag", length = 100, nullable=false)
 	private Set<String> hashtag;
 	
 	/* default */ Tweet(){
