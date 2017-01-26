@@ -1,11 +1,17 @@
 package ar.edu.itba.paw.webapp.config;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.ws.rs.ext.ContextResolver;
 
+import ar.edu.itba.paw.webapp.controllers.TweetDTOBuilder;
+import ar.edu.itba.paw.webapp.controllers.UserDTOBuilder;
+import org.glassfish.jersey.moxy.json.MoxyJsonConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -20,32 +26,18 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+
 
 @EnableTransactionManagement
-@EnableWebMvc
 @ComponentScan({ "ar.edu.itba.paw.webapp.controllers",
 		"ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence" })
 @Configuration
-public class WebConfig  extends WebMvcConfigurerAdapter {
-	
-	private static final String RESOURCES = "/resources/";
-	private static final String RESOURCES_PATH = "/resources/**";
-	private final static String PREFIX_WEB_INF = "/WEB-INF/jsp/";
-	private final static String SUFFIX_JSP = ".jsp";
+public class WebConfig  {
+
 	
 	@Value("classpath:schema.sql")
     private Resource schemaSql;
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler(RESOURCES_PATH).addResourceLocations(RESOURCES);
-	}
 	
 	@Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -61,7 +53,7 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 	private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.hbm2ddl.auto", "update");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");        
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
         return properties;        
     }
 	
@@ -75,25 +67,16 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 //            return new DataSourceTransactionManager(ds);
 //    }
 
-	@Bean
-	public ViewResolver viewResolver() {
-		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix(PREFIX_WEB_INF);
-		viewResolver.setSuffix(SUFFIX_JSP);
-
-		return viewResolver;
-	}
 
 	@Bean					
 	public DataSource dataSource() {
 		final DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("org.postgresql.Driver");
 
-//		// DB ELEPHANT
-//		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/rroxiqgx");
-//		ds.setUsername("rroxiqgx");
-//		ds.setPassword("IugU760wJ4CcMpk2g-iwyMM8VSyQnjXi");
+		// DB ELEPHANT
+		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/rroxiqgx");
+		ds.setUsername("rroxiqgx");
+		ds.setPassword("IugU760wJ4CcMpk2g-iwyMM8VSyQnjXi");
 
 		
 //		// DB ELEPHANT 2 CREO QUE NO SIRVE MAS ESTA...
@@ -112,9 +95,9 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 //		ds.setPassword("123456");
 
 		// DB FOR DEPLOY
-		ds.setUrl("jdbc:postgresql://localhost/grupo6");
-		ds.setUsername("grupo6");
-		ds.setPassword("baiK8Hah");
+//		ds.setUrl("jdbc:postgresql://localhost/grupo6");
+//		ds.setUsername("grupo6");
+//		ds.setPassword("baiK8Hah");
 
 		return ds;
 	}
@@ -126,7 +109,29 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		return messageSource;
 	}
-	
+
+
+
+	@Bean
+	public ContextResolver<MoxyJsonConfig> moxyJsonResolver() {
+		final MoxyJsonConfig moxyJsonConfig = new MoxyJsonConfig();
+		Map<String, String> namespacePrefixMapper = new HashMap<String, String>(1);
+		namespacePrefixMapper.put("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+		moxyJsonConfig.setNamespacePrefixMapper(namespacePrefixMapper).setNamespaceSeparator(':');
+		return moxyJsonConfig.resolver();
+	}
+
+	@Bean
+    public UserDTOBuilder userDTOBuilder() {
+	    return new UserDTOBuilder();
+    }
+
+    @Bean
+    public TweetDTOBuilder tweetDTOBuilder() {
+	    return new TweetDTOBuilder();
+    }
+
+
 //	@Bean
 //    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
 //        final DataSourceInitializer dsi = new DataSourceInitializer();

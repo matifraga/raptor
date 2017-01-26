@@ -52,7 +52,13 @@ public class UserViewModel {
     }
 
     private String generateProfilePictureUrl(User u, final int size) {
-        return new StringBuilder(GRAVATAR_END_POINT).append(md5(u.getEmail())).append("?").append(DEFAULT_PICTURE).append("&s=").append(size).toString();
+        return new StringBuilder(GRAVATAR_END_POINT)
+                .append(md5(u.getEmail()))
+                .append("?")
+                .append(DEFAULT_PICTURE)
+                .append("&s=")
+                .append(size)
+                .toString();
     }
 
     private String md5(String s) {
