@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import javax.ws.rs.ext.ContextResolver;
 
+import ar.edu.itba.paw.webapp.controllers.NotificationDTOBuilder;
 import ar.edu.itba.paw.webapp.controllers.TweetDTOBuilder;
 import ar.edu.itba.paw.webapp.controllers.UserDTOBuilder;
 import org.glassfish.jersey.moxy.json.MoxyJsonConfig;
@@ -131,6 +132,10 @@ public class WebConfig  {
 	    return new TweetDTOBuilder();
     }
 
+	@Bean
+	public NotificationDTOBuilder notificationDTOBuilder() {
+		return new NotificationDTOBuilder();
+	}
 
 //	@Bean
 //    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {

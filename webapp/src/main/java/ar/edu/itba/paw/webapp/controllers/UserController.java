@@ -1,10 +1,13 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import ar.edu.itba.paw.models.Notification;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FollowerService;
+import ar.edu.itba.paw.services.NotificationService;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
+import ar.edu.itba.paw.webapp.dto.NotificationsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,10 +37,16 @@ public class UserController {
     private TweetService ts;
 
     @Autowired
+    NotificationService ns;
+
+    @Autowired
     private UserDTOBuilder userDTOBuilder;
 
     @Autowired
     private TweetDTOBuilder tweetDTOBuilder;
+
+    @Autowired
+    private NotificationDTOBuilder notificationDTOBuilder;
 
     @Context
     private UriInfo uriInfo;
@@ -52,7 +61,7 @@ public class UserController {
         User loggedUser = SessionHandler.sessionUser();
         System.out.println(loggedUser);
         if (loggedUser == null)
-            return Response.ok().build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
 
         return Response.ok(userDTOBuilder.build(loggedUser)).build();
     }
@@ -62,13 +71,47 @@ public class UserController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getFeed(@QueryParam("page") final int page, @QueryParam("limit") final int limit) {
         User loggedUser = SessionHandler.sessionUser();
-        List<Tweet> feed;
         if (loggedUser != null)
-            feed = ts.currentSessionFeed(loggedUser,limit,page);
-        else
-            feed = ts.globalFeed(limit,page);
-
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        List<Tweet> feed = ts.globalFeed(limit,page);
         return Response.ok(tweetDTOBuilder.buildList(feed,loggedUser)).build();
     }
+
+    @GET
+    @Path("/notifications")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getNotifications(@QueryParam("page") final int page, @QueryParam("limit") final int limit) {
+        User loggedUser = SessionHandler.sessionUser();
+        if (loggedUser == null)
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        List<Notification> notifications = ns.getNotifications(loggedUser, limit, page);
+        return Response.ok(notificationDTOBuilder.buildList(notifications)).build();
+    }
+
+
+    //hay que poder buscar una notificacion por id
+    /*@POST
+    @Path("/notifications/read")
+    public Response readNotifications(NotificationsDTO toRead){
+        User loggedUser = SessionHandler.sessionUser();
+        if (loggedUser == null)
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+
+    }*/
+
+
+  /*  @GET
+    @Path("/nottifications/count")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getNotificationCount() {
+        User loggedUser = SessionHandler.sessionUser();
+        if (loggedUser == null)
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+
+        //int count = ns.getUnreadNotifications(user);
+        return Response.ok(count).build()
+    }*/
+
+
 
 }
