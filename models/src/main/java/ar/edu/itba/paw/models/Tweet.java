@@ -24,6 +24,16 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+/*
+ * Los campos id y msg pueden tomar valor null, exclusivamente, en caso
+ * de que el tweet sea un retweet, por eso se permite que ambos tomen
+ * valor nulo. Al objeto se le inyectara esta informacion del tweet 
+ * que fue retweeteado, previamente a cualquier uso del objeto,
+ * por lo que la aparicion de NullPointerException por este motivo
+ * queda descartada.
+ * */
+
+
 @Entity
 @Table(name = "tweets")
 public class Tweet {
