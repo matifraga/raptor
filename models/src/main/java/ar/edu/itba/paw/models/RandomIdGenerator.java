@@ -1,4 +1,4 @@
-package idgenerators;
+package ar.edu.itba.paw.models;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -8,8 +8,6 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
 public class RandomIdGenerator implements IdentifierGenerator{
-
-	
 	private static final int ID_LENGTH = 12;
 
 	@Override
@@ -26,5 +24,4 @@ public class RandomIdGenerator implements IdentifierGenerator{
 
 		return new String(userId);
 	}
-
 }
