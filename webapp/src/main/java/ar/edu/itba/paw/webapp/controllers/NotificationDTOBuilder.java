@@ -22,24 +22,7 @@ public class NotificationDTOBuilder {
 
     public NotificationDTO build(Notification n) {
 
-        String type = "";
-        switch (n.getType()) {
-            case FAVORITE:
-                type = "favorite";
-                break;
-            case FOLLOW:
-                type = "follow";
-                break;
-            case MENTION:
-                type = "meantion";
-                break;
-            case RETWEET:
-                type = "retweet";
-                break;
-            case UNFOLLOW:
-                type = "unfollow";
-                break;
-        }
+        String type = n.getType().toString();
         UserDTO user = userDTOBuilder.build(n.getFrom());
         return new NotificationDTO(n.getId(), type, n.getSeen(), n.getTimestamp().getTime(), user, n.getTweet().getId() );
     }
