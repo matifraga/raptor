@@ -1,5 +1,19 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import ar.edu.itba.paw.models.Notification;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
@@ -7,25 +21,10 @@ import ar.edu.itba.paw.services.FollowerService;
 import ar.edu.itba.paw.services.NotificationService;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.dto.NotificationsDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.util.List;
-
-/**
- * Created by luis on 1/25/17.
- */
 
 @Path("user")
 @Component
 public class UserController {
-
 
     @Autowired
     private UserService us;
@@ -50,9 +49,6 @@ public class UserController {
 
     @Context
     private UriInfo uriInfo;
-
-
-
 
     @GET
     @Path("/")
@@ -88,7 +84,6 @@ public class UserController {
         return Response.ok(notificationDTOBuilder.buildList(notifications)).build();
     }
 
-
     //hay que poder buscar una notificacion por id
     /*@POST
     @Path("/notifications/read")
@@ -98,7 +93,6 @@ public class UserController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }*/
-
 
   /*  @GET
     @Path("/nottifications/count")
@@ -111,7 +105,4 @@ public class UserController {
         //int count = ns.getUnreadNotifications(user);
         return Response.ok(count).build()
     }*/
-
-
-
 }

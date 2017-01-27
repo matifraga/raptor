@@ -2,11 +2,6 @@ package ar.edu.itba.paw.webapp.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-
-/**
- * Created by luis on 1/25/17.
- */
-
 @XmlRootElement
 public class UserDTO {
     private String id;

@@ -13,9 +13,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
-/**
- * Created by luis on 1/25/17.
- */
 public class UserDTOBuilder {
 
     private static final int SMALL = 50;

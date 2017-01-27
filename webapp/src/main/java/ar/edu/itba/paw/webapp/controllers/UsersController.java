@@ -1,21 +1,20 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.FollowerService;
-import ar.edu.itba.paw.services.MentionService;
-import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.dto.FeedDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-/**
- * Created by luis on 1/25/17.
- */
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.FollowerService;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.services.UserService;
 
 @Path("users")
 @Component
@@ -62,8 +61,7 @@ public class UsersController {
     @GET
     @Path("/{username}/mentions")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getMentions(@PathParam("username") final String username, @QueryParam("page") final int page,
-                                @QueryParam("limit") final int limit) {
+    public Response getMentions(@PathParam("username") final String username, @QueryParam("page") final int page,  @QueryParam("limit") final int limit) {
         User loggedUser = SessionHandler.sessionUser();
         User user = us.getUserWithUsername(username);
         if (user == null)
@@ -76,8 +74,7 @@ public class UsersController {
     @GET
     @Path("/{username}/likes")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getLikes(@PathParam("username") final String username, @QueryParam("page") final int page,
-                                @QueryParam("limit") final int limit) {
+    public Response getLikes(@PathParam("username") final String username, @QueryParam("page") final int page, @QueryParam("limit") final int limit) {
         User loggedUser = SessionHandler.sessionUser();
         User user = us.getUserWithUsername(username);
         if (user == null)
@@ -86,8 +83,4 @@ public class UsersController {
         return Response.ok(tweetDTOBuilder.buildList(ts.getFavorites(user, limit, page),loggedUser)).build();
 
     }
-
-
-
-
 }

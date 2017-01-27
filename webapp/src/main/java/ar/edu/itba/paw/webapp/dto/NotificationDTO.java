@@ -2,9 +2,6 @@ package ar.edu.itba.paw.webapp.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Created by luis on 1/26/17.
- */
 @XmlRootElement
 public class NotificationDTO {
     private long id;

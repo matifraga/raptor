@@ -4,11 +4,7 @@ import ar.edu.itba.paw.models.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-/**
- * Created by luis on 1/26/17.
- */
 public class SessionHandler {
-
 
     private static final String ANONYMOUS_USER = "anonymousUser";
 
@@ -19,5 +15,4 @@ public class SessionHandler {
         User user = (User) auth.getPrincipal();
         return user;
     }
-
 }

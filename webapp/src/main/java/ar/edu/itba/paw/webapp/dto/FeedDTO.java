@@ -3,10 +3,6 @@ package ar.edu.itba.paw.webapp.dto;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-/**
- * Created by luis on 1/26/17.
- */
-
 @XmlRootElement
 public class FeedDTO {
     List<TweetDTO> rawrs;

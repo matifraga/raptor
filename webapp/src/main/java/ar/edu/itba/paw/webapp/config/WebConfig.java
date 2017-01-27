@@ -28,18 +28,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 @EnableTransactionManagement
 @ComponentScan({ "ar.edu.itba.paw.webapp.controllers",
 		"ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence" })
 @Configuration
 public class WebConfig  {
-
 	
 	@Value("classpath:schema.sql")
     private Resource schemaSql;
 
-	
 	@Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -67,7 +64,6 @@ public class WebConfig  {
 //    public PlatformTransactionManager transactionManager(final DataSource ds) {
 //            return new DataSourceTransactionManager(ds);
 //    }
-
 
 	@Bean					
 	public DataSource dataSource() {
@@ -110,8 +106,6 @@ public class WebConfig  {
 		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		return messageSource;
 	}
-
-
 
 	@Bean
 	public ContextResolver<MoxyJsonConfig> moxyJsonResolver() {
