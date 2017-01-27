@@ -71,9 +71,9 @@ public class WebConfig  {
 		ds.setDriverClassName("org.postgresql.Driver");
 
 		// DB ELEPHANT
-		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/rroxiqgx");
-		ds.setUsername("rroxiqgx");
-		ds.setPassword("IugU760wJ4CcMpk2g-iwyMM8VSyQnjXi");
+//		ds.setUrl("jdbc:postgresql://pellefant-02.db.elephantsql.com:5432/rroxiqgx");
+//		ds.setUsername("rroxiqgx");
+//		ds.setPassword("IugU760wJ4CcMpk2g-iwyMM8VSyQnjXi");
 
 		
 //		// DB ELEPHANT 2 CREO QUE NO SIRVE MAS ESTA...
@@ -87,9 +87,9 @@ public class WebConfig  {
 // 		ds.setPassword("147852");
 		
 		// DB TESTING LUCAS
-//		ds.setUrl("jdbc:postgresql://localhost/lucaspaw");
-//		ds.setUsername("postgres");
-//		ds.setPassword("123456");
+		ds.setUrl("jdbc:postgresql://localhost/lucaspaw");
+		ds.setUsername("postgres");
+		ds.setPassword("123456");
 
 		// DB FOR DEPLOY
 //		ds.setUrl("jdbc:postgresql://localhost/grupo6");

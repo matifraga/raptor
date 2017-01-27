@@ -15,4 +15,5 @@ public class SessionHandler {
         User user = (User) auth.getPrincipal();
         return user;
     }
+    
 }

@@ -67,7 +67,7 @@ public class UserController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getFeed(@QueryParam("page") final int page, @QueryParam("limit") final int limit) {
         User loggedUser = SessionHandler.sessionUser();
-        if (loggedUser != null)
+        if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
         List<Tweet> feed = ts.globalFeed(limit,page);
         return Response.ok(tweetDTOBuilder.buildList(feed,loggedUser)).build();
