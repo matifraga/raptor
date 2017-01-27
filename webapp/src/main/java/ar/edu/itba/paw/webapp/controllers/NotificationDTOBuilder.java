@@ -16,9 +16,7 @@ public class NotificationDTOBuilder {
     private UserDTOBuilder userDTOBuilder;
 
     public NotificationDTO build(Notification n) {
-
         String type = n.getType().toString();
-     
         UserDTO user = userDTOBuilder.build(n.getFrom());
         return new NotificationDTO(n.getId(), type, n.getSeen(), n.getTimestamp().getTime(), user, n.getTweet().getId() );
     }
