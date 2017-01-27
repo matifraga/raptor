@@ -40,6 +40,9 @@ public class AuthController {
 	@Consumes(value = {MediaType.APPLICATION_JSON})
 	public Response login(final LoginDTO loginDTO, @Context final HttpServletRequest request){
 	
+		User isLogged = SessionHandler.sessionUser();
+		if (isLogged != null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		String username = loginDTO.getUsername();
 		String password = loginDTO.getPassword();
 		User loggedUser = us.authenticateUser(username, password);
@@ -53,4 +56,20 @@ public class AuthController {
 		
 	    return Response.ok().build();
 	}
+	
+//	@POST
+//	@Path("/logout")
+//	public Response logout(@Context final HttpServletRequest request){
+//	
+//		User loggedUser = SessionHandler.sessionUser();
+//		if(loggedUser == null)
+//			return Response.status(Response.Status.BAD_REQUEST).build();
+//		
+//		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+//	    token.setDetails(new WebAuthenticationDetails(request));
+//		Authentication authenticatedUser = authenticationProvider.authenticate(token);
+//	    SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+//		
+//	    return Response.ok().build();
+//	}
 }

@@ -27,7 +27,7 @@ public class TweetDTOBuilder {
     public TweetDTO build (Tweet tweet, User user)  {
         System.out.println(tweet);
         TweetCountsDTO count = new TweetCountsDTO(tweet.getCountFavorites(), tweet.getCountRetweets());
-        UserDTO owner = userDTOBuilder.build(tweet.getOwner());
+        UserDTO owner = userDTOBuilder.build(tweet.getOwner(),user);
         boolean userHasLiked = false;
         if (user != null)
             favoriteService.isFavorited(tweet, user);

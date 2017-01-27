@@ -11,101 +11,152 @@ public class UserDTO {
     private ProfilePicturesDTO pics;
     private Boolean verified;
     private UserCountsDTO userCountsDTO;
-
-    public UserDTO(String id, String username, String firstName, String lastName, ProfilePicturesDTO pics, Boolean verified, UserCountsDTO userCountsDTO) {
-        this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.pics = pics;
-        this.verified = verified;
-        this.userCountsDTO = userCountsDTO;
-    }
+    private boolean userFollows; 
+    
 
     public UserDTO() {
+    }
+
+	public UserDTO(String id, String username, String firstName, String lastName, ProfilePicturesDTO pics,
+			Boolean verified, UserCountsDTO userCountsDTO, boolean userFollows) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.pics = pics;
+		this.verified = verified;
+		this.userCountsDTO = userCountsDTO;
+		this.userFollows = userFollows;
+	}
+
+    @Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserDTO other = (UserDTO) obj;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (pics == null) {
+			if (other.pics != null)
+				return false;
+		} else if (!pics.equals(other.pics))
+			return false;
+		if (userCountsDTO == null) {
+			if (other.userCountsDTO != null)
+				return false;
+		} else if (!userCountsDTO.equals(other.userCountsDTO))
+			return false;
+		if (userFollows != other.userFollows)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		if (verified == null) {
+			if (other.verified != null)
+				return false;
+		} else if (!verified.equals(other.verified))
+			return false;
+		return true;
+	}
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public ProfilePicturesDTO getPics() {
         return pics;
     }
 
-    public void setPics(ProfilePicturesDTO pics) {
-        this.pics = pics;
+    public UserCountsDTO getUserCountsDTO() {
+        return userCountsDTO;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public Boolean getVerified() {
         return verified;
     }
 
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((pics == null) ? 0 : pics.hashCode());
+		result = prime * result + ((userCountsDTO == null) ? 0 : userCountsDTO.hashCode());
+		result = prime * result + (userFollows ? 1231 : 1237);
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((verified == null) ? 0 : verified.hashCode());
+		return result;
+	}
+
+    public boolean isUserFollows() {
+		return userFollows;
+	}
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public UserCountsDTO getUserCountsDTO() {
-        return userCountsDTO;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setUserCountsDTO(UserCountsDTO userCountsDTO) {
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPics(ProfilePicturesDTO pics) {
+        this.pics = pics;
+    }
+
+	public void setUserCountsDTO(UserCountsDTO userCountsDTO) {
         this.userCountsDTO = userCountsDTO;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserDTO)) return false;
+	public void setUserFollows(boolean userFollows) {
+		this.userFollows = userFollows;
+	}
 
-        UserDTO userDTO = (UserDTO) o;
-
-        if (id != null ? !id.equals(userDTO.id) : userDTO.id != null) return false;
-        if (username != null ? !username.equals(userDTO.username) : userDTO.username != null) return false;
-        if (firstName != null ? !firstName.equals(userDTO.firstName) : userDTO.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(userDTO.lastName) : userDTO.lastName != null) return false;
-        if (pics != null ? !pics.equals(userDTO.pics) : userDTO.pics != null) return false;
-        if (verified != null ? !verified.equals(userDTO.verified) : userDTO.verified != null) return false;
-        return userCountsDTO != null ? userCountsDTO.equals(userDTO.userCountsDTO) : userDTO.userCountsDTO == null;
+	public void setUsername(String username) {
+        this.username = username;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (pics != null ? pics.hashCode() : 0);
-        result = 31 * result + (verified != null ? verified.hashCode() : 0);
-        result = 31 * result + (userCountsDTO != null ? userCountsDTO.hashCode() : 0);
-        return result;
+	public void setVerified(Boolean verified) {
+        this.verified = verified;
     }
+
+	
 }

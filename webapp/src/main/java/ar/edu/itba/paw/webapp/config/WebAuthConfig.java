@@ -91,6 +91,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		
 		private String getFailureUrl(HttpServletRequest request){
 			String ref  = request.getHeader(REFERER); 
+			if (ref == null)
+				return "/";
 			int index = ref.indexOf("?");
 			return ref.substring(0, index==-1?ref.length():index) + ERROR_PARAM_TRUE;
 		}
@@ -116,6 +118,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		
 		private String getSuccessUrl(HttpServletRequest request){ //TODO why does split not work?
 			String ref  = request.getHeader(REFERER); 
+			if (ref == null)
+				return "/";
 			int index = ref.indexOf("?");
 			return ref.substring(0, index==-1?ref.length():index);
 		}

@@ -59,7 +59,7 @@ public class UserController {
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
-        return Response.ok(userDTOBuilder.build(loggedUser)).build();
+        return Response.ok(userDTOBuilder.build(loggedUser,null)).build();
     }
 
     @GET
@@ -81,7 +81,7 @@ public class UserController {
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
         List<Notification> notifications = ns.getNotifications(loggedUser, limit, page);
-        return Response.ok(notificationDTOBuilder.buildList(notifications)).build();
+        return Response.ok(notificationDTOBuilder.buildList(notifications,loggedUser)).build();
     }
 
     //hay que poder buscar una notificacion por id
@@ -95,7 +95,7 @@ public class UserController {
     }*/
 
   /*  @GET
-    @Path("/nottifications/count")
+    @Path("/notifications/count")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getNotificationCount() {
         User loggedUser = SessionHandler.sessionUser();

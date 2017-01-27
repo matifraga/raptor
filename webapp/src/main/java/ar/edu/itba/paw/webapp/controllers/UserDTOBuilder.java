@@ -28,17 +28,20 @@ public class UserDTOBuilder {
     @Autowired
     private TweetService tweetService;
 
-    public UserDTO build(User user) {
+    public UserDTO build(User user, User viewer) {
         String small = generateProfilePictureUrl(user, SMALL);
         String medium = generateProfilePictureUrl(user, MEDIUM);
         String large = generateProfilePictureUrl(user, LARGE);
         int rawrs = tweetService.countTweets(user);
         int followers = followerService.countFollowers(user);
         int following = followerService.countFollowing(user);
+        boolean userFollows = false;
+        if (viewer != null)
+        	userFollows = followerService.isFollower(viewer, user);
         ProfilePicturesDTO profilePictures = new ProfilePicturesDTO(small, medium, large);
         UserCountsDTO counts = new UserCountsDTO(rawrs, followers, following);
         return new UserDTO(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(),
-                profilePictures, user.getVerified(), counts);
+                profilePictures, user.getVerified(), counts, userFollows);
     }
 
     private static String md5(String s) {
