@@ -19,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class User {
 
 	@Id
-	@GenericGenerator(name = "random_id", strategy = "idgenerators.RandomIdGenerator")
+	@GenericGenerator(name = "random_id", strategy = "ar.edu.itba.paw.models.RandomIdGenerator")
     @GeneratedValue(generator = "random_id")
     @Column(name = "userID", length = 12, nullable = false)
     private String id;

@@ -52,7 +52,7 @@ public class Tweet {
 	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
 	@Id
-	@GenericGenerator(name = "random_id", strategy = "idgenerators.RandomIdGenerator")
+	@GenericGenerator(name = "random_id", strategy = "ar.edu.itba.paw.models.RandomIdGenerator")
 	@GeneratedValue(generator = "random_id")
 	@Column(name = "tweetID", length = 12, nullable = false)
 	private String id;
