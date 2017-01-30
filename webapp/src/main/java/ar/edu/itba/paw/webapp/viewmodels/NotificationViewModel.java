@@ -1,22 +1,19 @@
 package ar.edu.itba.paw.webapp.viewmodels;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ar.edu.itba.paw.models.Notification;
 import ar.edu.itba.paw.models.NotificationType;
 
-/**
- * Created by Tomi on 6/11/16.
- */
 public class NotificationViewModel {
 
     private final UserViewModel from;
     private final UserViewModel to;
     private final NotificationType type;
-    private final Timestamp timestamp;
+    private final Date timestamp;
     private final TweetViewModel tweet;
     private final String messageCode;
 
@@ -74,7 +71,7 @@ public class NotificationViewModel {
         return type;
     }
 
-    public Timestamp getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 

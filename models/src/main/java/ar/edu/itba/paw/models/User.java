@@ -114,7 +114,7 @@ public class User {
 
 	/*
 	 *
-	 * Getters and Setters
+	 * Getters & Setters
 	 * 
 	 */
 	
