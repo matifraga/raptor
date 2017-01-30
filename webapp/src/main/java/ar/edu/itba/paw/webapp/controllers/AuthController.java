@@ -42,6 +42,7 @@ public class AuthController {
 		User isLogged = SessionHandler.sessionUser();
 		if (isLogged != null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
+		
 		String username = loginDTO.getUsername();
 		String password = loginDTO.getPassword();
 		User loggedUser = us.authenticateUser(username, password);

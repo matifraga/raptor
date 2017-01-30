@@ -11,10 +11,9 @@ public class NotificationDTO {
     private UserDTO user;
     private String statusId;
 
-    public NotificationDTO() {
-    }
+    /* default */ NotificationDTO() {}
 
-    public NotificationDTO(long id, String type, boolean read, long created, UserDTO user, String statusId) {
+    public NotificationDTO(final long id, final String type, final boolean read, final long created, final UserDTO user, final String statusId) {
         this.id = id;
         this.type = type;
         this.read = read;

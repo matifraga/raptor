@@ -7,10 +7,9 @@ public class TweetCountsDTO {
     private int likes;
     private int rerawrs;
 
-    public TweetCountsDTO() {
-    }
+    /* default */ TweetCountsDTO() {}
 
-    public TweetCountsDTO(int likes, int rerawrs) {
+    public TweetCountsDTO(final int likes, final int rerawrs) {
         this.likes = likes;
         this.rerawrs = rerawrs;
     }

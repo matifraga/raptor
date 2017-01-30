@@ -28,5 +28,4 @@ public class NotificationDTOBuilder {
         		.map(n -> this.build(n,viewer))
         				.collect(Collectors.toList()));
     }
-
 }

@@ -5,14 +5,19 @@ import java.util.List;
 
 @XmlRootElement
 public class FeedDTO {
-    List<TweetDTO> rawrs;
+    private List<TweetDTO> rawrs;
 
-    public FeedDTO() {
-    }
+    /* default */ FeedDTO() {}
 
     public FeedDTO(List<TweetDTO> rawrs) {
         this.rawrs = rawrs;
     }
+    
+    /*
+     * 
+     * Getters & Setters.
+     * 
+     * */
 
     public List<TweetDTO> getRawrs() {
         return rawrs;

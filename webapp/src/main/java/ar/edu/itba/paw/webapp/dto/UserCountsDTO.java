@@ -8,13 +8,12 @@ public class UserCountsDTO {
     private Integer followers;
     private Integer following;
 
-    public UserCountsDTO(Integer rawrs, Integer followers, Integer following) {
+    /* default */ UserCountsDTO() {}
+    
+    public UserCountsDTO(final Integer rawrs,final Integer followers, final Integer following) {
         this.rawrs = rawrs;
         this.followers = followers;
         this.following = following;
-    }
-
-    public UserCountsDTO() {
     }
 
     public Integer getRawrs() {

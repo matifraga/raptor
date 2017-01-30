@@ -12,8 +12,8 @@ public class SessionHandler {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.getName().equals(ANONYMOUS_USER))
             return null;
+        
         User user = (User) auth.getPrincipal();
         return user;
     }
-    
 }

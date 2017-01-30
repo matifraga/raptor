@@ -38,6 +38,7 @@ public class UserDTOBuilder {
         boolean userFollows = false;
         if (viewer != null)
         	userFollows = followerService.isFollower(viewer, user);
+        
         ProfilePicturesDTO profilePictures = new ProfilePicturesDTO(small, medium, large);
         UserCountsDTO counts = new UserCountsDTO(rawrs, followers, following);
         return new UserDTO(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(),
@@ -49,9 +50,7 @@ public class UserDTOBuilder {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             md5.update(StandardCharsets.UTF_8.encode(s));
             return String.format("%032x", new BigInteger(1, md5.digest()));
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+        } catch (Exception e) {}
         return null;
     }
 

@@ -8,9 +8,18 @@ public class LoginDTO {
 	private String username;
 	private String password;
 
-	public LoginDTO() {
-		super();
+	/* default */ LoginDTO() {}
+	
+	public LoginDTO(final String username, final String password) {
+		this.username = username;
+		this.password = password;
 	}
+	
+	/*
+	 * 
+	 * Getters & Setters.
+	 * 
+	 * */
 
 	public String getUsername() {
 		return username;
