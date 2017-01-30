@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +27,7 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public Tweet create(final String msg, final User owner) {
-		Timestamp thisMoment = new Timestamp(new Date().getTime());
+		Date thisMoment = new Date();
 		Tweet tweet;
 		try {
 			tweet = new Tweet(msg, owner, thisMoment);
@@ -43,8 +42,8 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public Tweet retweet(final Tweet tweet, final User user) {
-		Timestamp thisMoment = new Timestamp(new Date().getTime());
-        Tweet retweet = new Tweet(user, thisMoment, tweet);
+		Date thisMoment = new Date();
+		Tweet retweet = new Tweet(user, thisMoment, tweet);
         em.persist(retweet);
 		return retweet;
 	}
@@ -82,7 +81,6 @@ public class TweetHibernateDAO implements TweetDAO{
 				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
-		
 	}
 
 	@Override

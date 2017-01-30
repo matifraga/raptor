@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,12 +51,12 @@ public class Notification {
 	private Boolean seen;
 	
 	@Column(name = "timestamp", nullable = false)
-	private Timestamp timestamp;
+	private Date timestamp;
 	
 	/*default*/ public Notification() {
 	}
 	
-	public Notification(User originUser, User destinyUser, NotificationType type, Tweet tweet, Timestamp timestamp) {
+	public Notification(User originUser, User destinyUser, NotificationType type, Tweet tweet, Date timestamp) {
 		this.from = originUser;
 		this.to = destinyUser;
 		this.type = type;
@@ -143,11 +143,11 @@ public class Notification {
 		this.seen = seen;
 	}
 
-	public Timestamp getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Timestamp timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 	

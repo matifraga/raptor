@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.models;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -28,11 +28,10 @@ import org.hibernate.annotations.OnDeleteAction;
  * Los campos id y msg pueden tomar valor null, exclusivamente, en caso
  * de que el tweet sea un retweet, por eso se permite que ambos tomen
  * valor nulo. Al objeto se le inyectara esta informacion del tweet 
- * que fue retweeteado, previamente a cualquier uso del objeto,
- * por lo que la aparicion de NullPointerException por este motivo
- * queda descartada.
+ * que fue retweeteado, previamente a cualquier uso del objeto
+ * (motivo por el cual ningun NullPointerException puede aparecer
+ * debido a ello).
  * */
-
 
 @Entity
 @Table(name = "tweets")
@@ -66,7 +65,7 @@ public class Tweet {
 	private User owner;
 	
 	@Column(name = "timestamp", nullable = false)
-	private Timestamp timestamp;
+	private Date timestamp;
 	
 	@Column(name = "countRetweets", nullable = false)
 	private int countRetweets;
@@ -103,45 +102,39 @@ public class Tweet {
 		
 	}
 	
-	public Tweet(final String msg, final User owner, final Timestamp timestamp,
-				 final int countRetweets, final int countFavorites, final Tweet retweet/*,
-				 final Boolean isRetweeted, final Boolean isFavorited*/) throws IllegalArgumentException {
+	public Tweet(final String msg, final User owner, final Date timestamp,
+				 final int countRetweets, final int countFavorites, final Tweet retweet
+				 ) throws IllegalArgumentException {
 		if (msg != null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
 		}
 		this.msg = msg;
 		this.owner = owner;
-		this.timestamp = new Timestamp(timestamp.getTime());
+		this.timestamp = timestamp;
 		this.countRetweets = countRetweets;
 		this.countFavorites = countFavorites;
 		this.retweet = retweet;
-//		this.isFavorited = isFavorited;
-//		this.isRetweeted = isRetweeted;
 	}
 
-	public Tweet(final User owner, final Timestamp timestamp, final Tweet retweet) {
+	public Tweet(final User owner, final Date timestamp, final Tweet retweet) {
 		this.msg = null;
 		this.owner = owner;
-		this.timestamp = new Timestamp(timestamp.getTime());
+		this.timestamp = timestamp;
 		this.countRetweets = 0;
 		this.countFavorites = 0;
 		this.retweet = retweet;
-//		this.isFavorited = false;
-//		this.isRetweeted = false;
 	}
 
-	public Tweet(final String msg, final User owner, final Timestamp timestamp) throws IllegalArgumentException {
+	public Tweet(final String msg, final User owner, final Date timestamp) throws IllegalArgumentException {
 		if (msg != null && !isValidLength(msg)) {
 			throw new IllegalArgumentException(ERROR_LENGTH);
 		}
 		this.msg = msg;
 		this.owner = owner;
-		this.timestamp = new Timestamp(timestamp.getTime());
+		this.timestamp = timestamp;
 		this.countRetweets = 0;
 		this.countFavorites = 0;
 		this.retweet = null;
-//		this.isFavorited = false;
-//		this.isRetweeted = false;
 	}
 
 	public static int getMaxLength() {
@@ -207,7 +200,7 @@ public class Tweet {
 
 	/*
 	 *
-	 * Getters
+	 * Getters & Setters
 	 *
 	 * */
 
@@ -233,7 +226,7 @@ public class Tweet {
 	}
 	
 	public String getTimestamp(){
-		return sdf.format(timestamp); //TODO unsafe for multithread
+		return sdf.format(timestamp); //unsafe for multithread
 	}
 
 	public int getCountRetweets() {
@@ -248,14 +241,6 @@ public class Tweet {
 		return retweet;
 	}
 
-//	public Boolean getIsRetweeted() {
-//		return isRetweeted;
-//	}
-//
-//	public Boolean getIsFavorited() {
-//		return isFavorited;
-//	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -268,7 +253,7 @@ public class Tweet {
 		this.owner = owner;
 	}
 
-	public void setTimestamp(Timestamp timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -282,15 +267,5 @@ public class Tweet {
 
 	public void setRetweet(Tweet retweet) {
 		this.retweet = retweet;
-	}
-
-//	public void setIsRetweeted(Boolean isRetweeted) {
-//		this.isRetweeted = isRetweeted;
-//	}
-//
-//	public void setIsFavorited(Boolean isFavorited) {
-//		this.isFavorited = isFavorited;
-//	}
-
-	
+	}	
 }

@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class NotificationHibernateDAO implements NotificationDAO {
 	
 	@Override
 	public Notification create(User from, User to, NotificationType type, Tweet tweet) {
-		Timestamp thisMoment = new Timestamp(new Date().getTime());
+		Date thisMoment = new Date();
 		Notification notif = new Notification(from, to, type, tweet, thisMoment);
         em.persist(notif);
 		return notif;
