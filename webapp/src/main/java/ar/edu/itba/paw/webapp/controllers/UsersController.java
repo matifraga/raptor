@@ -47,6 +47,8 @@ public class UsersController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getTimeline(@PathParam("username") final String username, @QueryParam("page") final int page,
     @QueryParam("limit") final int limit) {
+    	if(page < 1 || limit < 1)
+        	return Response.status(Response.Status.BAD_REQUEST).build();
         User user = us.getUserWithUsername(username);
         if (user == null)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -59,7 +61,9 @@ public class UsersController {
     @Path("/{username}/mentions")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getMentions(@PathParam("username") final String username, @QueryParam("page") final int page,  @QueryParam("limit") final int limit) {
-        User loggedUser = SessionHandler.sessionUser();
+    	if(page < 1 || limit < 1)
+        	return Response.status(Response.Status.BAD_REQUEST).build();
+    	User loggedUser = SessionHandler.sessionUser();
         User user = us.getUserWithUsername(username);
         if (user == null)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -71,7 +75,9 @@ public class UsersController {
     @Path("/{username}/likes")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getLikes(@PathParam("username") final String username, @QueryParam("page") final int page, @QueryParam("limit") final int limit) {
-        User loggedUser = SessionHandler.sessionUser();
+    	if(page < 1 || limit < 1)
+        	return Response.status(Response.Status.BAD_REQUEST).build();
+    	User loggedUser = SessionHandler.sessionUser();
         User user = us.getUserWithUsername(username);
         if (user == null)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -116,13 +122,11 @@ public class UsersController {
 
     }
 
-
-
-    //test csrf
-    @POST
-    @Path("/hola")
-    public Response hola() {
-        System.out.println("HOLA");
-        return Response.ok().build();
-    }
+//    //test csrf
+//    @POST
+//    @Path("/hola")
+//    public Response hola() {
+//        System.out.println("HOLA");
+//        return Response.ok().build();
+//    }
 }
