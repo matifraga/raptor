@@ -176,6 +176,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 		http.csrf().csrfTokenRepository(new  HttpSessionCsrfTokenRepository())
 				.ignoringAntMatchers(LOGIN_PATH)
+				.ignoringAntMatchers(SIGNUP)
 				.and()
 				.authenticationProvider(authProv)
 				.exceptionHandling()
