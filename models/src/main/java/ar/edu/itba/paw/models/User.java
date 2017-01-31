@@ -37,7 +37,7 @@ public class User {
     private String lastName;
 	
 	@Column(name = "verified", nullable = false)
-    private Boolean verified;
+    private boolean verified;
 
 	@Column(name = "password", nullable = false, length = 100)
 	private String password;
@@ -70,12 +70,7 @@ public class User {
 	)
 	private Set<Tweet> mentions;
 	
-//    @SuppressWarnings("unused")
-//    private final String miniBio = null; //TODO use!
-	
-	/* default */ User(){
-		
-	}
+	/* default */ User(){}
 
     public User(String username, String email,
                 String firstName, String lastName, String password, Boolean verified) {

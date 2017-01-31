@@ -48,7 +48,7 @@ public class Notification {
 	private Tweet tweet;
 	
 	@Column(name = "seen", nullable = false)
-	private Boolean seen;
+	private boolean seen;
 	
 	@Column(name = "timestamp", nullable = false)
 	private Date timestamp;
