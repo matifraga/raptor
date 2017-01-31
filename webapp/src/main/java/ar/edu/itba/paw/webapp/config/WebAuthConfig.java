@@ -142,7 +142,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	private static final String USERS = "/users/**";
 	private static final String RAWRS = "/rawrs/**";
     private static final String FEED = "/feed";
-    private static final String SEARCH = "/search";
+    private static final String SEARCH = "/search/**";
     private static final String TRENDING = "/trending";
     private static final String SIGNUP = "/signup";
     private static final String TOKEN = "/auth/token";

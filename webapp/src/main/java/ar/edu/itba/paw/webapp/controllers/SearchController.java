@@ -1,0 +1,100 @@
+package ar.edu.itba.paw.webapp.controllers;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.services.UserService;
+import ar.edu.itba.paw.webapp.dto.FeedDTO;
+import ar.edu.itba.paw.webapp.dto.UsersDTO;
+
+@Path("search")
+@Component
+public class SearchController {
+	
+	@Autowired
+	private TweetService ts;
+
+	@Autowired
+	private UserService us;
+	
+	@Autowired
+	private TweetDTOBuilder tweetDTOBuilder;
+
+	@Autowired
+	private UserDTOBuilder userDTOBuilder;
+	
+//	@SuppressWarnings("unchecked")
+//	@GET
+//	@Path("/")
+//	@Produces(value = {MediaType.APPLICATION_JSON})
+//	public Response search(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term){
+//		if(page < 1 || limit < 1 || term.length() == 0)
+//        	return Response.status(Response.Status.BAD_REQUEST).build();
+//		@SuppressWarnings("rawtypes")
+//		SearchDTO searchDTO;
+//		User loggedUser = SessionHandler.sessionUser();
+//		switch (term.charAt(0)) {
+//			case '#':
+//			searchDTO = new SearchTweetsDTO();
+//			FeedDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, page), loggedUser);
+//			searchDTO.setResults(hashtags);
+//			break;
+//		case '@':
+//			searchDTO = new SearchUsersDTO();
+//			UsersDTO users = userDTOBuilder.buildList(us.searchUsers(term.substring(1), limit, page),loggedUser);
+//			searchDTO.setResults(users);
+//			break;
+//		default:
+//			searchDTO = new SearchTweetsDTO();
+//			FeedDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, page), loggedUser);
+//			searchDTO.setResults(rawrs);
+//			break;
+//		}
+//		return Response.ok(searchDTO).build();
+//	}
+	
+	@GET
+	@Path("/users")
+	@Produces(value = {MediaType.APPLICATION_JSON})
+	public Response searchUsers(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term) {
+		if(page < 1 || limit < 1 || term.length() == 0)
+        	return Response.status(Response.Status.BAD_REQUEST).build();
+	
+		User loggedUser = SessionHandler.sessionUser();
+		UsersDTO users = userDTOBuilder.buildList(us.searchUsers(term.substring(1), limit, page),loggedUser);
+		return Response.ok(users).build();
+	}
+	
+	@GET
+	@Path("/rawrs")
+	@Produces(value = {MediaType.APPLICATION_JSON})
+	public Response searchRawrs(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term) {
+		if(page < 1 || limit < 1 || term.length() == 0)
+        	return Response.status(Response.Status.BAD_REQUEST).build();
+	
+		User loggedUser = SessionHandler.sessionUser();
+		FeedDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, page), loggedUser);
+		return Response.ok(rawrs).build();
+	}
+	
+	@GET
+	@Path("/hashtags")
+	@Produces(value = {MediaType.APPLICATION_JSON})
+	public Response searchHashtags(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term) {
+		if(page < 1 || limit < 1 || term.length() == 0)
+        	return Response.status(Response.Status.BAD_REQUEST).build();
+	
+		User loggedUser = SessionHandler.sessionUser();
+		FeedDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, page), loggedUser);
+		return Response.ok(hashtags).build();
+	}
+}

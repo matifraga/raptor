@@ -1,19 +1,21 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.HashtagDAO;
-import org.junit.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
+import java.sql.Timestamp;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Timestamp;
-import java.util.Set;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.HashtagDAO;
 
 
 public class HashtagServiceImplTest {
