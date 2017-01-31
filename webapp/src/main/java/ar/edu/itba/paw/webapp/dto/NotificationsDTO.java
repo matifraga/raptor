@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement
-public class NotificationsDTO {
+public class NotificationsDTO{
     private List<NotificationDTO> notifications;
 
     /* default */ NotificationsDTO() {

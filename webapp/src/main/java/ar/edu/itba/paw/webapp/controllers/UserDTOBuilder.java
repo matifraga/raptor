@@ -1,17 +1,20 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.FollowerService;
-import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.dto.ProfilePicturesDTO;
-import ar.edu.itba.paw.webapp.dto.UserCountsDTO;
-import ar.edu.itba.paw.webapp.dto.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.services.FollowerService;
+import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.webapp.dto.ProfilePicturesDTO;
+import ar.edu.itba.paw.webapp.dto.UserCountsDTO;
+import ar.edu.itba.paw.webapp.dto.UserDTO;
+import ar.edu.itba.paw.webapp.dto.UsersDTO;
 
 public class UserDTOBuilder {
 
@@ -21,8 +24,6 @@ public class UserDTOBuilder {
     private static final String GRAVATAR_END_POINT = "https://www.gravatar.com/avatar/";
     private static final String DEFAULT_PICTURE = "d=http%3A%2F%2Fi.imgur.com%2FgOGINGL.png";
 
-    @Autowired
-    private UserService userService;
     @Autowired
     private FollowerService followerService;
     @Autowired
@@ -43,6 +44,10 @@ public class UserDTOBuilder {
         UserCountsDTO counts = new UserCountsDTO(rawrs, followers, following);
         return new UserDTO(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(),
                 profilePictures, user.getVerified(), counts, userFollows);
+    }
+    
+    public UsersDTO buildList(List<User> userList, User viewer) {
+        return new UsersDTO(userList.stream().map(user -> this.build(user,viewer)).collect(Collectors.toList()));
     }
 
     private static String md5(String s) {

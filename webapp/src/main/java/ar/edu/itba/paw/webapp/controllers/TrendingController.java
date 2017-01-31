@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.services.HashtagService;
+import ar.edu.itba.paw.webapp.dto.HashtagsDTO;
 
 @Path("trending")
 @Component

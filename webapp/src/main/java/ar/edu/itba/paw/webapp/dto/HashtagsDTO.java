@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.controllers;
+package ar.edu.itba.paw.webapp.dto;
 
 import java.util.List;
 

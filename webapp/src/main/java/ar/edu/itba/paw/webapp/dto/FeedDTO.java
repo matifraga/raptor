@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement
-public class FeedDTO {
+public class FeedDTO{
     private List<TweetDTO> rawrs;
 
     /* default */ FeedDTO() {}
