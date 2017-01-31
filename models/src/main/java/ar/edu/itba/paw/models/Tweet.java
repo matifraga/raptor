@@ -98,9 +98,7 @@ public class Tweet {
 	@Column(name="hashtag", length = 100, nullable=false)
 	private Set<String> hashtag;
 	
-	/* default */ Tweet(){
-		
-	}
+	/* default */ Tweet(){}
 	
 	public Tweet(final String msg, final User owner, final Date timestamp,
 				 final int countRetweets, final int countFavorites, final Tweet retweet
