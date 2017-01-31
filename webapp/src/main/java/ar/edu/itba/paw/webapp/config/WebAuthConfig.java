@@ -6,6 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ar.edu.itba.paw.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +18,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
 @Configuration
@@ -26,7 +30,7 @@ import org.springframework.stereotype.Component;
 @ComponentScan({ "ar.edu.itba.paw.webapp.auth"})
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String EVERYTHING = "**";
+	/*private static final String EVERYTHING = "**";
 	private static final String ERROR_PAGE = "/403";
 	private static final String LOGOUT = "/logout";
 	private static final String PASSWORD = "j_password";
@@ -123,6 +127,143 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 			int index = ref.indexOf("?");
 			return ref.substring(0, index==-1?ref.length():index);
 		}
+	}*/
+
+
+	private static final String LOGIN_PATH = "/auth/login";
+	private static final String LOGOUT_PATH = "/auth/logout";
+	private static final String PASSWORD = "j_password";
+	private static final String USERNAME = "j_username";
+	private static final String EVERYTHING = "**";
+	private static final String USER = "/user/?*";
+	private static final String USERS = "/users/**";
+	private static final String RAWRS = "/rawrs/**";
+    private static final String FEED = "/feed";
+    private static final String SEARCH = "/search";
+    private static final String TRENDING = "/trending";
+    private static final String SIGNUP = "/signup";
+
+
+	@Autowired
+	private AuthenticationProvider authProv;
+	@Autowired
+	private HttpAuthenticationEntryPoint authenticationEntryPoint;
+	@Autowired
+	private AuthSuccessHandler authSuccessHandler;
+	@Autowired
+	private AuthFailureHandler authFailureHandler;
+	@Autowired
+	private HttpLogoutSuccessHandler logoutSuccessHandler;
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher(USERS,"POST"))
+                .requireCsrfProtectionMatcher(new AntPathRequestMatcher(RAWRS,"POST"))
+				.and()
+				.authenticationProvider(authProv)
+				.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint)
+				.and()
+				.formLogin()
+				.permitAll()
+				.loginProcessingUrl(LOGIN_PATH)
+				.usernameParameter(USERNAME)
+				.passwordParameter(PASSWORD)
+				.successHandler(authSuccessHandler)
+				.failureHandler(authFailureHandler)
+				.and()
+				.logout()
+				.permitAll()
+				.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PATH, "POST"))
+				.logoutSuccessHandler(logoutSuccessHandler)
+				.and()
+				.sessionManagement()
+				.maximumSessions(1);
+
+		//http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests()
+                .requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()
+                .antMatchers(FEED).permitAll()
+                .antMatchers(SEARCH).permitAll()
+                .antMatchers(TRENDING).permitAll()
+                .antMatchers(SIGNUP).anonymous()
+                .antMatchers(LOGIN_PATH).anonymous()
+                .anyRequest().authenticated();
+
 	}
-	
+
+	@Component
+	public class HttpAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+	    @Autowired
+	    public HttpAuthenticationEntryPoint() {
+            super();
+        }
+
+        @Override
+		public void commence(HttpServletRequest request, HttpServletResponse response,
+							 AuthenticationException authException) throws IOException {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+		}
+	}
+
+	@Component
+	public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+		private final Logger LOGGER = LoggerFactory.getLogger(AuthSuccessHandler.class);
+
+
+		@Autowired
+		public AuthSuccessHandler(){
+			super();
+		}
+
+		@Override
+		public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+											Authentication authentication) throws IOException, ServletException {
+			response.setStatus(HttpServletResponse.SC_OK);
+
+			User user = (User) authentication.getPrincipal();
+			LOGGER.info(user.getUsername() + " got is connected ");
+            CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+            LOGGER.info("token: " + token);
+            response.setHeader("X-CSRF-HEADER",token.getHeaderName());
+            response.setHeader("X-CSRF-PARAM", token.getParameterName());
+            response.setHeader("X-CSRF-TOKEN", token.getToken());
+			response.getWriter().flush();
+
+		}
+	}
+
+	@Component
+	public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+
+        @Autowired
+        public AuthFailureHandler(){
+            super();
+        }
+
+		@Override
+		public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+											AuthenticationException exception) throws IOException, ServletException {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().flush();
+		}
+	}
+
+	@Component
+	public class HttpLogoutSuccessHandler implements LogoutSuccessHandler {
+
+	    @Autowired
+        public HttpLogoutSuccessHandler() {
+            super();
+        }
+
+        @Override
+		public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+				throws IOException {
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().flush();
+		}
+	}
 }
