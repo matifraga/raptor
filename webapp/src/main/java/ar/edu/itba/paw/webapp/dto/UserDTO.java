@@ -12,14 +12,11 @@ public class UserDTO {
     private Boolean verified;
     private UserCountsDTO userCountsDTO;
     private boolean userFollows; 
-    
 
-    public UserDTO() {
-    }
+    /* default */ UserDTO() {}
 
-	public UserDTO(String id, String username, String firstName, String lastName, ProfilePicturesDTO pics,
-			Boolean verified, UserCountsDTO userCountsDTO, boolean userFollows) {
-		super();
+	public UserDTO(final String id, final String username, final String firstName, final String lastName, final ProfilePicturesDTO pics,
+			final Boolean verified, final UserCountsDTO userCountsDTO, final boolean userFollows) {
 		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
@@ -29,6 +26,12 @@ public class UserDTO {
 		this.userCountsDTO = userCountsDTO;
 		this.userFollows = userFollows;
 	}
+	
+	/*
+	 * 
+	 * Getters & Setters.
+	 * 
+	 * */
 
     @Override
 	public boolean equals(Object obj) {
@@ -156,7 +159,5 @@ public class UserDTO {
 
 	public void setVerified(Boolean verified) {
         this.verified = verified;
-    }
-
-	
+    }	
 }

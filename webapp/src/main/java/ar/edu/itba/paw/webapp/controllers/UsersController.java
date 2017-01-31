@@ -69,7 +69,6 @@ public class UsersController {
             return Response.status(Response.Status.NOT_FOUND).build();
 
         return Response.ok(tweetDTOBuilder.buildList(ts.getMentions(user, limit, page),loggedUser)).build();
-
     }
 
     @GET
@@ -82,6 +81,5 @@ public class UsersController {
             return Response.status(Response.Status.NOT_FOUND).build();
 
         return Response.ok(tweetDTOBuilder.buildList(ts.getFavorites(user, limit, page),loggedUser)).build();
-
     }
 }

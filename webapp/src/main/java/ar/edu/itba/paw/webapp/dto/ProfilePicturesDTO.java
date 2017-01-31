@@ -9,13 +9,13 @@ public class ProfilePicturesDTO {
     private String medium;
     private String large;
 
-    public ProfilePicturesDTO(String small, String medium, String large) {
+    /* default */ ProfilePicturesDTO() {
+    }
+
+    public ProfilePicturesDTO(final String small, final String medium, final String large) {
         this.small = small;
         this.medium = medium;
         this.large = large;
-    }
-
-    public ProfilePicturesDTO() {
     }
 
     public String getSmall() {

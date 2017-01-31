@@ -12,10 +12,9 @@ public class TweetDTO {
     private TweetCountsDTO counts;
     private UserDTO owner;
 
-    public TweetDTO() {
-    }
+    /* default */ TweetDTO() {}
 
-    public TweetDTO(String id, String createdTime, String status, boolean userHasLiked, boolean userHasRerawred, TweetCountsDTO counts, UserDTO owner) {
+    public TweetDTO(final String id, final String createdTime, final String status, final boolean userHasLiked, final boolean userHasRerawred, final TweetCountsDTO counts, final UserDTO owner) {
         this.id = id;
         this.createdTime = createdTime;
         this.status = status;
@@ -24,6 +23,12 @@ public class TweetDTO {
         this.counts = counts;
         this.owner = owner;
     }
+    
+    /*
+     * 
+     * Getters & Setters.
+     * 
+     * */
 
     public String getId() {
         return id;

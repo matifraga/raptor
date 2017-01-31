@@ -24,7 +24,7 @@ public class TweetDTOBuilder {
     @Autowired
     private TweetService tweetService;
 
-    public TweetDTO build (Tweet tweet, User user)  {
+    public TweetDTO build (final Tweet tweet, final User user)  {
         System.out.println(tweet);
         TweetCountsDTO count = new TweetCountsDTO(tweet.getCountFavorites(), tweet.getCountRetweets());
         UserDTO owner = userDTOBuilder.build(tweet.getOwner(),user);
