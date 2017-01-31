@@ -43,6 +43,7 @@ public class FollowerServiceImpl implements FollowerService {
 	@Transactional
     @Override
     public void unfollow(final User follower, final User following) {
+        if (follower.equals(following)) return;
         followerDAO.unfollow(follower, following);
         notificationService.register(follower, following, NotificationType.UNFOLLOW, null);
     }

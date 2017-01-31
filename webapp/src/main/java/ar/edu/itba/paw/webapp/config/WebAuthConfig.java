@@ -22,6 +22,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
@@ -142,6 +143,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     private static final String SEARCH = "/search";
     private static final String TRENDING = "/trending";
     private static final String SIGNUP = "/signup";
+    private static final String TOKEN = "/auth/token";
 
 
 	@Autowired
@@ -157,15 +159,27 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher(USERS,"POST"))
-                .requireCsrfProtectionMatcher(new AntPathRequestMatcher(RAWRS,"POST"))
+		http.authorizeRequests()
+				.antMatchers(SIGNUP).anonymous()
+				.requestMatchers(new AntPathRequestMatcher(LOGIN_PATH,"POST")).anonymous()
+				.requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()
+				.antMatchers(FEED).permitAll()
+				.antMatchers(SEARCH).permitAll()
+				.antMatchers(TRENDING).permitAll()
+				.antMatchers(TOKEN).permitAll()
+				.anyRequest().authenticated();
+
+
+
+		http.csrf().csrfTokenRepository(new  HttpSessionCsrfTokenRepository())
+				.ignoringAntMatchers(LOGIN_PATH)
 				.and()
 				.authenticationProvider(authProv)
 				.exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint)
 				.and()
 				.formLogin()
-				.permitAll()
 				.loginProcessingUrl(LOGIN_PATH)
 				.usernameParameter(USERNAME)
 				.passwordParameter(PASSWORD)
@@ -173,23 +187,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.failureHandler(authFailureHandler)
 				.and()
 				.logout()
-				.permitAll()
 				.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PATH, "POST"))
-				.logoutSuccessHandler(logoutSuccessHandler)
-				.and()
+				.logoutSuccessHandler(logoutSuccessHandler);
+/*				.and()
 				.sessionManagement()
-				.maximumSessions(1);
+				.maximumSessions(1);*/
 
 		//http.authorizeRequests().anyRequest().authenticated();
-        http.authorizeRequests()
-                .requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
-				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()
-                .antMatchers(FEED).permitAll()
-                .antMatchers(SEARCH).permitAll()
-                .antMatchers(TRENDING).permitAll()
-                .antMatchers(SIGNUP).anonymous()
-                .antMatchers(LOGIN_PATH).anonymous()
-                .anyRequest().authenticated();
+
 
 	}
 

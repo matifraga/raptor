@@ -2,14 +2,8 @@ package ar.edu.itba.paw.webapp.controllers;
 
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -59,7 +53,7 @@ public class UserController {
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
-        return Response.ok(userDTOBuilder.build(loggedUser,null)).build();
+        return Response.ok(userDTOBuilder.build(loggedUser, null)).build();
     }
 
     @GET
@@ -69,8 +63,8 @@ public class UserController {
         User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        List<Tweet> feed = ts.globalFeed(limit,page);
-        return Response.ok(tweetDTOBuilder.buildList(feed,loggedUser)).build();
+        List<Tweet> feed = ts.globalFeed(limit, page);
+        return Response.ok(tweetDTOBuilder.buildList(feed, loggedUser)).build();
     }
 
     @GET
@@ -81,7 +75,7 @@ public class UserController {
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
         List<Notification> notifications = ns.getNotifications(loggedUser, limit, page);
-        return Response.ok(notificationDTOBuilder.buildList(notifications,loggedUser)).build();
+        return Response.ok(notificationDTOBuilder.buildList(notifications, loggedUser)).build();
     }
 
     //hay que poder buscar una notificacion por id
@@ -105,4 +99,13 @@ public class UserController {
         //int count = ns.getUnreadNotifications(user);
         return Response.ok(count).build()
     }*/
+
+/*  @POST
+  @Path("/notifications/read")
+  @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response readNotifications(NotificationsIDsDTO ids) {
+
+  }
+}*/
+
 }

@@ -1,10 +1,6 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -81,5 +77,52 @@ public class UsersController {
             return Response.status(Response.Status.NOT_FOUND).build();
 
         return Response.ok(tweetDTOBuilder.buildList(ts.getFavorites(user, limit, page),loggedUser)).build();
+    }
+
+
+    @POST
+    @Path("/{username}/follow")
+    public Response followUser(@PathParam("username") final String username) {
+        User loggedUser = SessionHandler.sessionUser();
+        if (loggedUser == null) {
+            //nunca deberia entrar por spring security
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        User user = us.getUserWithUsername(username);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        fs.follow(loggedUser,user);
+        return Response.ok().build();
+
+    }
+
+    @POST
+    @Path("/{username}/unfollow")
+    public Response unfollowUser(@PathParam("username") final String username) {
+        User loggedUser = SessionHandler.sessionUser();
+        if (loggedUser == null) {
+            //nunca deberia entrar por spring security
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        User user = us.getUserWithUsername(username);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        fs.unfollow(loggedUser,user);
+        return Response.ok().build();
+
+    }
+
+
+
+    //test csrf
+    @POST
+    @Path("/hola")
+    public Response hola() {
+        System.out.println("HOLA");
+        return Response.ok().build();
     }
 }
