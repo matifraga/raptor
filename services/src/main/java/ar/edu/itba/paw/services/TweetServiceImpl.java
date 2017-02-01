@@ -43,7 +43,7 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public void register(final String msg, final User owner) {
+    public Tweet register(final String msg, final User owner) {
         Tweet t = tweetDAO.create(msg, owner);
         if (t == null) {
             //TODO handle null (invalid message)
@@ -51,6 +51,7 @@ public class TweetServiceImpl implements TweetService {
             hashtagService.register(t);
             mentionService.register(t);
         }
+        return t;
     }
 
 	@Transactional
@@ -77,7 +78,7 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public void retweet(final Tweet tweet, final User owner) {
+    public Tweet retweet(final Tweet tweet, final User owner) {
         Tweet t = tweetDAO.retweet(tweet, owner);
         notificationService.register(owner, tweet.getOwner(), NotificationType.RETWEET, tweet);
         if (t == null) {
@@ -85,6 +86,7 @@ public class TweetServiceImpl implements TweetService {
         } else {
             increaseRetweetCount(tweet);
         }
+        return t;
     }
 
 	@Transactional

@@ -49,4 +49,22 @@ public class NotificationServiceImpl implements NotificationService {
         return ans;
 	}
 
+	@Override
+	public Notification getNotificationByID(long id) {
+		Notification notif = notifDAO.getNotificationByID(id);
+		if (notif == null) {
+            // TODO handle null
+        }
+        return notif;
+	}
+
+	@Override
+	public Integer getUnreadNotificationsCount(User user) {
+		Integer count = notifDAO.getUnreadNotificationsCount(user);
+		if (count == null) {
+            // TODO handle null
+        }
+        return count;
+	}
+
 }

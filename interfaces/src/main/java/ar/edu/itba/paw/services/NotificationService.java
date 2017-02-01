@@ -42,5 +42,20 @@ public interface NotificationService {
 	 * @return	The list of notifications for the user.
 	 */
 	List<Notification> getNotifications(final User user, final int resultsPerPage, final int page);
+	
+	/**
+	 * Get a notification by id.
+	 * 
+	 * @param id The id.
+	 * @return The notification.
+	 */
+	Notification getNotificationByID(long id);
 
+	/**
+	 * Get the number of a user's unread notifications.
+	 *
+	 * @param user The user.
+	 * @return The number of unread notifications.
+	 */
+	Integer getUnreadNotificationsCount(User user);
 }

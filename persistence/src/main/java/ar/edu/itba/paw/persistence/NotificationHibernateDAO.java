@@ -59,4 +59,24 @@ public class NotificationHibernateDAO implements NotificationDAO {
 				.getResultList();
 	}
 
+	@Override
+	public Notification getNotificationByID(long id) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Notification> cq = cb.createQuery(Notification.class);
+		Root<Notification> notif = cq.from(Notification.class);
+		cq.where(cb.equal(notif.get("notifid"), id));
+		
+		return em.createQuery(cq).getSingleResult();
+	}
+
+	@Override
+	public Integer getUnreadNotificationsCount(User user) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		Root<Notification> notif = cq.from(Notification.class);
+		cq.select(cb.count(notif.get("notifid"))).where(cb.and(cb.equal(notif.get("to"), user),cb.equal(notif.get("seen"), true)));
+		
+		return em.createQuery(cq).getSingleResult().intValue();
+	}
+
 }

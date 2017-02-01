@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controllers;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -19,6 +20,7 @@ import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.NotificationService;
 import ar.edu.itba.paw.services.TweetService;
+import ar.edu.itba.paw.webapp.dto.NotificationIDsDTO;
 
 @Path("user")
 @Component
@@ -81,16 +83,19 @@ public class UserController {
     }
 
     //hay que poder buscar una notificacion por id
-    /*@POST
+    @POST
     @Path("/notifications/read")
-    public Response readNotifications(NotificationsDTO toRead){
+    public Response readNotifications(NotificationIDsDTO toRead){
         User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
+        for(Long id : toRead.getNotificationIDs()){
+        	ns.seen(ns.getNotificationByID(id));
+        }
+        return Response.ok().build();
+    }
 
-    }*/
-
-  /*  @GET
+    @GET
     @Path("/notifications/count")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getNotificationCount() {
@@ -98,16 +103,7 @@ public class UserController {
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
-        //int count = ns.getUnreadNotifications(user);
-        return Response.ok(count).build()
-    }*/
-
-/*  @POST
-  @Path("/notifications/read")
-  @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response readNotifications(NotificationsIDsDTO ids) {
-
-  }
-}*/
-
+        int count = ns.getUnreadNotificationsCount(loggedUser);
+        return Response.ok(count).build();
+    }
 }
