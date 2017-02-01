@@ -104,6 +104,6 @@ public class UserController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
         int count = ns.getUnreadNotificationsCount(loggedUser);
-        return Response.ok(count).build();
+        return Response.ok("{\"count\":" + count +"}" ).build();
     }
 }
