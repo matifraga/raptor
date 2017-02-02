@@ -36,7 +36,7 @@ public class UserDTOBuilder {
         int rawrs = tweetService.countTweets(user);
         int followers = followerService.countFollowers(user);
         int following = followerService.countFollowing(user);
-        boolean userFollows = false;
+        Boolean userFollows = null;
         if (viewer != null)
         	userFollows = followerService.isFollower(viewer, user);
         

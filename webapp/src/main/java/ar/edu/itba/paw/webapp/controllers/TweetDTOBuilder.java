@@ -4,10 +4,7 @@ import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FavoriteService;
 import ar.edu.itba.paw.services.TweetService;
-import ar.edu.itba.paw.webapp.dto.FeedDTO;
-import ar.edu.itba.paw.webapp.dto.TweetCountsDTO;
-import ar.edu.itba.paw.webapp.dto.TweetDTO;
-import ar.edu.itba.paw.webapp.dto.UserDTO;
+import ar.edu.itba.paw.webapp.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -25,18 +22,28 @@ public class TweetDTOBuilder {
     private TweetService tweetService;
 
     public TweetDTO build (final Tweet tweet, final User user)  {
-        System.out.println(tweet);
-        TweetCountsDTO count = new TweetCountsDTO(tweet.getCountFavorites(), tweet.getCountRetweets());
-        UserDTO owner = userDTOBuilder.build(tweet.getOwner(),user);
-        boolean userHasLiked = false;
-        if (user != null)
-            favoriteService.isFavorited(tweet, user);
 
-        boolean userHasRerawred = false;
+        // el tweet original (si es un retweet se toma el que es retweeteado)
+        Tweet actualTweet = tweet;
+        RerawrDTO rerawr = null;
+        if (tweet.isRetweet()) {
+            actualTweet = tweet.getRetweet();
+            UserDTO reOwner = userDTOBuilder.build(tweet.getOwner(),user);
+            rerawr = new RerawrDTO(tweet.getId(),tweet.getTimestamp(),reOwner);
+        }
+        TweetCountsDTO count = new TweetCountsDTO(actualTweet.getCountFavorites(), actualTweet.getCountRetweets());
+        UserDTO owner = userDTOBuilder.build(actualTweet.getOwner(),user);
+        Boolean userHasLiked = null;
         if (user != null)
-            tweetService.isRetweeted(tweet, user);
+            userHasLiked = favoriteService.isFavorited(tweet, user);
 
-        return new TweetDTO(tweet.getId(), tweet.getTimestamp(), tweet.getMsg(), userHasLiked, userHasRerawred, count, owner);
+        Boolean userHasRerawred = null;
+        if (user != null)
+            userHasRerawred = tweetService.isRetweeted(tweet, user);
+
+
+
+        return new TweetDTO(actualTweet.getId(), actualTweet.getTimestamp(), actualTweet.getMsg(), userHasLiked, userHasRerawred, count, owner, rerawr);
     }
 
     public FeedDTO buildList(List<Tweet> tweetList, User user) {

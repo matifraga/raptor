@@ -232,7 +232,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 			response.setStatus(HttpServletResponse.SC_OK);
 
 			User user = (User) authentication.getPrincipal();
-			LOGGER.info(user.getUsername() + " got is connected ");
+			LOGGER.info(user.getUsername() + " is connected ");
             CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
             LOGGER.info("token: " + token);
             response.setHeader("X-CSRF-HEADER",token.getHeaderName());

@@ -5,16 +5,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class TweetDTO {
     private String id;
-    private String createdTime;
+    private long createdTime;
     private String status;
-    private boolean userHasLiked;
-    private boolean userHasRerawred;
+    private Boolean userHasLiked;
+    private Boolean userHasRerawred;
     private TweetCountsDTO counts;
     private UserDTO owner;
+    private RerawrDTO rerawr;
 
-    /* default */ TweetDTO() {}
+    /* default */ TweetDTO() {
+    }
 
-    public TweetDTO(final String id, final String createdTime, final String status, final boolean userHasLiked, final boolean userHasRerawred, final TweetCountsDTO counts, final UserDTO owner) {
+    public TweetDTO(String id, long createdTime, String status, Boolean userHasLiked, Boolean userHasRerawred, TweetCountsDTO counts, UserDTO owner, RerawrDTO rerawr) {
         this.id = id;
         this.createdTime = createdTime;
         this.status = status;
@@ -22,9 +24,10 @@ public class TweetDTO {
         this.userHasRerawred = userHasRerawred;
         this.counts = counts;
         this.owner = owner;
+        this.rerawr = rerawr;
     }
-    
-    /*
+
+   /*
      * 
      * Getters & Setters.
      * 
@@ -38,11 +41,11 @@ public class TweetDTO {
         this.id = id;
     }
 
-    public String getCreatedTime() {
+    public long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -54,19 +57,19 @@ public class TweetDTO {
         this.status = status;
     }
 
-    public boolean isUserHasLiked() {
+    public Boolean getUserHasLiked() {
         return userHasLiked;
     }
 
-    public void setUserHasLiked(boolean userHasLiked) {
+    public void setUserHasLiked(Boolean userHasLiked) {
         this.userHasLiked = userHasLiked;
     }
 
-    public boolean isUserHasRerawred() {
+    public Boolean getUserHasRerawred() {
         return userHasRerawred;
     }
 
-    public void setUserHasRerawred(boolean userHasRerawred) {
+    public void setUserHasRerawred(Boolean userHasRerawred) {
         this.userHasRerawred = userHasRerawred;
     }
 
@@ -86,6 +89,14 @@ public class TweetDTO {
         this.owner = owner;
     }
 
+    public RerawrDTO getRerawr() {
+        return rerawr;
+    }
+
+    public void setRerawr(RerawrDTO rerawr) {
+        this.rerawr = rerawr;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,25 +104,28 @@ public class TweetDTO {
 
         TweetDTO tweetDTO = (TweetDTO) o;
 
-        if (userHasLiked != tweetDTO.userHasLiked) return false;
-        if (userHasRerawred != tweetDTO.userHasRerawred) return false;
+        if (createdTime != tweetDTO.createdTime) return false;
         if (id != null ? !id.equals(tweetDTO.id) : tweetDTO.id != null) return false;
-        if (createdTime != null ? !createdTime.equals(tweetDTO.createdTime) : tweetDTO.createdTime != null)
-            return false;
         if (status != null ? !status.equals(tweetDTO.status) : tweetDTO.status != null) return false;
+        if (userHasLiked != null ? !userHasLiked.equals(tweetDTO.userHasLiked) : tweetDTO.userHasLiked != null)
+            return false;
+        if (userHasRerawred != null ? !userHasRerawred.equals(tweetDTO.userHasRerawred) : tweetDTO.userHasRerawred != null)
+            return false;
         if (counts != null ? !counts.equals(tweetDTO.counts) : tweetDTO.counts != null) return false;
-        return owner != null ? owner.equals(tweetDTO.owner) : tweetDTO.owner == null;
+        if (owner != null ? !owner.equals(tweetDTO.owner) : tweetDTO.owner != null) return false;
+        return rerawr != null ? rerawr.equals(tweetDTO.rerawr) : tweetDTO.rerawr == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (createdTime != null ? createdTime.hashCode() : 0);
+        result = 31 * result + (int) (createdTime ^ (createdTime >>> 32));
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (userHasLiked ? 1 : 0);
-        result = 31 * result + (userHasRerawred ? 1 : 0);
+        result = 31 * result + (userHasLiked != null ? userHasLiked.hashCode() : 0);
+        result = 31 * result + (userHasRerawred != null ? userHasRerawred.hashCode() : 0);
         result = 31 * result + (counts != null ? counts.hashCode() : 0);
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + (rerawr != null ? rerawr.hashCode() : 0);
         return result;
     }
 }

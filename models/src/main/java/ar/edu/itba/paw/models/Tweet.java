@@ -223,8 +223,8 @@ public class Tweet {
 		return owner;
 	}
 	
-	public String getTimestamp(){
-		return sdf.format(timestamp); //unsafe for multithread
+	public long getTimestamp(){
+		return timestamp.getTime(); //unsafe for multithread
 	}
 
 	public int getCountRetweets() {
