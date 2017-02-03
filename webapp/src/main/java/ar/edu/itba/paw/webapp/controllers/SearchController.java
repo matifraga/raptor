@@ -42,10 +42,11 @@ public class SearchController {
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response searchUsers(@QueryParam("page") final String p, @QueryParam("limit") final String lim, @QueryParam("term") final String term) {
 		Integer limit =  null;
-		Integer page = null;
+		int page = 1;
 		try {
 			limit = Integer.valueOf(lim);
-			page = Integer.valueOf(p);
+			if (lim != null)
+				page = Integer.valueOf(p);
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
@@ -62,13 +63,16 @@ public class SearchController {
 	@Path("/rawrs")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response searchRawrs(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("term") final String term, @QueryParam("page") final String p) {
-		Date from = null, to = null;
-		Integer limit = null, page = null;
+		Date from = null, to =   null;
+		int limit, page = 1;
 		try {
 			limit = Integer.valueOf(lim);
-			to = new Date(Long.valueOf(maxPosition));
-			from = new Date(Long.valueOf(minPosition));
-			page = Integer.valueOf(p);
+			if (maxPosition != null)
+				to = new Date(Long.valueOf(maxPosition));
+			if (minPosition != null)
+				from = new Date(Long.valueOf(minPosition));
+			if (p != null)
+				page = Integer.valueOf(p);
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
@@ -85,13 +89,16 @@ public class SearchController {
 	@Path("/hashtags")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response searchHashtags(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("term") final String term, @QueryParam("page") final String p) {
-		Date from = null, to = null;
-		Integer limit = null, page = null;
+		Date from = null, to =   null;
+		int limit, page = 1;
 		try {
 			limit = Integer.valueOf(lim);
-			to = new Date(Long.valueOf(maxPosition));
-			from = new Date(Long.valueOf(minPosition));
-			page = Integer.valueOf(p);
+			if (maxPosition != null)
+				to = new Date(Long.valueOf(maxPosition));
+			if (minPosition != null)
+				from = new Date(Long.valueOf(minPosition));
+			if (p != null)
+				page = Integer.valueOf(p);
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}

@@ -38,19 +38,22 @@ public class FeedController {
 	@GET
 	@Path("/")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response getGlobalFeed(@QueryParam("limit") final String limit, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
+	public Response getGlobalFeed(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
 
 		Date from = null, to =   null;
-		Integer lim = null, page = null;
+		int limit, page = 1;
 		try {
-			lim = Integer.valueOf(limit);
-			to = new Date(Long.valueOf(maxPosition));
-			from = new Date(Long.valueOf(minPosition));
-			page = Integer.valueOf(p);
+			limit = Integer.valueOf(lim);
+			if (maxPosition != null)
+				to = new Date(Long.valueOf(maxPosition));
+			if (minPosition != null)
+				from = new Date(Long.valueOf(minPosition));
+			if (p != null)
+				page = Integer.valueOf(p);
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
-		List<Tweet> tweets = ts.globalFeed(lim, from, to, page);
+		List<Tweet> tweets = ts.globalFeed(limit, from, to, page);
 		User user = SessionHandler.sessionUser();
 		return Response.ok(tweetDTOBuilder.buildList(tweets, user)).build();
 	}
