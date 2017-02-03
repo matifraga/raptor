@@ -54,5 +54,4 @@ public class FavoriteServiceImpl implements FavoriteService {
 		tweetService.decreaseFavoriteCount(tweet);
 		favoriteDAO.unfavorite(tweet, user);
 	}
-
 }

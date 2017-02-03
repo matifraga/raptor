@@ -42,8 +42,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Transactional
 	@Override
-	public List<Notification> getNotifications(final User user, int resultsPerPage, final Date from, final Date to) {
-		List<Notification> ans = notifDAO.getNotifications(user, resultsPerPage, from, to);
+	public List<Notification> getNotifications(final User user, int resultsPerPage, final Date from, final Date to, final int page) {
+		List<Notification> ans = notifDAO.getNotifications(user, resultsPerPage, from, to, page);
         if (ans == null) {
             // TODO handle null
         }
@@ -67,5 +67,4 @@ public class NotificationServiceImpl implements NotificationService {
         }
         return count;
 	}
-
 }

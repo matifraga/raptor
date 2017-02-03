@@ -46,5 +46,4 @@ public class MentionServiceImpl implements MentionService {
 			}
         }
     }
-
 }

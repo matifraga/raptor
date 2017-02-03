@@ -12,9 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.paw.models.User;
 
-/**
- * Testing model
- */
 @Repository
 public class UserHibernateDAO implements UserDAO{
  
@@ -108,5 +105,4 @@ public class UserHibernateDAO implements UserDAO{
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
-	
 }

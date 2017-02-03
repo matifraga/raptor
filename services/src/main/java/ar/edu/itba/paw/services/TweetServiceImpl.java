@@ -69,8 +69,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getTimeline(final User user, final int resultsPerPage, final Date from, final Date to) {
-        List<Tweet> ans = tweetDAO.getTweetsForUser(user, resultsPerPage, from, to);
+    public List<Tweet> getTimeline(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
+        List<Tweet> ans = tweetDAO.getTweetsForUser(user, resultsPerPage, from, to, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -92,8 +92,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getMentions(final User user, final int resultsPerPage, final Date from, final Date to) {
-        List<Tweet> ans = tweetDAO.getTweetsByMention(user, resultsPerPage, from, to);
+    public List<Tweet> getMentions(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
+        List<Tweet> ans = tweetDAO.getTweetsByMention(user, resultsPerPage, from, to, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -102,8 +102,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to) {
-        List<Tweet> ans = tweetDAO.getFavorites(user, resultsPerPage, from, to);
+    public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
+        List<Tweet> ans = tweetDAO.getFavorites(user, resultsPerPage, from, to, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -112,8 +112,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to) {
-        List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, from, to);
+    public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to, final int page) {
+        List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, from, to, page);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -122,8 +122,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to) {
-        List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, from, to);
+	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to, final int page) {
+        List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, from, to, page);
         if (ans == null) {
             //TODO handle null
         }
@@ -132,8 +132,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
 	@Override 
-    public List<Tweet> globalFeed(int resultsPerPage, final Date from, final Date to) {
-        List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, from, to);
+    public List<Tweet> globalFeed(int resultsPerPage, final Date from, final Date to, final int page) {
+        List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, from, to, page);
         if (ans == null) {
             // TODO handle null
         }
@@ -142,8 +142,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> currentSessionFeed(final User user, final int resultsPerPage, final Date from, final Date to) {
-        List<Tweet> ans = tweetDAO.getLogedInFeed(user, resultsPerPage, from, to);
+    public List<Tweet> currentSessionFeed(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
+        List<Tweet> ans = tweetDAO.getLogedInFeed(user, resultsPerPage, from, to, page);
         if (ans == null) {
             // TODO handle null
         }

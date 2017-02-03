@@ -38,6 +38,8 @@ public class TweetServiceImplTest {
     private static final int RESULTSPERPAGE = 1;
     
     private static final Date FROM = new Date(1234567), TO = new Date(3456789);
+    
+    private static final int PAGE = 1;
 
     private static User owner;
 //    private static User sessionUser;
@@ -71,9 +73,9 @@ public class TweetServiceImplTest {
         ts = new TweetServiceImpl();
         ts.setTweetDAO(tweetDAO);
         when(tweetDAO.create(MESSAGE, owner)).thenReturn(tweet);
-        when(tweetDAO.getGlobalFeed(any(Integer.class), any(Date.class), any(Date.class))).thenReturn(arrayList);
-        when(tweetDAO.getLogedInFeed(any(User.class), any(Integer.class), any(Date.class), any(Date.class))).thenReturn(arrayList);
-        when(tweetDAO.getTweetsForUser(any(User.class), any(Integer.class), any(Date.class), any(Date.class))).thenReturn(arrayList);
+        when(tweetDAO.getGlobalFeed(any(Integer.class), any(Date.class), any(Date.class), any(Integer.class))).thenReturn(arrayList);
+        when(tweetDAO.getLogedInFeed(any(User.class), any(Integer.class), any(Date.class), any(Date.class), any(Integer.class))).thenReturn(arrayList);
+        when(tweetDAO.getTweetsForUser(any(User.class), any(Integer.class), any(Date.class), any(Date.class), any(Integer.class))).thenReturn(arrayList);
         when(tweetDAO.countTweets(any(User.class))).thenReturn(1);
         when(tweetDAO.isRetweeted(any(Tweet.class), any(User.class))).thenReturn(true);
         when(tweetDAO.getTweetById(tweet.getId())).thenReturn(tweet);
@@ -102,36 +104,36 @@ public class TweetServiceImplTest {
     @Test
     public void getHashtagsTest() {
 
-        ts.getHashtag(HASHTAG, RESULTSPERPAGE, FROM, TO);
-        verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(FROM), eq(TO));
+        ts.getHashtag(HASHTAG, RESULTSPERPAGE, FROM, TO, PAGE);
+        verify(tweetDAO).getTweetsByHashtag(eq(HASHTAG), eq(RESULTSPERPAGE), eq(FROM), eq(TO), eq(PAGE));
 
     }
 
     @Test
     public void searchTweetsTest() {
 
-        ts.searchTweets(SEARCH, RESULTSPERPAGE, FROM, TO);
-        verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(FROM), eq(TO));
+        ts.searchTweets(SEARCH, RESULTSPERPAGE, FROM, TO, PAGE);
+        verify(tweetDAO).searchTweets(eq(SEARCH), eq(RESULTSPERPAGE), eq(FROM), eq(TO), eq(PAGE));
     }
 
     @Test
     public void getMentionsTest() {
-        ts.getMentions(owner, RESULTSPERPAGE, FROM, TO);
-        verify(tweetDAO).getTweetsByMention(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO));
+        ts.getMentions(owner, RESULTSPERPAGE, FROM, TO, PAGE);
+        verify(tweetDAO).getTweetsByMention(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO), eq(PAGE));
     }
 
 
     @Test
     public void globalFeedTest() {
-        ts.globalFeed(RESULTSPERPAGE, FROM, TO);
-        verify(tweetDAO).getGlobalFeed(eq(RESULTSPERPAGE), eq(FROM), eq(TO));
+        ts.globalFeed(RESULTSPERPAGE, FROM, TO, PAGE);
+        verify(tweetDAO).getGlobalFeed(eq(RESULTSPERPAGE), eq(FROM), eq(TO), eq(PAGE));
     }
 
 
     @Test
     public void currentSessionFeedTest() {
-        ts.currentSessionFeed(owner, RESULTSPERPAGE, FROM, TO);
-        verify(tweetDAO).getLogedInFeed(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO));
+        ts.currentSessionFeed(owner, RESULTSPERPAGE, FROM, TO, PAGE);
+        verify(tweetDAO).getLogedInFeed(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO), eq(PAGE));
     }
 
     @Test
@@ -166,8 +168,8 @@ public class TweetServiceImplTest {
 
     @Test
     public void getTimelineTest() {
-        ts.getTimeline(owner, RESULTSPERPAGE, FROM, TO);
-        verify(tweetDAO).getTweetsForUser(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO));
+        ts.getTimeline(owner, RESULTSPERPAGE, FROM, TO, PAGE);
+        verify(tweetDAO).getTweetsForUser(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO), eq(PAGE));
     }
 
 
@@ -199,8 +201,8 @@ public class TweetServiceImplTest {
 
     @Test
     public void getFavoritesTest() {
-        ts.getFavorites(owner, RESULTSPERPAGE, FROM, TO);
-        verify(tweetDAO).getFavorites(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO));
+        ts.getFavorites(owner, RESULTSPERPAGE, FROM, TO, PAGE);
+        verify(tweetDAO).getFavorites(eq(owner), eq(RESULTSPERPAGE), eq(FROM), eq(TO), eq(PAGE));
     }
 
 }
