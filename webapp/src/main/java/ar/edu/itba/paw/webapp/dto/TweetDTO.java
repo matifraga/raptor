@@ -1,13 +1,17 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class TweetDTO {
     private String id;
+    @XmlElement(name = "created_time")
     private long createdTime;
     private String status;
+    @XmlElement(name = "user_has_liked")
     private Boolean userHasLiked;
+    @XmlElement(name = "user_has_rerawred")
     private Boolean userHasRerawred;
     private TweetCountsDTO counts;
     private UserDTO owner;

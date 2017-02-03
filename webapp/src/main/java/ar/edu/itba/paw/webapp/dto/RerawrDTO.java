@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class RerawrDTO {
     private String id;
+    @XmlElement(name="created_time")
     private long createdTime;
     private UserDTO owner;
 

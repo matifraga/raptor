@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -9,6 +10,7 @@ public class NotificationDTO {
     private boolean read;
     private long created;
     private UserDTO user;
+    @XmlElement(name = "status_id")
     private String statusId;
 
     /* default */ NotificationDTO() {}

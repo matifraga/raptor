@@ -36,36 +36,6 @@ public class SearchController {
 	@Autowired
 	private UserDTOBuilder userDTOBuilder;
 	
-//	@SuppressWarnings("unchecked")
-//	@GET
-//	@Path("/")
-//	@Produces(value = {MediaType.APPLICATION_JSON})
-//	public Response search(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term){
-//		if(page < 1 || limit < 1 || term.length() == 0)
-//        	return Response.status(Response.Status.BAD_REQUEST).build();
-//		@SuppressWarnings("rawtypes")
-//		SearchDTO searchDTO;
-//		User loggedUser = SessionHandler.sessionUser();
-//		switch (term.charAt(0)) {
-//			case '#':
-//			searchDTO = new SearchTweetsDTO();
-//			FeedDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, page), loggedUser);
-//			searchDTO.setResults(hashtags);
-//			break;
-//		case '@':
-//			searchDTO = new SearchUsersDTO();
-//			UsersDTO users = userDTOBuilder.buildList(us.searchUsers(term.substring(1), limit, page),loggedUser);
-//			searchDTO.setResults(users);
-//			break;
-//		default:
-//			searchDTO = new SearchTweetsDTO();
-//			FeedDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, page), loggedUser);
-//			searchDTO.setResults(rawrs);
-//			break;
-//		}
-//		return Response.ok(searchDTO).build();
-//	}
-	
 	@GET
 	@Path("/users")
 	@Produces(value = {MediaType.APPLICATION_JSON})

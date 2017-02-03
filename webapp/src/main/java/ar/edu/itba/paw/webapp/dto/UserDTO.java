@@ -1,16 +1,20 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class UserDTO {
     private String id;
     private String username;
+    @XmlElement(name = "first_name")
     private String firstName;
+    @XmlElement(name = "last_name")
     private String lastName;
     private ProfilePicturesDTO pics;
     private Boolean verified;
-    private UserCountsDTO userCountsDTO;
+    private UserCountsDTO counts;
+    @XmlElement(name = "user_follows")
     private Boolean userFollows;
 
     /* default */ UserDTO() {}
@@ -22,7 +26,7 @@ public class UserDTO {
 		this.lastName = lastName;
 		this.pics = pics;
 		this.verified = verified;
-		this.userCountsDTO = userCountsDTO;
+		this.counts = userCountsDTO;
 		this.userFollows = userFollows;
 	}
 
@@ -80,12 +84,12 @@ public class UserDTO {
 		this.verified = verified;
 	}
 
-	public UserCountsDTO getUserCountsDTO() {
-		return userCountsDTO;
+	public UserCountsDTO getCounts() {
+		return counts;
 	}
 
-	public void setUserCountsDTO(UserCountsDTO userCountsDTO) {
-		this.userCountsDTO = userCountsDTO;
+	public void setCounts(UserCountsDTO userCountsDTO) {
+		this.counts = userCountsDTO;
 	}
 
 	public Boolean getUserFollows() {
@@ -109,7 +113,7 @@ public class UserDTO {
 		if (lastName != null ? !lastName.equals(userDTO.lastName) : userDTO.lastName != null) return false;
 		if (pics != null ? !pics.equals(userDTO.pics) : userDTO.pics != null) return false;
 		if (verified != null ? !verified.equals(userDTO.verified) : userDTO.verified != null) return false;
-		if (userCountsDTO != null ? !userCountsDTO.equals(userDTO.userCountsDTO) : userDTO.userCountsDTO != null)
+		if (counts != null ? !counts.equals(userDTO.counts) : userDTO.counts != null)
 			return false;
 		return userFollows != null ? userFollows.equals(userDTO.userFollows) : userDTO.userFollows == null;
 	}
@@ -122,7 +126,7 @@ public class UserDTO {
 		result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
 		result = 31 * result + (pics != null ? pics.hashCode() : 0);
 		result = 31 * result + (verified != null ? verified.hashCode() : 0);
-		result = 31 * result + (userCountsDTO != null ? userCountsDTO.hashCode() : 0);
+		result = 31 * result + (counts != null ? counts.hashCode() : 0);
 		result = 31 * result + (userFollows != null ? userFollows.hashCode() : 0);
 		return result;
 	}

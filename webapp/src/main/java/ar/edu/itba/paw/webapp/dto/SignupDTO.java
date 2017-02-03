@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -7,7 +9,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class SignupDTO {
+    @XmlElement(name = "first_name")
     private String firstName;
+    @XmlElement(name = "last_name")
     private String lastName;
     private String username;
     private String email;
