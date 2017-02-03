@@ -47,13 +47,14 @@ public class UsersController {
     @GET
     @Path("/{username}/timeline")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getTimeline(@PathParam("username") final String username, @QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+    public Response getTimeline(@PathParam("username") final String username, @QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
         Date from = null, to = null;
-        Integer limit =  null;
+        Integer limit = null, page = null;
         try {
             limit = Integer.valueOf(lim);
             to = new Date(Long.valueOf(maxPosition));
             from = new Date(Long.valueOf(minPosition));
+            page = Integer.valueOf(p);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -62,19 +63,20 @@ public class UsersController {
             return Response.status(Response.Status.NOT_FOUND).build();
 
         User viewer = SessionHandler.sessionUser();
-        return Response.ok(tweetDTOBuilder.buildList(ts.getTimeline(user,limit,from,to), viewer)).build();
+        return Response.ok(tweetDTOBuilder.buildList(ts.getTimeline(user,limit,from,to,page), viewer)).build();
     }
 
     @GET
     @Path("/{username}/mentions")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getMentions(@PathParam("username") final String username, @QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+    public Response getMentions(@PathParam("username") final String username, @QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
         Date from = null, to = null;
-        Integer limit =  null;
+        Integer limit = null, page = null;
         try {
             limit = Integer.valueOf(lim);
             to = new Date(Long.valueOf(maxPosition));
             from = new Date(Long.valueOf(minPosition));
+            page = Integer.valueOf(p);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -84,19 +86,20 @@ public class UsersController {
         if (user == null)
             return Response.status(Response.Status.NOT_FOUND).build();
 
-        return Response.ok(tweetDTOBuilder.buildList(ts.getMentions(user, limit, from, to),loggedUser)).build();
+        return Response.ok(tweetDTOBuilder.buildList(ts.getMentions(user, limit, from, to, page),loggedUser)).build();
     }
 
     @GET
     @Path("/{username}/likes")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getLikes(@PathParam("username") final String username, @QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+    public Response getLikes(@PathParam("username") final String username, @QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
         Date from = null, to = null;
-        Integer limit =  null;
+        Integer limit = null, page = null;
         try {
             limit = Integer.valueOf(lim);
             to = new Date(Long.valueOf(maxPosition));
             from = new Date(Long.valueOf(minPosition));
+            page = Integer.valueOf(p);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -106,7 +109,7 @@ public class UsersController {
         if (user == null)
             return Response.status(Response.Status.NOT_FOUND).build();
 
-        return Response.ok(tweetDTOBuilder.buildList(ts.getFavorites(user, limit, from, to),loggedUser)).build();
+        return Response.ok(tweetDTOBuilder.buildList(ts.getFavorites(user, limit, from, to, page),loggedUser)).build();
     }
 
 

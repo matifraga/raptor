@@ -61,13 +61,14 @@ public class UserController {
     @GET
     @Path("/feed")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getFeed(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+    public Response getFeed(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
         Date from = null, to = null;
-        Integer limit =  null;
+        Integer limit = null, page = null;
         try {
             limit = Integer.valueOf(lim);
             to = new Date(Long.valueOf(maxPosition));
             from = new Date(Long.valueOf(minPosition));
+            page = Integer.valueOf(p);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -75,27 +76,28 @@ public class UserController {
     	User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        List<Tweet> feed = ts.currentSessionFeed(loggedUser, limit, from, to);
+        List<Tweet> feed = ts.currentSessionFeed(loggedUser, limit, from, to, page);
         return Response.ok(tweetDTOBuilder.buildList(feed, loggedUser)).build();
     }
 
     @GET
     @Path("/notifications")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getNotifications(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+    public Response getNotifications(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
         Date from = null, to = null;
-        Integer limit =  null;
+        Integer limit = null,  page = null;
         try {
             limit = Integer.valueOf(lim);
             to = new Date(Long.valueOf(maxPosition));
             from = new Date(Long.valueOf(minPosition));
+            page = Integer.valueOf(p);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     	User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        List<Notification> notifications = ns.getNotifications(loggedUser, limit, from, to);
+        List<Notification> notifications = ns.getNotifications(loggedUser, limit, from, to, page);
         return Response.ok(notificationDTOBuilder.buildList(notifications, loggedUser)).build();
     }
 
