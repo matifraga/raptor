@@ -35,9 +35,10 @@ public class FeedController {
 	@GET
 	@Path("/")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response getGlobalFeed(@QueryParam("page") final int page, @QueryParam("limit") final int limit) {
-		if(page < 1 || limit < 1)
-        	return Response.status(Response.Status.BAD_REQUEST).build();
+	public Response getGlobalFeed(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
+		//El checkeo de parametros se hace en service?
+		//if(page < 1 || limit < 1)
+		//return Response.status(Response.Status.BAD_REQUEST).build();
 		List<Tweet> tweets = ts.globalFeed(limit, page);
 		User user = SessionHandler.sessionUser();
 		return Response.ok(tweetDTOBuilder.buildList(tweets, user)).build();

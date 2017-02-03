@@ -59,7 +59,7 @@ public class UserController {
     @GET
     @Path("/feed")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getFeed(@QueryParam("page") final int page, @QueryParam("limit") final int limit) {
+    public Response getFeed(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
         if(page < 1 || limit < 1)
         	return Response.status(Response.Status.BAD_REQUEST).build();
     	User loggedUser = SessionHandler.sessionUser();
@@ -72,7 +72,7 @@ public class UserController {
     @GET
     @Path("/notifications")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getNotifications(@QueryParam("page") final int page, @QueryParam("limit") final int limit) {
+    public Response getNotifications(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
     	if(page < 1 || limit < 1)
         	return Response.status(Response.Status.BAD_REQUEST).build();
     	User loggedUser = SessionHandler.sessionUser();

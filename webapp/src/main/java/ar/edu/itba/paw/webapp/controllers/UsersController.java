@@ -45,8 +45,7 @@ public class UsersController {
     @GET
     @Path("/{username}/timeline")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getTimeline(@PathParam("username") final String username, @QueryParam("page") final int page,
-    @QueryParam("limit") final int limit) {
+    public Response getTimeline(@PathParam("username") final String username, @QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
     	if(page < 1 || limit < 1)
         	return Response.status(Response.Status.BAD_REQUEST).build();
         User user = us.getUserWithUsername(username);
@@ -60,7 +59,7 @@ public class UsersController {
     @GET
     @Path("/{username}/mentions")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getMentions(@PathParam("username") final String username, @QueryParam("page") final int page,  @QueryParam("limit") final int limit) {
+    public Response getMentions(@PathParam("username") final String username, @QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
     	if(page < 1 || limit < 1)
         	return Response.status(Response.Status.BAD_REQUEST).build();
     	User loggedUser = SessionHandler.sessionUser();
@@ -74,7 +73,7 @@ public class UsersController {
     @GET
     @Path("/{username}/likes")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getLikes(@PathParam("username") final String username, @QueryParam("page") final int page, @QueryParam("limit") final int limit) {
+    public Response getLikes(@PathParam("username") final String username, @QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
     	if(page < 1 || limit < 1)
         	return Response.status(Response.Status.BAD_REQUEST).build();
     	User loggedUser = SessionHandler.sessionUser();

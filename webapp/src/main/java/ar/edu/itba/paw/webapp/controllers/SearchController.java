@@ -51,7 +51,7 @@ public class SearchController {
 	@GET
 	@Path("/rawrs")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response searchRawrs(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term) {
+	public Response searchRawrs(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition, @QueryParam("term") final String term) {
 		if(page < 1 || limit < 1 || term.length() == 0)
         	return Response.status(Response.Status.BAD_REQUEST).build();
 
@@ -64,7 +64,7 @@ public class SearchController {
 	@GET
 	@Path("/hashtags")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response searchHashtags(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term) {
+	public Response searchHashtags(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition, @QueryParam("term") final String term) {
 		if(page < 1 || limit < 1 || term.length() == 0)
         	return Response.status(Response.Status.BAD_REQUEST).build();
 
