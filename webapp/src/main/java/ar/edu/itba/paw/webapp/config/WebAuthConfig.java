@@ -162,7 +162,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers(SIGNUP).anonymous()
+				.requestMatchers(new AntPathRequestMatcher(SIGNUP, "POST")).anonymous()
 				.requestMatchers(new AntPathRequestMatcher(LOGIN_PATH,"POST")).anonymous()
 				.requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
 				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()

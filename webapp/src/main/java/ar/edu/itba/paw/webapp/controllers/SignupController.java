@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.controllers;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.dto.SignupDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,15 +21,14 @@ import javax.ws.rs.core.Response;
 @Path("signup")
 @Component
 public class SignupController {
-
+    private final Logger LOGGER = LoggerFactory.getLogger(UserDTOBuilder.class);
     @Autowired
     UserService us;
 
     @POST
-    @Path("/")
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response signup(SignupDTO signup) {
-
+    @Path("")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response signup(final SignupDTO signup) {
         if (!isValidSignup(signup))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
@@ -43,6 +44,7 @@ public class SignupController {
 
 
     private boolean isValidSignup(SignupDTO signupDTO) {
+        LOGGER.info(signupDTO.toString());
         if (signupDTO.getFirstName() == null || signupDTO.getLastName() == null
                 || signupDTO.getUsername() == null || signupDTO.getPassword() == null
                 || signupDTO.getEmail() == null)

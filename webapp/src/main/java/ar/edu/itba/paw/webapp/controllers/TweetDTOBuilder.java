@@ -5,13 +5,15 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FavoriteService;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.webapp.dto.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TweetDTOBuilder {
-
+    private final Logger LOGGER = LoggerFactory.getLogger(TweetDTOBuilder.class);
     @Autowired
     private UserDTOBuilder userDTOBuilder;
 
@@ -22,7 +24,7 @@ public class TweetDTOBuilder {
     private TweetService tweetService;
 
     public TweetDTO build (final Tweet tweet, final User user)  {
-
+        LOGGER.info("building tweet : " + tweet.getMsg());
         // el tweet original (si es un retweet se toma el que es retweeteado)
         Tweet actualTweet = tweet;
         RerawrDTO rerawr = null;
