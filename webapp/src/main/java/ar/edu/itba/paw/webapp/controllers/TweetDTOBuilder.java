@@ -24,7 +24,7 @@ public class TweetDTOBuilder {
     private TweetService tweetService;
 
     public TweetDTO build (final Tweet tweet, final User user)  {
-        LOGGER.info("building tweet : " + tweet.getMsg());
+        LOGGER.debug("building tweet : " + tweet.getMsg());
         // el tweet original (si es un retweet se toma el que es retweeteado)
         Tweet actualTweet = tweet;
         RerawrDTO rerawr = null;

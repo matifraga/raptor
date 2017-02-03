@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -12,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +28,7 @@ import ar.edu.itba.paw.webapp.dto.NotificationIDsDTO;
 @Path("user")
 @Component
 public class UserController {
-
+    private final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
     @Autowired
     private TweetService ts;
 
@@ -49,7 +52,6 @@ public class UserController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUser() {
         User loggedUser = SessionHandler.sessionUser();
-        System.out.println(loggedUser);
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
@@ -59,26 +61,41 @@ public class UserController {
     @GET
     @Path("/feed")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getFeed(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
-        if(page < 1 || limit < 1)
-        	return Response.status(Response.Status.BAD_REQUEST).build();
+    public Response getFeed(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+        Date from = null, to = null;
+        Integer limit =  null;
+        try {
+            limit = Integer.valueOf(lim);
+            to = new Date(Long.valueOf(maxPosition));
+            from = new Date(Long.valueOf(minPosition));
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
     	User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        List<Tweet> feed = ts.currentSessionFeed(loggedUser, limit, page);
+        List<Tweet> feed = ts.currentSessionFeed(loggedUser, limit, from, to);
         return Response.ok(tweetDTOBuilder.buildList(feed, loggedUser)).build();
     }
 
     @GET
     @Path("/notifications")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getNotifications(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
-    	if(page < 1 || limit < 1)
-        	return Response.status(Response.Status.BAD_REQUEST).build();
+    public Response getNotifications(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+        Date from = null, to = null;
+        Integer limit =  null;
+        try {
+            limit = Integer.valueOf(lim);
+            to = new Date(Long.valueOf(maxPosition));
+            from = new Date(Long.valueOf(minPosition));
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     	User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        List<Notification> notifications = ns.getNotifications(loggedUser, limit, page);
+        List<Notification> notifications = ns.getNotifications(loggedUser, limit, from, to);
         return Response.ok(notificationDTOBuilder.buildList(notifications, loggedUser)).build();
     }
 

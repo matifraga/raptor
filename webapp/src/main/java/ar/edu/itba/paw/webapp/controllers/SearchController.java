@@ -18,6 +18,8 @@ import ar.edu.itba.paw.services.UserService;
 import ar.edu.itba.paw.webapp.dto.RawrsDTO;
 import ar.edu.itba.paw.webapp.dto.UsersDTO;
 
+import java.util.Date;
+
 @Path("search")
 @Component
 public class SearchController {
@@ -38,11 +40,19 @@ public class SearchController {
 	@GET
 	@Path("/users")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response searchUsers(@QueryParam("page") final int page, @QueryParam("limit") final int limit, @QueryParam("term") final String term) {
-		if(page < 1 || limit < 1 || term.length() == 0)
-        	return Response.status(Response.Status.BAD_REQUEST).build();
+	public Response searchUsers(@QueryParam("page") final String p, @QueryParam("limit") final String lim, @QueryParam("term") final String term) {
+		Integer limit =  null;
+		Integer page = null;
+		try {
+			limit = Integer.valueOf(lim);
+			page = Integer.valueOf(p);
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		if (term == null || term.length() == 0)
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		LOGGER.info("searching users with term: " + term.substring(1));
+		LOGGER.debug("searching users with term: " + term.substring(1));
 		User loggedUser = SessionHandler.sessionUser();
 		UsersDTO users = userDTOBuilder.buildList(us.searchUsers(term.substring(1), limit, page),loggedUser);
 		return Response.ok(users).build();
@@ -51,26 +61,44 @@ public class SearchController {
 	@GET
 	@Path("/rawrs")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response searchRawrs(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition, @QueryParam("term") final String term) {
-		if(page < 1 || limit < 1 || term.length() == 0)
-        	return Response.status(Response.Status.BAD_REQUEST).build();
+	public Response searchRawrs(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("term") final String term) {
+		Date from = null, to = null;
+		Integer limit =  null;
+		try {
+			limit = Integer.valueOf(lim);
+			to = new Date(Long.valueOf(maxPosition));
+			from = new Date(Long.valueOf(minPosition));
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		if (term == null || term.length() == 0)
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		LOGGER.info("searching rawrs with term: " + term);
+		LOGGER.debug("searching rawrs with term: " + term);
 		User loggedUser = SessionHandler.sessionUser();
-		RawrsDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, page), loggedUser);
+		RawrsDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, from, to), loggedUser);
 		return Response.ok(rawrs).build();
 	}
 	
 	@GET
 	@Path("/hashtags")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response searchHashtags(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition, @QueryParam("term") final String term) {
-		if(page < 1 || limit < 1 || term.length() == 0)
-        	return Response.status(Response.Status.BAD_REQUEST).build();
+	public Response searchHashtags(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("term") final String term) {
+		Date from = null, to = null;
+		Integer limit =  null;
+		try {
+			limit = Integer.valueOf(lim);
+			to = new Date(Long.valueOf(maxPosition));
+			from = new Date(Long.valueOf(minPosition));
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		if (term == null || term.length() == 0)
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		LOGGER.info("searching hashtags with term: " + term.substring(1	));
+		LOGGER.debug("searching hashtags with term: " + term.substring(1	));
 		User loggedUser = SessionHandler.sessionUser();
-		RawrsDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, page), loggedUser);
+		RawrsDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, from, to), loggedUser);
 		return Response.ok(hashtags).build();
 	}
 }

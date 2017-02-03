@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controllers;
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -12,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +25,7 @@ import ar.edu.itba.paw.services.TweetService;
 @Path("feed")
 @Component
 public class FeedController {
-
+	private final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	@Autowired
     private TweetService ts;
 	
@@ -35,11 +38,18 @@ public class FeedController {
 	@GET
 	@Path("/")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response getGlobalFeed(@QueryParam("limit") final int limit, @QueryParam("max_position") final long maxPosition, @QueryParam("min_position") final long minPosition) {
-		//El checkeo de parametros se hace en service?
-		//if(page < 1 || limit < 1)
-		//return Response.status(Response.Status.BAD_REQUEST).build();
-		List<Tweet> tweets = ts.globalFeed(limit, page);
+	public Response getGlobalFeed(@QueryParam("limit") final String limit, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition) {
+
+		Date from = null, to =   null;
+		Integer lim =  null;
+		try {
+			lim = Integer.valueOf(limit);
+			to = new Date(Long.valueOf(maxPosition));
+			from = new Date(Long.valueOf(minPosition));
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		List<Tweet> tweets = ts.globalFeed(lim, from, to);
 		User user = SessionHandler.sessionUser();
 		return Response.ok(tweetDTOBuilder.buildList(tweets, user)).build();
 	}

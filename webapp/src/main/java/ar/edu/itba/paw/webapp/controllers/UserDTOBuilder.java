@@ -31,7 +31,7 @@ public class UserDTOBuilder {
     private TweetService tweetService;
 
     public UserDTO build(User user, User viewer) {
-        LOGGER.info("building : " + user.getUsername());
+        LOGGER.debug("building : " + user.getUsername());
         String small = generateProfilePictureUrl(user, SMALL);
         String medium = generateProfilePictureUrl(user, MEDIUM);
         String large = generateProfilePictureUrl(user, LARGE);
