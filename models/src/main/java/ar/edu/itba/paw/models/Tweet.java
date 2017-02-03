@@ -224,7 +224,7 @@ public class Tweet {
 	}
 	
 	public long getTimestamp(){
-		return timestamp.getTime(); //unsafe for multithread
+		return timestamp.getTime();
 	}
 
 	public int getCountRetweets() {

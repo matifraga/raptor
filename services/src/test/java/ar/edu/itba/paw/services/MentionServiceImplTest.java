@@ -1,17 +1,21 @@
 package ar.edu.itba.paw.services;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+
+import java.sql.Timestamp;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.MentionDAO;
 import ar.edu.itba.paw.persistence.UserDAO;
-import org.junit.*;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.sql.Timestamp;
-import java.util.Set;
-
-import static org.mockito.Mockito.*;
 
 public class MentionServiceImplTest {
 
