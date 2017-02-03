@@ -1,15 +1,16 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.models.NotificationType;
-import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.TweetDAO;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import ar.edu.itba.paw.models.NotificationType;
+import ar.edu.itba.paw.models.Tweet;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.persistence.TweetDAO;
 
 @Service
 public class TweetServiceImpl implements TweetService {
@@ -68,8 +69,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getTimeline(final User user, final int resultsPerPage, final int page) {
-        List<Tweet> ans = tweetDAO.getTweetsForUser(user, resultsPerPage, page);
+    public List<Tweet> getTimeline(final User user, final int resultsPerPage, final Date from, final Date to) {
+        List<Tweet> ans = tweetDAO.getTweetsForUser(user, resultsPerPage, from, to);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -91,8 +92,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getMentions(final User user, final int resultsPerPage, final int page) {
-        List<Tweet> ans = tweetDAO.getTweetsByMention(user, resultsPerPage, page);
+    public List<Tweet> getMentions(final User user, final int resultsPerPage, final Date from, final Date to) {
+        List<Tweet> ans = tweetDAO.getTweetsByMention(user, resultsPerPage, from, to);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -101,8 +102,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page) {
-        List<Tweet> ans = tweetDAO.getFavorites(user, resultsPerPage, page);
+    public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to) {
+        List<Tweet> ans = tweetDAO.getFavorites(user, resultsPerPage, from, to);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -111,8 +112,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final int page) {
-        List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, page);
+    public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to) {
+        List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, from, to);
         if (ans == null) {
             //TODO handle null (db error)
         }
@@ -121,8 +122,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page) {
-        List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, page);
+	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to) {
+        List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, from, to);
         if (ans == null) {
             //TODO handle null
         }
@@ -131,8 +132,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
 	@Override 
-    public List<Tweet> globalFeed(int resultsPerPage, int page) {
-        List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, page);
+    public List<Tweet> globalFeed(int resultsPerPage, final Date from, final Date to) {
+        List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, from, to);
         if (ans == null) {
             // TODO handle null
         }
@@ -141,8 +142,8 @@ public class TweetServiceImpl implements TweetService {
 
 	@Transactional
     @Override
-    public List<Tweet> currentSessionFeed(final User user, final int resultsPerPage, final int page) {
-        List<Tweet> ans = tweetDAO.getLogedInFeed(user, resultsPerPage, page);
+    public List<Tweet> currentSessionFeed(final User user, final int resultsPerPage, final Date from, final Date to) {
+        List<Tweet> ans = tweetDAO.getLogedInFeed(user, resultsPerPage, from, to);
         if (ans == null) {
             // TODO handle null
         }

@@ -1,9 +1,10 @@
 package ar.edu.itba.paw.services;
 
+import java.util.Date;
+import java.util.List;
+
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
-
-import java.util.List;
 
 public interface TweetService {
 
@@ -30,69 +31,76 @@ public interface TweetService {
 	 *
 	 * @param id             The user.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return The recovered tweets.
 	 */
-	List<Tweet> getTimeline(final User user, final int resultsPerPage, final int page);
+	List<Tweet> getTimeline(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a user's mentions.
 	 *
 	 * @param user           The user.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return The recovered mentions.
 	 */
-	List<Tweet> getMentions(final User user, final int resultsPerPage, final int page);
+	List<Tweet> getMentions(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a user's favorites.
 	 *
 	 * @param user             The user.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return The recovered favorites.
 	 */
-	List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page);
+	List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a list of tweets with a hashtag.
 	 *
 	 * @param hashtag        The hashtag to be searched.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return The recovered list.
 	 */
-	List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final int page);
+	List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a list of tweets containing the search.
 	 *
 	 * @param text           The text searched.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return The recovered list.
 	 */
-	List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page);
+	List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a list of the latest tweets in the whole network.
 	 *
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return The recovered List.
      */
-	List<Tweet> globalFeed(final int resultsPerPage, final int page);
+	List<Tweet> globalFeed(final int resultsPerPage, final Date from, final Date to);
 	
 	/**
 	 * Get a list of the latest tweets from users followed by the current user.
 	 *
 	 * @param user         The the current user.
 	 * @param resultsPerPage Limit number of tweets per page
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return The recovered List.
      */
-	List<Tweet> currentSessionFeed(final User user, final int resultsPerPage, final int page);
+	List<Tweet> currentSessionFeed(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get the amount of tweets the user has.

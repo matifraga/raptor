@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Transactional
 	@Override
-	public List<Notification> getNotifications(final User user, int resultsPerPage, int page) {
-		List<Notification> ans = notifDAO.getNotifications(user, resultsPerPage, page);
+	public List<Notification> getNotifications(final User user, int resultsPerPage, final Date from, final Date to) {
+		List<Notification> ans = notifDAO.getNotifications(user, resultsPerPage, from, to);
         if (ans == null) {
             // TODO handle null
         }
