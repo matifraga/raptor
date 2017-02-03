@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.models;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,11 +43,7 @@ public class Tweet {
 
 	private final static int MAX_LENGTH = 256;
 
-	private final static String DATE_FORMAT = "h:mm a - d MMMM yyyy";
-
 	private final static String ERROR_LENGTH = "A tweet can not have more than " + MAX_LENGTH + " characters.";
-
-	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
 	@Id
 	@GenericGenerator(name = "random_id", strategy = "ar.edu.itba.paw.models.RandomIdGenerator")

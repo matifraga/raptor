@@ -17,9 +17,6 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 
-/**
- * Testing model
- */
 @Repository
 public class TweetHibernateDAO implements TweetDAO{
 
@@ -35,9 +32,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	        em.persist(tweet);
 	        em.flush();
 	        return tweet;
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		} catch (Exception e) {}
 		return null;
 	}
 
@@ -50,7 +45,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final Date from, final Date to) {
+	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
@@ -58,13 +53,14 @@ public class TweetHibernateDAO implements TweetDAO{
 			.where(cb.between(tweet.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(tweet.get("timestamp")));
 		List<Tweet> list = em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 		return list;
 	}
 
 	@Override
-	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to) {
+	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> hashtagIDs = em.createNativeQuery("select tweetID from hashtags where UPPER(hashtag) = ?")
 				.setParameter(1, hashtag.toUpperCase())
@@ -79,12 +75,13 @@ public class TweetHibernateDAO implements TweetDAO{
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
 
 	@Override
-	public List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final Date from, final Date to) {
+	public List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> mentionIDs = em.createNativeQuery("select tweetID from mentions where userID = ?")
 				.setParameter(1, user.getId())
@@ -99,12 +96,13 @@ public class TweetHibernateDAO implements TweetDAO{
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
 
 	@Override
-	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to) {
+	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to, final int page) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
@@ -113,22 +111,24 @@ public class TweetHibernateDAO implements TweetDAO{
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
 
 	@Override
-	public List<Tweet> getGlobalFeed(final int resultsPerPage, final Date from, final Date to) {
+	public List<Tweet> getGlobalFeed(final int resultsPerPage, final Date from, final Date to, final int page) {
 		
 		return em.createQuery("from Tweet as t where timestamp between ? and ? order by t.timestamp desc", Tweet.class)
 				.setParameter(1, new Timestamp(from.getTime()))
 				.setParameter(2, new Timestamp(to.getTime()))
+		.setFirstResult((page-1)*resultsPerPage)
 		.setMaxResults(resultsPerPage)
 		.getResultList();
 	}
 
 	@Override
-	public List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final Date from, final Date to) {
+	public List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = ?")
 				.setParameter(1, user.getId())
@@ -142,6 +142,7 @@ public class TweetHibernateDAO implements TweetDAO{
 			.orderBy(cb.desc(tweet.get("timestamp")));
 	
 		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
@@ -206,7 +207,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to) {
+	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
 		@SuppressWarnings("unchecked")
 		List<String> favoriteTweetIDs = em.createNativeQuery("select tweetID from favorites where favoriteID = ?")
 				.setParameter(1, user.getId()).getResultList();
@@ -220,6 +221,7 @@ public class TweetHibernateDAO implements TweetDAO{
 			.orderBy(cb.desc(tweet.get("timestamp")));
 
 		return em.createQuery(cq)
+				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}

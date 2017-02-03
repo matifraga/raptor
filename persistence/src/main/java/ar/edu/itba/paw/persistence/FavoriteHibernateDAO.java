@@ -19,7 +19,7 @@ public class FavoriteHibernateDAO implements FavoriteDAO{
 		em.createNativeQuery("INSERT INTO favorites (favoriteID, tweetID) values(?, ?)")
 			.setParameter(1, user.getId())
 			.setParameter(2, tweet.getId())
-			.executeUpdate(); 	//TODO check if execute update returns >0 to see if deletion was ok
+			.executeUpdate(); 	
 	}
 
 	@Override
@@ -36,7 +36,6 @@ public class FavoriteHibernateDAO implements FavoriteDAO{
 		em.createNativeQuery("DELETE FROM favorites where favoriteID = ? and tweetID = ?")
 			.setParameter(1, user.getId())
 			.setParameter(2, tweet.getId())
-			.executeUpdate();		//TODO check if execute update returns >0 to see if deletion was ok
+			.executeUpdate();		
 	}
-
 }

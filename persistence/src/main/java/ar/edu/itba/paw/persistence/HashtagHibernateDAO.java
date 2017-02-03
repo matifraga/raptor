@@ -25,7 +25,7 @@ public class HashtagHibernateDAO implements HashtagDAO {
 		em.createNativeQuery("insert into hashtags (tweetid, hashtag) values(?, ?)")
 			.setParameter(1, tweet.getId())
 			.setParameter(2, hashtag)
-			.executeUpdate();      //TODO check if execute update returns >0 to see if deletion was ok
+			.executeUpdate();      
 	}
 
 	@SuppressWarnings("unchecked")

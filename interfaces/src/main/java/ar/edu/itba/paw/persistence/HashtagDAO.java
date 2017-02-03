@@ -9,16 +9,16 @@ public interface HashtagDAO {
     /**
      * Create a hashtag.
      *
-     * @param hashtag The hashtag name.
-     * @param tweet The tweet with the hashtag.
+     * @param hashtag 	The hashtag name.
+     * @param tweet 	The tweet with the hashtag.
      */
     void create(final String hashtag, final Tweet tweet);
 
     /**
      * Get a list of hashtags.
      *
-     * @param count Number of results expecting.
-     * @return The list of Trending Topics.
+     * @param count 	Number of results expecting.
+     * @return 			The list of Trending Topics.
      */
     List<String> getTrendingTopics(final int count);
 

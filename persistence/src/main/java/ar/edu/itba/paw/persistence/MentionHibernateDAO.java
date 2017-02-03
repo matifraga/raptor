@@ -19,7 +19,7 @@ public class MentionHibernateDAO implements MentionDAO {
 		em.createNativeQuery("INSERT INTO mentions (userID, tweetID) values(?, ?)")
 			.setParameter(1, user.getId())
 			.setParameter(2, tweet.getId())
-			.executeUpdate();     //TODO check if execute update returns >0 to see if deletion was ok
+			.executeUpdate();  
 	}
 
 }

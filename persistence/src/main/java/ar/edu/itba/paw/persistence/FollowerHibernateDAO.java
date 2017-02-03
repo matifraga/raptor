@@ -18,9 +18,7 @@ public class FollowerHibernateDAO implements FollowerDAO {
 		em.createNativeQuery("INSERT INTO followers (followerID, followingID) values(?, ?)")
 				.setParameter(1, follower.getId())
 				.setParameter(2, following.getId())
-				.executeUpdate();		//TODO check if execute update returns >0 to see if deletion was ok
-//		em.persist(follower);
-//		em.persist(following);
+				.executeUpdate();		
 	}
 
 	@Override
@@ -36,7 +34,7 @@ public class FollowerHibernateDAO implements FollowerDAO {
 		em.createNativeQuery("DELETE FROM followers WHERE followerID = ? and followingID = ?")
 			.setParameter(1, follower.getId())
 			.setParameter(2, following.getId())
-			.executeUpdate();	//TODO check if execute update returns >0 to see if deletion was ok
+			.executeUpdate();	
 	}
 
 	@Override
