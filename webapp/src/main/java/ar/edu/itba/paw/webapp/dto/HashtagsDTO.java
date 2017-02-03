@@ -9,9 +9,7 @@ public class HashtagsDTO {
 
 	private List<String> hashtags;
 	
-	/* default */ public HashtagsDTO() {
-		// TODO Auto-generated constructor stub
-	}
+	/* default */ public HashtagsDTO() {}
 	
 	public HashtagsDTO(List<String> hashtags) {
         this.hashtags = hashtags;

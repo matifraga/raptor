@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.dto.FeedDTO;
+import ar.edu.itba.paw.webapp.dto.RawrsDTO;
 import ar.edu.itba.paw.webapp.dto.UsersDTO;
 
 @Path("search")
@@ -57,7 +57,7 @@ public class SearchController {
 
 		LOGGER.info("searching rawrs with term: " + term);
 		User loggedUser = SessionHandler.sessionUser();
-		FeedDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, page), loggedUser);
+		RawrsDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, page), loggedUser);
 		return Response.ok(rawrs).build();
 	}
 	
@@ -70,7 +70,7 @@ public class SearchController {
 
 		LOGGER.info("searching hashtags with term: " + term.substring(1	));
 		User loggedUser = SessionHandler.sessionUser();
-		FeedDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, page), loggedUser);
+		RawrsDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, page), loggedUser);
 		return Response.ok(hashtags).build();
 	}
 }

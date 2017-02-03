@@ -9,8 +9,7 @@ public class ProfilePicturesDTO {
     private String medium;
     private String large;
 
-    /* default */ ProfilePicturesDTO() {
-    }
+    /* default */ ProfilePicturesDTO() {}
 
     public ProfilePicturesDTO(final String small, final String medium, final String large) {
         this.small = small;

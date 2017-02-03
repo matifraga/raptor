@@ -7,8 +7,7 @@ import java.util.List;
 public class NotificationsDTO{
     private List<NotificationDTO> notifications;
 
-    /* default */ NotificationsDTO() {
-    }
+    /* default */ NotificationsDTO() {}
 
     public NotificationsDTO(List<NotificationDTO> notifications) {
         this.notifications = notifications;

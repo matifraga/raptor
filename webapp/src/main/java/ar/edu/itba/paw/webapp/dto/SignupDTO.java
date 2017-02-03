@@ -1,12 +1,8 @@
 package ar.edu.itba.paw.webapp.dto;
 
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Created by luis on 1/31/17.
- */
 @XmlRootElement
 public class SignupDTO {
     @XmlElement(name = "first_name")
@@ -17,8 +13,7 @@ public class SignupDTO {
     private String email;
     private String password;
 
-    /*default*/ SignupDTO() {
-    }
+    /* default */ SignupDTO() {}
 
     public SignupDTO(String firstName, String lastName, String username, String email, String password) {
         this.firstName = firstName;
@@ -27,6 +22,12 @@ public class SignupDTO {
         this.email = email;
         this.password = password;
     }
+    
+    /*
+     * 
+     * Getters & Setters.
+     * 
+     * */
 
     @Override
     public String toString() {

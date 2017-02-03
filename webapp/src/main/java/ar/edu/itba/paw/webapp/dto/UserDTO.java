@@ -30,7 +30,7 @@ public class UserDTO {
 		this.userFollows = userFollows;
 	}
 
-/*
+	/*
 	 * 
 	 * Getters & Setters.
 	 * 

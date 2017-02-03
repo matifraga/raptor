@@ -17,8 +17,7 @@ public class TweetDTO {
     private UserDTO owner;
     private RerawrDTO rerawr;
 
-    /* default */ TweetDTO() {
-    }
+    /* default */ TweetDTO() {}
 
     public TweetDTO(String id, long createdTime, String status, Boolean userHasLiked, Boolean userHasRerawred, TweetCountsDTO counts, UserDTO owner, RerawrDTO rerawr) {
         this.id = id;
@@ -31,7 +30,7 @@ public class TweetDTO {
         this.rerawr = rerawr;
     }
 
-   /*
+    /*
      * 
      * Getters & Setters.
      * 

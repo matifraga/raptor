@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement
-public class FeedDTO{
+public class RawrsDTO{
     private List<TweetDTO> rawrs;
 
-    /* default */ FeedDTO() {}
+    /* default */ RawrsDTO() {}
 
-    public FeedDTO(List<TweetDTO> rawrs) {
+    public RawrsDTO(List<TweetDTO> rawrs) {
         this.rawrs = rawrs;
     }
     
@@ -30,9 +30,9 @@ public class FeedDTO{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FeedDTO)) return false;
+        if (!(o instanceof RawrsDTO)) return false;
 
-        FeedDTO feedDTO = (FeedDTO) o;
+        RawrsDTO feedDTO = (RawrsDTO) o;
 
         return rawrs != null ? rawrs.equals(feedDTO.rawrs) : feedDTO.rawrs == null;
     }

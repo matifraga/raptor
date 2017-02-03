@@ -13,6 +13,12 @@ public class TweetCountsDTO {
         this.likes = likes;
         this.rerawrs = rerawrs;
     }
+    
+    /*
+     * 
+     * Getters & Setters.
+     * 
+     * */
 
     public int getLikes() {
         return likes;

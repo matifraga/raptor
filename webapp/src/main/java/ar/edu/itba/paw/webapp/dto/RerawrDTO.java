@@ -1,25 +1,29 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Created by luis on 2/2/17.
- */
 @XmlRootElement
 public class RerawrDTO {
+	
     private String id;
     @XmlElement(name="created_time")
     private long createdTime;
     private UserDTO owner;
 
-    /*default*/ RerawrDTO() {
-    }
+    /* default */ RerawrDTO() {}
 
     public RerawrDTO(String id, long createdTime, UserDTO owner) {
         this.id = id;
         this.createdTime = createdTime;
         this.owner = owner;
     }
+    
+    /*
+     * 
+     * Getters & Setters.
+     * 
+     * */
 
     public String getId() {
         return id;

@@ -48,7 +48,7 @@ public class TweetDTOBuilder {
         return new TweetDTO(actualTweet.getId(), actualTweet.getTimestamp(), actualTweet.getMsg(), userHasLiked, userHasRerawred, count, owner, rerawr);
     }
 
-    public FeedDTO buildList(List<Tweet> tweetList, User user) {
-        return new FeedDTO(tweetList.stream().map(tweet -> this.build(tweet,user)).collect(Collectors.toList()));
+    public RawrsDTO buildList(List<Tweet> tweetList, User user) {
+        return new RawrsDTO(tweetList.stream().map(tweet -> this.build(tweet,user)).collect(Collectors.toList()));
     }
 }

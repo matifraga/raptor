@@ -11,8 +11,7 @@ public class NotificationIDsDTO {
     @XmlElement(name = "notification_ids")
     private List<Long> notificationIDs;
 
-    /* default */ NotificationIDsDTO() {
-    }
+    /* default */ NotificationIDsDTO() {}
 
     public NotificationIDsDTO(List<Long> notificationIDs) {
         this.notificationIDs = notificationIDs;

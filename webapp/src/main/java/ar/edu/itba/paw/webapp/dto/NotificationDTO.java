@@ -24,6 +24,12 @@ public class NotificationDTO {
         this.statusId = statusId;
     }
 
+    /*
+     * 
+     * Getters & Setters.
+     * 
+     * */
+    
     public long getId() {
         return id;
     }
