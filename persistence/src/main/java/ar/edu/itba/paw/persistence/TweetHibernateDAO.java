@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,22 +50,21 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page) {
+	public List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final Date from, final Date to) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
 		cq.where(cb.equal(tweet.get("owner"), user))
+			.where(cb.between(tweet.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(tweet.get("timestamp")));
-		List<Tweet> list = em.createQuery(/*"from Tweet as t where t.owner = :user"*/ cq)
-				//.setParameter("user", user)
-				.setFirstResult((page-1)*resultsPerPage)
+		List<Tweet> list = em.createQuery(cq)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 		return list;
 	}
 
 	@Override
-	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page) {
+	public List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to) {
 		@SuppressWarnings("unchecked")
 		List<String> hashtagIDs = em.createNativeQuery("select tweetID from hashtags where UPPER(hashtag) = ?")
 				.setParameter(1, hashtag.toUpperCase())
@@ -75,16 +75,16 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
 		cq.where(root.get("id").in(hashtagIDs))
+			.where(cb.between(root.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
-				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
 
 	@Override
-	public List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final int page) {
+	public List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final Date from, final Date to) {
 		@SuppressWarnings("unchecked")
 		List<String> mentionIDs = em.createNativeQuery("select tweetID from mentions where userID = ?")
 				.setParameter(1, user.getId())
@@ -95,38 +95,40 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
 		cq.where(root.get("id").in(mentionIDs))
+			.where(cb.between(root.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
-				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
 
 	@Override
-	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page) {
+	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
 		cq.where(cb.like(cb.upper(root.get("msg")), '%'+text.toUpperCase()+'%'))
+			.where(cb.between(root.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(root.get("timestamp")));
 	
 		return em.createQuery(cq)
-				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
 
 	@Override
-	public List<Tweet> getGlobalFeed(final int resultsPerPage, final int page) {
-		return em.createQuery("from Tweet as t order by t.timestamp desc", Tweet.class)
-		.setFirstResult((page-1)*resultsPerPage)
+	public List<Tweet> getGlobalFeed(final int resultsPerPage, final Date from, final Date to) {
+		
+		return em.createQuery("from Tweet as t where timestamp between ? and ? order by t.timestamp desc", Tweet.class)
+				.setParameter(1, new Timestamp(from.getTime()))
+				.setParameter(2, new Timestamp(to.getTime()))
 		.setMaxResults(resultsPerPage)
 		.getResultList();
 	}
 
 	@Override
-	public List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final int page) {
+	public List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final Date from, final Date to) {
 		@SuppressWarnings("unchecked")
 		List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = ?")
 				.setParameter(1, user.getId())
@@ -135,11 +137,11 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
-		cq.where(followingIDs.isEmpty()?cb.equal(tweet.get("owner"),user) : cb.or(tweet.get("owner").get("id").in(followingIDs), cb.equal(tweet.get("owner"),user)))  //TODO fix first get
+		cq.where(followingIDs.isEmpty()?cb.equal(tweet.get("owner"),user) : cb.or(tweet.get("owner").get("id").in(followingIDs), cb.equal(tweet.get("owner"),user)))
+			.where(cb.between(tweet.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(tweet.get("timestamp")));
 	
 		return em.createQuery(cq)
-				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}
@@ -204,7 +206,7 @@ public class TweetHibernateDAO implements TweetDAO{
 	}
 
 	@Override
-	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page) {
+	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to) {
 		@SuppressWarnings("unchecked")
 		List<String> favoriteTweetIDs = em.createNativeQuery("select tweetID from favorites where favoriteID = ?")
 				.setParameter(1, user.getId()).getResultList();
@@ -214,10 +216,10 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
 		cq.where(tweet.get("id").in(favoriteTweetIDs)) 
+			.where(cb.between(tweet.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(tweet.get("timestamp")));
 
 		return em.createQuery(cq)
-				.setFirstResult((page - 1) * resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}

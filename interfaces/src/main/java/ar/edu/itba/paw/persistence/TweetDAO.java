@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 
+import java.util.Date;
 import java.util.List;
 
 public interface TweetDAO {
@@ -30,59 +31,65 @@ public interface TweetDAO {
 	 *
 	 * @param user           The user.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from 			 The min date.
+	 * @param to 			 The max date.
 	 * @return The user's list of tweets.
 	 */
-	List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final int page);
+	List<Tweet> getTweetsForUser(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a list of Tweets with a hashtag.
 	 *
 	 * @param hashtag		 The searched hashtag.
 	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param from 			 The min date.
+	 * @param to 			 The max date.
 	 * @return 				 The list of tweets containing the hashtag.
 	 */
-	List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final int page);
+	List<Tweet> getTweetsByHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a list of Tweets mentioning a user.
 	 *
 	 * @param user         		The user.
 	 * @param resultsPerPage 	Limit number of tweets per page.
-	 * @param page           	Number of page needed.
+	 * @param from 			 	The min date.
+	 * @param to 			 	The max date.
 	 * @return 					the list of tweets containing the mention.
 	 */
-	List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final int page);
+	List<Tweet> getTweetsByMention(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Search for tweets.
 	 *
 	 * @param text           	The searched text.
 	 * @param resultsPerPage 	Limit number of tweets per page.
-	 * @param page           	Number of page needed.
+	 * @param from 			 	The min date.
+	 * @param to 			 	The max date.
 	 * @return the list of tweets containing the text.
      */
-    List<Tweet> searchTweets(final String text, final int resultsPerPage, final int page);
+    List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a list of the latest tweets in the whole network.
 	 *
 	 * @param resultsPerPage 	Limit number of tweets per page.
-	 * @param page           	Number of page needed.
+	 * @param from 			 	The min date.
+	 * @param to 			 	The max date.
 	 * @return The list of tweets.
      */
-	List<Tweet> getGlobalFeed(final int resultsPerPage, final int page);
+	List<Tweet> getGlobalFeed(final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a list of the latest tweets from the users you follow.
 	 *
 	 * @param user         		The user.
 	 * @param resultsPerPage 	Limit number of tweets per page.
-	 * @param page           	Number of page needed.
+	 * @param from 				The min date.
+	 * @param to 				The max date.
 	 * @return The list of tweets.
      */
-	List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final int page);
+	List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get the amount of tweets the user has.
@@ -148,11 +155,12 @@ public interface TweetDAO {
 	/**
 	 * Get a user's favorites.
 	 *
-	 * @param user             The user.
-	 * @param resultsPerPage Limit number of tweets per page.
-	 * @param page           Number of page needed.
+	 * @param user             	The user.
+	 * @param resultsPerPage 	Limit number of tweets per page.
+	 * @param from 				The min date.
+	 * @param to 				The max date.
 	 * @return The recovered favorites.
 	 */
-	List<Tweet> getFavorites(final User user, final int resultsPerPage, final int page);
+	List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to);
 
 }

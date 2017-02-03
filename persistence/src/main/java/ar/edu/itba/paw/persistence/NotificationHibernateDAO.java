@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -46,15 +47,15 @@ public class NotificationHibernateDAO implements NotificationDAO {
 	}
 
 	@Override
-	public List<Notification> getNotifications(User user, int resultsPerPage, int page) {
+	public List<Notification> getNotifications(User user, int resultsPerPage, Date from, Date to) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Notification> cq = cb.createQuery(Notification.class);
 		Root<Notification> notif = cq.from(Notification.class);
 		cq.where(cb.equal(notif.get("to"), user))
+			.where(cb.between(notif.get("timestamp"), new Timestamp(from.getTime()), new Timestamp(to.getTime())))
 			.orderBy(cb.desc(notif.get("timestamp")));
 		
 		return em.createQuery(cq)
-				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
 				.getResultList();
 	}

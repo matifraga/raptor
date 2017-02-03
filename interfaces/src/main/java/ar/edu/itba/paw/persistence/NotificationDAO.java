@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import java.util.Date;
 import java.util.List;
 
 import ar.edu.itba.paw.models.Notification;
@@ -38,10 +39,11 @@ public interface NotificationDAO {
 	 * 
 	 * @param user The user.
 	 * @param resultsPerPage Limit number of notifications per page.
-	 * @param page           Number of page needed.
+	 * @param from The min date.
+	 * @param to The max date.
 	 * @return	The list of notifications for the user.
 	 */
-	List<Notification> getNotifications(final User user, final int resultsPerPage, final int page);
+	List<Notification> getNotifications(final User user, final int resultsPerPage, final Date from, final Date to);
 
 	/**
 	 * Get a notification by id.
