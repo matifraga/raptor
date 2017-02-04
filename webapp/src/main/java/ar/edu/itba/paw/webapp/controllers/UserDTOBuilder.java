@@ -39,7 +39,7 @@ public class UserDTOBuilder {
         int followers = followerService.countFollowers(user);
         int following = followerService.countFollowing(user);
         Boolean userFollows = null;
-        if (viewer != null)
+        if (viewer != null && ! user.equals(viewer))
         	userFollows = followerService.isFollower(viewer, user);
         
         ProfilePicturesDTO profilePictures = new ProfilePicturesDTO(small, medium, large);

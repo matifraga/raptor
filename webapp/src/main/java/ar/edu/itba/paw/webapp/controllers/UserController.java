@@ -1,12 +1,14 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,11 +107,11 @@ public class UserController {
     @POST
     @Path("/notifications/read")
     @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response readNotifications(final ArrayList<Long> toRead){
+    public Response readNotifications(final NotificationIDsDTO toRead){
         User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        for(Long id : toRead){
+        for(Long id : toRead.getNotificationIDs()){
         	ns.seen(ns.getNotificationByID(id));
         }
         return Response.ok().build();
