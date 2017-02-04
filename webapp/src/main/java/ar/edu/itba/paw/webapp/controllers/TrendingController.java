@@ -1,8 +1,12 @@
 package ar.edu.itba.paw.webapp.controllers;
 
+import java.io.StringReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonReader;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,6 +16,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ar.edu.itba.paw.webapp.dto.HashtagDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +27,7 @@ import ar.edu.itba.paw.services.HashtagService;
 @Path("trending")
 @Component
 public class TrendingController {
-	
+	private final Logger LOGGER = LoggerFactory.getLogger(TrendingController.class);
 	@Autowired
 	private HashtagService hs;
 	
@@ -28,12 +35,12 @@ public class TrendingController {
 	@Path("/")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response getTrendings(@QueryParam("count") final int count){
+		LOGGER.info("getTrendings");
 		if(count <=0)
 			return Response.status(Status.BAD_REQUEST).build();
-		List<String> hashtags = hs.getTrendingTopics(count);
-
-		return Response.ok(new GenericEntity<List<GenericEntity<String>>>(
-				hashtags.stream().map(s -> new GenericEntity<String>(s) {}).collect(Collectors.toList())
-		) {}).build();
+		List<HashtagDTO> hashtags = hs.getTrendingTopics(count).stream().map(s -> new HashtagDTO(s)).collect(Collectors.toList());
+		LOGGER.info("hashtags: " +hashtags.size());
+		GenericEntity<List<HashtagDTO>> trending = new GenericEntity<List<HashtagDTO>>(hashtags) {};
+		return Response.ok(trending).build();
 	}
 }

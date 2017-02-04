@@ -3,12 +3,10 @@ package ar.edu.itba.paw.webapp.controllers;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +101,6 @@ public class UserController {
         return Response.ok(notificationDTOBuilder.buildList(notifications, loggedUser)).build();
     }
 
-    //hay que poder buscar una notificacion por id
     @POST
     @Path("/notifications/read")
     @Consumes(value = {MediaType.APPLICATION_JSON})
@@ -111,6 +108,12 @@ public class UserController {
         User loggedUser = SessionHandler.sessionUser();
         if (loggedUser == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
+       /* List<Long> toRead;
+        try {
+            toRead = Arrays.stream(toReadS).map(Long::parseLong).collect(Collectors.toList());
+        }catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }*/
         for(Long id : toRead.getNotificationIDs()){
         	ns.seen(ns.getNotificationByID(id));
         }

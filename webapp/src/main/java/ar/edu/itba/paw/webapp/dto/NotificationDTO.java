@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class NotificationDTO {
     private long id;
     private String type;
+    @XmlElement(name = "new")
     private boolean read;
     private long created;
     private UserDTO user;

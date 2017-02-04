@@ -51,9 +51,9 @@ public class SearchController {
 		if (term == null || term.length() == 0)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		LOGGER.debug("searching users with term: " + term.substring(1));
+		LOGGER.info("searching users with term: " + term);
 		User loggedUser = SessionHandler.sessionUser();
-		return Response.ok(userDTOBuilder.buildList(us.searchUsers(term.substring(1), limit, page),loggedUser)).build();
+		return Response.ok(userDTOBuilder.buildList(us.searchUsers(term, limit, page),loggedUser)).build();
 	}
 	
 	@GET
@@ -101,8 +101,8 @@ public class SearchController {
 		if (term == null || term.length() == 0)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		LOGGER.debug("searching hashtags with term: " + term.substring(1	));
+		LOGGER.info("searching hashtags with term: " + term);
 		User loggedUser = SessionHandler.sessionUser();
-		return Response.ok(tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, from, to, page), loggedUser)).build();
+		return Response.ok(tweetDTOBuilder.buildList(ts.getHashtag(term, limit, from, to, page), loggedUser)).build();
 	}
 }
