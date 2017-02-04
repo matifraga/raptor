@@ -114,8 +114,11 @@ public class UserController {
         }catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }*/
+       Notification notification;
         for(Long id : toRead.getNotificationIDs()){
-        	ns.seen(ns.getNotificationByID(id));
+            notification = ns.getNotificationByID(id);
+            if (notification != null)
+        	    ns.seen(notification);
         }
         return Response.ok().build();
     }

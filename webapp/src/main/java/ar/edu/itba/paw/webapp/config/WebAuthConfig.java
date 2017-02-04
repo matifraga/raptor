@@ -169,6 +169,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.requestMatchers(new AntPathRequestMatcher(SIGNUP, "POST")).anonymous()
 				.requestMatchers(new AntPathRequestMatcher(LOGIN_PATH,"POST")).anonymous()
+				.requestMatchers(new AntPathRequestMatcher(LOGOUT_PATH,"POST")).authenticated()
 				.requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
 				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()
 				.antMatchers(FEED).permitAll()

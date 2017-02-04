@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -65,12 +66,16 @@ public class NotificationHibernateDAO implements NotificationDAO {
 
 	@Override
 	public Notification getNotificationByID(long id) {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Notification> cq = cb.createQuery(Notification.class);
-		Root<Notification> notif = cq.from(Notification.class);
-		cq.where(cb.equal(notif.get("id"), id));
-		
-		return em.createQuery(cq).getSingleResult();
+		try {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Notification> cq = cb.createQuery(Notification.class);
+			Root<Notification> notif = cq.from(Notification.class);
+			cq.where(cb.equal(notif.get("id"), id));
+
+			return em.createQuery(cq).getSingleResult();
+		}catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	@Override
