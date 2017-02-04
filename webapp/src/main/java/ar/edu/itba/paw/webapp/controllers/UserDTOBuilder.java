@@ -6,11 +6,11 @@ import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.webapp.dto.ProfilePicturesDTO;
 import ar.edu.itba.paw.webapp.dto.UserCountsDTO;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
-import ar.edu.itba.paw.webapp.dto.UsersDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.ws.rs.core.GenericEntity;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -48,8 +48,10 @@ public class UserDTOBuilder {
                 profilePictures, user.getVerified(), counts, userFollows);
     }
     
-    public UsersDTO buildList(List<User> userList, User viewer) {
-        return new UsersDTO(userList.stream().map(user -> this.build(user,viewer)).collect(Collectors.toList()));
+    public GenericEntity<List<UserDTO>> buildList(List<User> userList, User viewer) {
+        return new GenericEntity<List<UserDTO>>(
+                userList.stream().map(user -> this.build(user,viewer)).collect(Collectors.toList())
+        ) {};
     }
 
     private static String md5(String s) {

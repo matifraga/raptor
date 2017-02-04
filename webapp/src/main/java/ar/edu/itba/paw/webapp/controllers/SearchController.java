@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
-import ar.edu.itba.paw.webapp.dto.RawrsDTO;
-import ar.edu.itba.paw.webapp.dto.UsersDTO;
 
 import java.util.Date;
 
@@ -55,8 +53,7 @@ public class SearchController {
 
 		LOGGER.debug("searching users with term: " + term.substring(1));
 		User loggedUser = SessionHandler.sessionUser();
-		UsersDTO users = userDTOBuilder.buildList(us.searchUsers(term.substring(1), limit, page),loggedUser);
-		return Response.ok(users).build();
+		return Response.ok(userDTOBuilder.buildList(us.searchUsers(term.substring(1), limit, page),loggedUser)).build();
 	}
 	
 	@GET
@@ -81,8 +78,7 @@ public class SearchController {
 
 		LOGGER.debug("searching rawrs with term: " + term);
 		User loggedUser = SessionHandler.sessionUser();
-		RawrsDTO rawrs = tweetDTOBuilder.buildList(ts.searchTweets(term, limit, from, to,  page), loggedUser);
-		return Response.ok(rawrs).build();
+		return Response.ok(tweetDTOBuilder.buildList(ts.searchTweets(term, limit, from, to,  page), loggedUser)).build();
 	}
 	
 	@GET
@@ -107,7 +103,6 @@ public class SearchController {
 
 		LOGGER.debug("searching hashtags with term: " + term.substring(1	));
 		User loggedUser = SessionHandler.sessionUser();
-		RawrsDTO hashtags = tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, from, to, page), loggedUser);
-		return Response.ok(hashtags).build();
+		return Response.ok(tweetDTOBuilder.buildList(ts.getHashtag(term.substring(1), limit, from, to, page), loggedUser)).build();
 	}
 }

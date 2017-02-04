@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ar.edu.itba.paw.models.Notification;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.NotificationDTO;
-import ar.edu.itba.paw.webapp.dto.NotificationsDTO;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
+
+import javax.ws.rs.core.GenericEntity;
 
 public class NotificationDTOBuilder {
 
@@ -22,10 +23,11 @@ public class NotificationDTOBuilder {
         return new NotificationDTO(n.getId(), type, n.getSeen(), n.getTimestamp().getTime(), user, n.getTweet().getId() );
     }
 
-    public NotificationsDTO buildList(List<Notification> notifications, User viewer) {
-        return new NotificationsDTO(
+    public GenericEntity<List<NotificationDTO>> buildList(List<Notification> notifications, User viewer) {
+        return new GenericEntity<List<NotificationDTO>>(
         		notifications.stream()
         		.map(n -> this.build(n,viewer))
-        				.collect(Collectors.toList()));
+        				.collect(Collectors.toList())
+        ) {};
     }
 }

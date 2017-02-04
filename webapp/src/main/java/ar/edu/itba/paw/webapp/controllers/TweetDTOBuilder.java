@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.ws.rs.core.GenericEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,9 @@ public class TweetDTOBuilder {
         return new TweetDTO(actualTweet.getId(), actualTweet.getTimestamp(), actualTweet.getMsg(), userHasLiked, userHasRerawred, count, owner, rerawr);
     }
 
-    public RawrsDTO buildList(List<Tweet> tweetList, User user) {
-        return new RawrsDTO(tweetList.stream().map(tweet -> this.build(tweet,user)).collect(Collectors.toList()));
+    public GenericEntity< List< TweetDTO > > buildList(List<Tweet> tweetList, User user) {
+        return new GenericEntity<List<TweetDTO>>(
+        tweetList.stream().map(tweet -> this.build(tweet,user)).collect(Collectors.toList())
+        ) { };
     }
 }

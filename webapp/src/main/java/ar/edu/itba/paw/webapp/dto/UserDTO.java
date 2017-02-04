@@ -11,6 +11,7 @@ public class UserDTO {
     private String firstName;
     @XmlElement(name = "last_name")
     private String lastName;
+    @XmlElement(name = "profile_pictures")
     private ProfilePicturesDTO pics;
     private Boolean verified;
     private UserCountsDTO counts;

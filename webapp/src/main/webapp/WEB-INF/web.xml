@@ -1,65 +1,89 @@
-<web-app id="PAW" version="2.4" 
-  xmlns="http://java.sun.com/xml/ns/j2ee" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+<web-app id="PAW" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
- <display-name>Raptor</display-name>
+    <display-name>Raptor</display-name>
 
- <servlet>
-  <servlet-name>jersey-servlet</servlet-name>
-  <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-  <init-param>
-   <param-name>jersey.config.server.provider.packages</param-name>
-    <param-value>ar.edu.itba.paw.webapp.controllers</param-value>
-  </init-param>
-  <load-on-startup>1</load-on-startup>
- </servlet>
+    <servlet>
+        <servlet-name>jersey-servlet</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>ar.edu.itba.paw.webapp.controllers</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
- <servlet-mapping>
-  <servlet-name>jersey-servlet</servlet-name>
-  <url-pattern>/*</url-pattern>
- </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>jersey-servlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
 
-<servlet-mapping>
- <servlet-name>default</servlet-name>
- <url-pattern>/resources/*</url-pattern>
-</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
 
 
- <context-param>
-  <param-name>contextClass</param-name>
-  <param-value>
-   org.springframework.web.context.support.AnnotationConfigWebApplicationContext
-  </param-value>
- </context-param>
- <context-param>
-  <param-name>contextConfigLocation</param-name>
-  <param-value>
-   ar.edu.itba.paw.webapp.config.WebConfig
-  </param-value>
- </context-param>
- <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>
-      ar.edu.itba.paw.webapp.config.WebConfig,
-      ar.edu.itba.paw.webapp.config.WebAuthConfig,
-    </param-value>
-  </context-param>
-  <filter>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
-		</filter-class>
-	</filter>
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>
+            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+        </param-value>
+    </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            ar.edu.itba.paw.webapp.config.WebConfig
+        </param-value>
+    </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            ar.edu.itba.paw.webapp.config.WebConfig,
+            ar.edu.itba.paw.webapp.config.WebAuthConfig,
+        </param-value>
+    </context-param>
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+        <init-param>
+            <param-name>cors.allowed.origins</param-name>
+            <param-value>http://localhost:8088</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.methods</param-name>
+            <param-value>GET, POST</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.headers</param-name>
+            <param-value>Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-CSRF-TOKEN</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.exposed.headers</param-name>
+            <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.support.credentials</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
 
-	<filter-mapping>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>*</url-pattern>
-	</filter-mapping>
-
- <listener>
-  <listener-class>
-   org.springframework.web.context.ContextLoaderListener
-  </listener-class>
- </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
 </web-app>
