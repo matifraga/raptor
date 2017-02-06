@@ -13,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -164,7 +167,12 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private HttpLogoutSuccessHandler logoutSuccessHandler;
 
-	@Override
+	/*
+	*
+	*	JSESSIONID
+	*
+	 */
+/*	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.requestMatchers(new AntPathRequestMatcher(SIGNUP, "POST")).anonymous()
@@ -198,12 +206,74 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PATH, "POST"))
 				.logoutSuccessHandler(logoutSuccessHandler);
-/*				.sessionManagement()
-				.maximumSessions(1);*/
+*//*				.sessionManagement()
+				.maximumSessions(1);*//*
 
 		//http.authorizeRequests().anyRequest().authenticated();
 
 
+	}*/
+
+	/*
+	*
+	*	HTTP BASIC
+	*
+	*
+	*/
+	protected void configure(HttpSecurity http) throws Exception {
+		/*http.authorizeRequests()
+				.requestMatchers(new AntPathRequestMatcher(SIGNUP, "POST")).anonymous()
+				.requestMatchers(new AntPathRequestMatcher(LOGIN_PATH,"POST")).anonymous()
+				.requestMatchers(new AntPathRequestMatcher(LOGOUT_PATH,"POST")).authenticated()
+				.requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()
+				.antMatchers(FEED).permitAll()
+				.antMatchers(SEARCH).permitAll()
+				.antMatchers(TRENDING).permitAll()
+				.antMatchers(TOKEN).permitAll()
+				.anyRequest().authenticated();*/
+
+
+
+		http.csrf().disable()
+				.authenticationProvider(authProv)
+				.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint)
+				.and()
+				.httpBasic().authenticationEntryPoint(authenticationEntryPoint)
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.formLogin().permitAll(false)
+				.loginProcessingUrl(LOGIN_PATH)
+				.usernameParameter(USERNAME)
+				.passwordParameter(PASSWORD)
+				.successHandler(authSuccessHandler)
+				.failureHandler(authFailureHandler)
+				.and()
+				.logout().permitAll(false)
+				.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PATH, "POST"))
+				.logoutSuccessHandler(logoutSuccessHandler);
+
+//				.maximumSessions(1);
+
+		http.authorizeRequests()
+				.antMatchers(FEED).permitAll()
+				.antMatchers(SEARCH).permitAll()
+				.antMatchers(TRENDING).permitAll()
+				.antMatchers(SIGNUP).anonymous()
+				.antMatchers(LOGIN_PATH).anonymous()
+				.antMatchers(LOGOUT_PATH).anonymous()
+				.requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()
+				.anyRequest().authenticated();
+
+
+	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
 	}
 
 	@Component
@@ -238,11 +308,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 			User user = (User) authentication.getPrincipal();
 			LOGGER.info(user.getUsername() + " is connected ");
-            CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+  /*          CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
             LOGGER.info("token: " + token);
             response.setHeader("X-CSRF-HEADER",token.getHeaderName());
             response.setHeader("X-CSRF-PARAM", token.getParameterName());
-            response.setHeader("X-CSRF-TOKEN", token.getToken());
+            response.setHeader("X-CSRF-TOKEN", token.getToken());*/
 			response.getWriter().flush();
 
 		}
