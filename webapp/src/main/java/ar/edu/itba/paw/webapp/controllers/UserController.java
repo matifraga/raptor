@@ -105,6 +105,7 @@ public class UserController {
         /*
         Nunca nos fijamos que las notificaciones correspondan al usuario correcto
          */
+
         Notification notification;
         for (Long id : toRead.getNotificationIDs()) {
             notification = ns.getNotificationByID(id);

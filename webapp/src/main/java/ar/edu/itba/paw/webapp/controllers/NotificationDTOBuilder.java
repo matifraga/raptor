@@ -3,17 +3,16 @@ package ar.edu.itba.paw.webapp.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ar.edu.itba.paw.models.Tweet;
+import javax.ws.rs.core.GenericEntity;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.itba.paw.models.Notification;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.webapp.dto.NotificationDTO;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
-
-import javax.ws.rs.core.GenericEntity;
 
 public class NotificationDTOBuilder {
     private final Logger LOGGER = LoggerFactory.getLogger(NotificationDTOBuilder.class);

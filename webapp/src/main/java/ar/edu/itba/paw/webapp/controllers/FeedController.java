@@ -13,8 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +23,6 @@ import ar.edu.itba.paw.services.TweetService;
 @Path("feed")
 @Component
 public class FeedController {
-	private final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	@Autowired
     private TweetService ts;
 	
