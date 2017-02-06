@@ -136,17 +136,17 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String LOGIN_PATH = "/auth/login";
 	private static final String LOGOUT_PATH = "/auth/logout";
-	private static final String PASSWORD = "j_password";
-	private static final String USERNAME = "j_username";
-	private static final String EVERYTHING = "**";
-	private static final String USER = "/user/?*";
+	//private static final String PASSWORD = "j_password";
+	//private static final String USERNAME = "j_username";
+	//private static final String EVERYTHING = "**";
+	//private static final String USER = "/user/?*";
 	private static final String USERS = "/users/**";
 	private static final String RAWRS = "/rawrs/**";
     private static final String FEED = "/feed";
     private static final String SEARCH = "/search/**";
     private static final String TRENDING = "/trending";
     private static final String SIGNUP = "/signup";
-    private static final String TOKEN = "/auth/token";
+    //private static final String TOKEN = "/auth/token";
 
 
 	@Autowired

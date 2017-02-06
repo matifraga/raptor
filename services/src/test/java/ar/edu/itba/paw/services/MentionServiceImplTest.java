@@ -23,7 +23,6 @@ public class MentionServiceImplTest {
     private static final String USERNAME = "@testUser", EMAIL = "testUser@gmail.com",
             FIRSTNAME = "test", LASTNAME = "user", UID = "12345abcd";
     private static User u;
-    private static Tweet t;
     @Mock
     private MentionDAO mentionDAO;
     @Mock
@@ -34,7 +33,7 @@ public class MentionServiceImplTest {
     public static void setUpBeforeClass() throws Exception {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         u = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, UID, false);
-        t = new Tweet(MESSAGE, u, timestamp);
+        new Tweet(MESSAGE, u, timestamp);
     }
 
     @AfterClass

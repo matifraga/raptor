@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class TweetTest {
 
-    private static final String MESSAGE = "tweet", ID = "12345";
+    private static final String MESSAGE = "tweet";
     private static final String INVALIDMESSAGE = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
             + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
             + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

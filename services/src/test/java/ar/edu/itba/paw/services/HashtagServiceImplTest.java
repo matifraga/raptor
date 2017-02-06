@@ -24,7 +24,6 @@ public class HashtagServiceImplTest {
     private static final String MESSAGE = "tweet #test #hola #jajaj";
     private static final String USERNAME = "@testUser", EMAIL = "testUser@gmail.com",
             FIRSTNAME = "test", LASTNAME = "user", UID = "12345abcd";
-    private static Tweet t;
     @Mock
     private HashtagDAO hashtagDAO;
     private HashtagServiceImpl hs;
@@ -33,7 +32,7 @@ public class HashtagServiceImplTest {
     public static void setUpBeforeClass() throws Exception {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         User u = new User(USERNAME, EMAIL, FIRSTNAME, LASTNAME, UID, false);
-        t = new Tweet(MESSAGE, u, timestamp);
+        new Tweet(MESSAGE, u, timestamp);
     }
 
     @AfterClass
