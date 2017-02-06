@@ -158,7 +158,11 @@ public class User {
         return verified;
     }
 
-    public void setVerified(Boolean verified) {
+    public String getHash() {
+		return password;
+	}
+
+	public void setVerified(Boolean verified) {
         this.verified = verified;
     }
 

@@ -34,6 +34,7 @@
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <org.hibernate.version>5.1.0.Final</org.hibernate.version>
         <jersey.version>3.0-SNAPSHOT</jersey.version>
+        <jbcrypt.version>0.4.1</jbcrypt.version>
     </properties>
 
     <build>
@@ -240,6 +241,11 @@
                 <groupId>org.apache.tomcat</groupId>
                 <artifactId>tomcat-catalina</artifactId>
                 <version>7.0.54</version>
+            </dependency>
+            <dependency>
+                <groupId>de.svenkubiak</groupId>
+                <artifactId>jBCrypt</artifactId>
+                <version>${jbcrypt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

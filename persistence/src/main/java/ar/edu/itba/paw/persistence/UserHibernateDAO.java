@@ -9,7 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.paw.models.User;
@@ -23,7 +23,8 @@ public class UserHibernateDAO implements UserDAO{
 	@Override
 	public User create(final String username, final String password, final String email, final String firstName, final String lastName) {
 		if(isUsernameAvailable(username) && isEmailAvailable(email)){
-			final User u = new User(username, email, firstName, lastName, password, false);
+			String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+			final User u = new User(username, email, firstName, lastName, hashed, false);
 			em.persist(u);
 			return u;
 		} else 
@@ -61,14 +62,14 @@ public class UserHibernateDAO implements UserDAO{
 		User u = list.isEmpty()? null : list.get(0);
 		return u==null;
 	}
-
+	
 	@Override
 	public User authenticateUser(final String username, final String password) {
-		List<User> list = em.createQuery("from User as u where u.username = :username and u.password = :password", User.class)
+		List<User> list = em.createQuery("from User as u where u.username = :username", User.class)
 				.setParameter("username", username)
-				.setParameter("password", password)
 				.getResultList();
-		return list.isEmpty() ? null : list.get(0);
+		
+		return list.isEmpty() ? null : BCrypt.checkpw(password, list.get(0).getHash()) ? list.get(0) : null;
 	}
 	
 	@Override
@@ -113,3 +114,4 @@ public class UserHibernateDAO implements UserDAO{
 					.getResultList();
 	}
 }
+

@@ -88,14 +88,14 @@ public class WebConfig  {
 // 		ds.setPassword("147852");
 		
 		// DB TESTING LUCAS
-//		ds.setUrl("jdbc:postgresql://localhost/lucaspaw");
-//		ds.setUsername("postgres");
-//		ds.setPassword("123456");
+		ds.setUrl("jdbc:postgresql://localhost/lucaspaw");
+		ds.setUsername("postgres");
+		ds.setPassword("123456");
 
 		// DB TESTING LUIS
-		ds.setUrl("jdbc:postgresql://localhost/raptor");
-		ds.setUsername("luis");
-		ds.setPassword("raptor");
+//		ds.setUrl("jdbc:postgresql://localhost/raptor");
+//		ds.setUsername("luis");
+//		ds.setPassword("raptor");
 
 		// DB FOR DEPLOY
 //		ds.setUrl("jdbc:postgresql://localhost/grupo6");

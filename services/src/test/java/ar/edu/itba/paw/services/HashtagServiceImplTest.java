@@ -20,7 +20,6 @@ import ar.edu.itba.paw.persistence.HashtagDAO;
 
 public class HashtagServiceImplTest {
 
-
     private static final String MESSAGE = "tweet #test #hola #jajaj";
     private static final String USERNAME = "@testUser", EMAIL = "testUser@gmail.com",
             FIRSTNAME = "test", LASTNAME = "user", UID = "12345abcd";

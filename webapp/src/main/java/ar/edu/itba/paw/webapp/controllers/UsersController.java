@@ -1,11 +1,16 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
+import java.util.Date;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import ar.edu.itba.paw.webapp.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +18,6 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.services.FollowerService;
 import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
-
-import java.util.Date;
-import java.util.List;
 
 @Path("users")
 @Component
