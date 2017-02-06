@@ -18,59 +18,60 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "users")
 public class User {
 
-	@Id
-	@GenericGenerator(name = "random_id", strategy = "ar.edu.itba.paw.models.RandomIdGenerator")
+    @Id
+    @GenericGenerator(name = "random_id", strategy = "ar.edu.itba.paw.models.RandomIdGenerator")
     @GeneratedValue(generator = "random_id")
     @Column(name = "userID", length = 12, nullable = false)
     private String id;
-	
-	@Column(name = "username", nullable = false, length = 100, unique = true)
+
+    @Column(name = "username", nullable = false, length = 100, unique = true)
     private String username;
-	
-	@Column(name = "email", nullable = false, length = 100, unique = true)
+
+    @Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;
-	
-	@Column(name = "firstName", nullable = false, length = 100)
+
+    @Column(name = "firstName", nullable = false, length = 100)
     private String firstName;
-	
-	@Column(name = "lastName", nullable = false, length = 100)
+
+    @Column(name = "lastName", nullable = false, length = 100)
     private String lastName;
-	
-	@Column(name = "verified", nullable = false)
+
+    @Column(name = "verified", nullable = false)
     private boolean verified;
 
-	@Column(name = "password", nullable = false, length = 100)
-	private String password;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="followers",
-	 joinColumns=@JoinColumn(name="followingID"),
-	 inverseJoinColumns=@JoinColumn(name="followerID")
-	)
-	private Set<User> followers;
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="followers",
-	 joinColumns=@JoinColumn(name="followerID"),
-	 inverseJoinColumns=@JoinColumn(name="followingID")
-	)
-	private Set<User> followings;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="favorites",
-	 joinColumns=@JoinColumn(name="favoriteID"),
-	 inverseJoinColumns=@JoinColumn(name="tweetID")
-	)
-	private Set<Tweet> favorites;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="mentions",
-	 joinColumns=@JoinColumn(name="userID"),
-	 inverseJoinColumns=@JoinColumn(name="tweetID")
-	)
-	private Set<Tweet> mentions;
-	
-	/* default */ User(){}
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "followers",
+            joinColumns = @JoinColumn(name = "followingID"),
+            inverseJoinColumns = @JoinColumn(name = "followerID")
+    )
+    private Set<User> followers;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "followers",
+            joinColumns = @JoinColumn(name = "followerID"),
+            inverseJoinColumns = @JoinColumn(name = "followingID")
+    )
+    private Set<User> followings;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "favorites",
+            joinColumns = @JoinColumn(name = "favoriteID"),
+            inverseJoinColumns = @JoinColumn(name = "tweetID")
+    )
+    private Set<Tweet> favorites;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "mentions",
+            joinColumns = @JoinColumn(name = "userID"),
+            inverseJoinColumns = @JoinColumn(name = "tweetID")
+    )
+    private Set<Tweet> mentions;
+
+    /* default */ User() {
+    }
 
     public User(String username, String email,
                 String firstName, String lastName, String password, Boolean verified) {
@@ -83,86 +84,85 @@ public class User {
     }
 
     @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 	/*
-	 *
+     *
 	 * Getters & Setters
 	 * 
 	 */
-	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public String getUsername() {
-		return username;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getFirstName() {
-		return firstName;
-	}
-	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	public String getLastName() {
-		return lastName;
-	}
-	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
-	public Boolean getVerified() {
-		return verified;
-	}
-	
-	public void setVerified(Boolean verified) {
-		this.verified = verified;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

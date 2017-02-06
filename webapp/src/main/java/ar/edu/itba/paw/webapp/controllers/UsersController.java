@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.webapp.controllers;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ar.edu.itba.paw.webapp.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import ar.edu.itba.paw.services.TweetService;
 import ar.edu.itba.paw.services.UserService;
 
 import java.util.Date;
+import java.util.List;
 
 @Path("users")
 @Component
@@ -156,4 +159,46 @@ public class UsersController {
 
     }
 
+    @GET
+    @Path("/{username}/followers")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getFollowers(@PathParam("username") final String username,
+                                 @QueryParam("page") final String p,
+                                 @QueryParam("limit") final String lim) {
+        int page = 1, limit;
+        try {
+            limit = Integer.valueOf(lim);
+            if (p != null)
+                page = Integer.valueOf(p);
+        }catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        User user = us.getUserWithUsername(username);
+        if (user == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        return Response.ok(userDTOBuilder.buildList(us.getFollowers(user,limit,page))).build();
+    }
+
+    @GET
+    @Path("/{username}/following")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getFollowing(@PathParam("username") final String username,
+                                 @QueryParam("page") final String p,
+                                 @QueryParam("limit") final String lim) {
+        int page = 1, limit;
+        try {
+            limit = Integer.valueOf(lim);
+            if (p != null)
+                page = Integer.valueOf(p);
+        }catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        User user = us.getUserWithUsername(username);
+        if (user == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(userDTOBuilder.buildList(us.getFollowing(user,limit,page))).build();
+    }
 }

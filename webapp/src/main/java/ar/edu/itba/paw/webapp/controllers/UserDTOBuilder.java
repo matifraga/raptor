@@ -58,9 +58,9 @@ public class UserDTOBuilder {
                 profilePictures, user.getVerified(), counts, userFollows);
     }
     
-    public GenericEntity<List<UserDTO>> buildList(List<User> userList, User viewer) {
+    public GenericEntity<List<UserDTO>> buildList(List<User> userList) {
         return new GenericEntity<List<UserDTO>>(
-                userList.stream().map(this::buildSimpleUser).collect(Collectors.toList())
+                userList.parallelStream().map(this::buildSimpleUser).collect(Collectors.toList())
         ) {};
     }
 

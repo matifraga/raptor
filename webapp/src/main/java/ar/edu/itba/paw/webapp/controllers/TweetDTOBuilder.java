@@ -51,7 +51,7 @@ public class TweetDTOBuilder {
 
     public GenericEntity< List< TweetDTO > > buildList(List<Tweet> tweetList, User user) {
         return new GenericEntity<List<TweetDTO>>(
-        tweetList.stream().map(tweet -> this.build(tweet,user)).collect(Collectors.toList())
+        tweetList.parallelStream().map(tweet -> this.build(tweet,user)).collect(Collectors.toList())
         ) { };
     }
 }

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,13 +9,14 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.paw.models.User;
 
 @Repository
 public class UserHibernateDAO implements UserDAO{
- 
+
 	@PersistenceContext
 	private EntityManager em;
 
@@ -71,38 +73,43 @@ public class UserHibernateDAO implements UserDAO{
 	
 	@Override
 	public List<User> getFollowers(final User user, final int resultsPerPage, final int page) {
-		@SuppressWarnings("unchecked")
-		List<String> followerIDs = em.createNativeQuery("select followerID from followers where followingID = ?")
-				.setParameter(1, user.getId())
-				.getResultList();
-		
-		
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<User> cq = cb.createQuery(User.class);
-		Root<User> root = cq.from(User.class);
-		cq.where(root.get("userID").in(followerIDs));
-	
-		return em.createQuery(cq)
-				.setFirstResult((page-1)*resultsPerPage)
-				.setMaxResults(resultsPerPage)
-				.getResultList();
+			@SuppressWarnings("unchecked")
+			List<String> followerIDs = em.createNativeQuery("select followerID from followers where followingID = ?")
+					.setParameter(1, user.getId())
+					.setFirstResult((page-1)*resultsPerPage)
+					.setMaxResults(resultsPerPage)
+					.getResultList();
+
+			if (followerIDs.isEmpty())
+				return new ArrayList<>();
+
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<User> cq = cb.createQuery(User.class);
+			Root<User> root = cq.from(User.class);
+			cq.where(root.get("id").in(followerIDs));
+
+			return em.createQuery(cq)
+					.getResultList();
 	}
 
 	@Override
 	public List<User> getFollowing(final User user, final int resultsPerPage, final int page) {
-		@SuppressWarnings("unchecked")
-		List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = ?")
-				.setParameter(1, user.getId())
-				.getResultList();
-		
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<User> cq = cb.createQuery(User.class);
-		Root<User> root = cq.from(User.class);
-		cq.where(root.get("userID").in(followingIDs));
-	
-		return em.createQuery(cq)
-				.setFirstResult((page-1)*resultsPerPage)
-				.setMaxResults(resultsPerPage)
-				.getResultList();
+			@SuppressWarnings("unchecked")
+			List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = ?")
+					.setParameter(1, user.getId())
+					.setFirstResult((page - 1) * resultsPerPage)
+					.setMaxResults(resultsPerPage)
+					.getResultList();
+
+			if (followingIDs.isEmpty())
+				return new ArrayList<>();
+
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<User> cq = cb.createQuery(User.class);
+			Root<User> root = cq.from(User.class);
+			cq.where(root.get("id").in(followingIDs));
+
+			return em.createQuery(cq)
+					.getResultList();
 	}
 }

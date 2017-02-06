@@ -53,15 +53,14 @@ public class SearchController {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		LOGGER.info("searching users with term: " + term);
-		User loggedUser = SessionHandler.sessionUser();
-		return Response.ok(userDTOBuilder.buildList(us.searchUsers(term, limit, page),loggedUser)).build();
+		return Response.ok(userDTOBuilder.buildList(us.searchUsers(term, limit, page))).build();
 	}
 	
 	@GET
 	@Path("/rawrs")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response searchRawrs(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("term") final String term, @QueryParam("page") final String p) {
-		Date from = null, to =   null;
+		Date from = null, to =  null;
 		int limit, page = 1;
 		try {
 			limit = Integer.valueOf(lim);
