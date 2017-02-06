@@ -21,10 +21,11 @@ public class NotificationDTOBuilder {
     @Autowired
     private UserDTOBuilder userDTOBuilder;
 
-    public NotificationDTO build(Notification n, User viewer) {
+    public NotificationDTO build(Notification n) {
         LOGGER.debug("building notification");
         String type = n.getType().toString();
-        UserDTO user = userDTOBuilder.build(n.getFrom(), viewer);
+        LOGGER.debug("user " + n.getFrom().getUsername());
+        UserDTO user = userDTOBuilder.buildSimpleUser(n.getFrom());
         Tweet t = n.getTweet();
         String id = null;
         if (t != null)
@@ -33,11 +34,10 @@ public class NotificationDTOBuilder {
         return new NotificationDTO(n.getId(), type.toLowerCase(), !n.getSeen(), n.getTimestamp().getTime(), user, id);
     }
 
-    public GenericEntity<List<NotificationDTO>> buildList(List<Notification> notifications, User viewer) {
+    public GenericEntity<List<NotificationDTO>> buildList(List<Notification> notifications) {
         return new GenericEntity<List<NotificationDTO>>(
         		notifications.stream()
-        		.map(n -> this.build(n,viewer))
-        				.collect(Collectors.toList())
+        		.map(this::build).collect(Collectors.toList())
         ) {};
     }
 }

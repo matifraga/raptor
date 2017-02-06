@@ -43,8 +43,7 @@ public class TweetCountsDTO {
 
         TweetCountsDTO that = (TweetCountsDTO) o;
 
-        if (likes != that.likes) return false;
-        return rerawrs == that.rerawrs;
+        return likes == that.likes && rerawrs == that.rerawrs;
     }
 
     @Override

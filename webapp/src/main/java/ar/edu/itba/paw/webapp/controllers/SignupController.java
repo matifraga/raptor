@@ -45,13 +45,11 @@ public class SignupController {
 
     private boolean isValidSignup(SignupDTO signupDTO) {
         LOGGER.info(signupDTO.toString());
-        if (signupDTO.getFirstName() == null
+        return !(signupDTO.getFirstName() == null
                 || signupDTO.getLastName() == null
                 || signupDTO.getUsername() == null
                 || signupDTO.getPassword() == null
-                || signupDTO.getEmail() == null)
-            return false;
-        return true;
+                || signupDTO.getEmail() == null);
     }
 
 }

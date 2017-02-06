@@ -30,7 +30,18 @@ public class UserDTOBuilder {
     @Autowired
     private TweetService tweetService;
 
-    public UserDTO build(User user, User viewer) {
+
+    public UserDTO buildSimpleUser(User user) {
+        LOGGER.debug("building : " + user.getUsername());
+        String small = generateProfilePictureUrl(user, SMALL);
+        String medium = generateProfilePictureUrl(user, MEDIUM);
+        String large = generateProfilePictureUrl(user, LARGE);
+        ProfilePicturesDTO profilePictures = new ProfilePicturesDTO(small, medium, large);
+        return new UserDTO(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(),
+                profilePictures, user.getVerified(), null, null);
+    }
+
+    public UserDTO buildFullUser(User user, User viewer) {
         LOGGER.debug("building : " + user.getUsername());
         String small = generateProfilePictureUrl(user, SMALL);
         String medium = generateProfilePictureUrl(user, MEDIUM);
@@ -38,19 +49,18 @@ public class UserDTOBuilder {
         int rawrs = tweetService.countTweets(user);
         int followers = followerService.countFollowers(user);
         int following = followerService.countFollowing(user);
-        Boolean userFollows = null;
-        if (viewer != null && ! user.equals(viewer))
-        	userFollows = followerService.isFollower(viewer, user);
-        
         ProfilePicturesDTO profilePictures = new ProfilePicturesDTO(small, medium, large);
         UserCountsDTO counts = new UserCountsDTO(rawrs, followers, following);
+        Boolean userFollows = null;
+        if (viewer != null && ! user.equals(viewer))
+            userFollows = followerService.isFollower(viewer, user);
         return new UserDTO(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(),
                 profilePictures, user.getVerified(), counts, userFollows);
     }
     
     public GenericEntity<List<UserDTO>> buildList(List<User> userList, User viewer) {
         return new GenericEntity<List<UserDTO>>(
-                userList.stream().map(user -> this.build(user,viewer)).collect(Collectors.toList())
+                userList.stream().map(this::buildSimpleUser).collect(Collectors.toList())
         ) {};
     }
 

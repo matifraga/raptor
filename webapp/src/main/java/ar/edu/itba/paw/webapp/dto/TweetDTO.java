@@ -115,8 +115,7 @@ public class TweetDTO {
         if (userHasRerawred != null ? !userHasRerawred.equals(tweetDTO.userHasRerawred) : tweetDTO.userHasRerawred != null)
             return false;
         if (counts != null ? !counts.equals(tweetDTO.counts) : tweetDTO.counts != null) return false;
-        if (owner != null ? !owner.equals(tweetDTO.owner) : tweetDTO.owner != null) return false;
-        return rerawr != null ? rerawr.equals(tweetDTO.rerawr) : tweetDTO.rerawr == null;
+        return (owner != null ? owner.equals(tweetDTO.owner) : tweetDTO.owner == null) && (rerawr != null ? rerawr.equals(tweetDTO.rerawr) : tweetDTO.rerawr == null);
     }
 
     @Override

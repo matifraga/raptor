@@ -90,8 +90,7 @@ public class SignupDTO {
         if (firstName != null ? !firstName.equals(signupDTO.firstName) : signupDTO.firstName != null) return false;
         if (lastName != null ? !lastName.equals(signupDTO.lastName) : signupDTO.lastName != null) return false;
         if (username != null ? !username.equals(signupDTO.username) : signupDTO.username != null) return false;
-        if (email != null ? !email.equals(signupDTO.email) : signupDTO.email != null) return false;
-        return password != null ? password.equals(signupDTO.password) : signupDTO.password == null;
+        return (email != null ? email.equals(signupDTO.email) : signupDTO.email == null) && (password != null ? password.equals(signupDTO.password) : signupDTO.password == null);
     }
 
     @Override

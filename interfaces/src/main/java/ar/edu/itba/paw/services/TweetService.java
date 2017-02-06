@@ -22,6 +22,7 @@ public interface TweetService {
 	 *
 	 * @param tweet 			The old tweet.
 	 * @param owner   			The user who retweeted.
+	 *
 	 * @return 					The tweet.
 	 */
 	Tweet retweet(final Tweet tweet, final User owner);

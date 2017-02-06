@@ -50,7 +50,7 @@ public class TweetServiceImpl implements TweetService {
             //TODO handle null (invalid message)
         } else {
             hashtagService.register(t);
-            mentionService.register(t);
+            mentionService.register(t,owner);
         }
         return t;
     }
@@ -81,7 +81,8 @@ public class TweetServiceImpl implements TweetService {
     @Override
     public Tweet retweet(final Tweet tweet, final User owner) {
         Tweet t = tweetDAO.retweet(tweet, owner);
-        notificationService.register(owner, tweet.getOwner(), NotificationType.RETWEET, tweet);
+        if (!owner.equals(tweet.getOwner()))
+            notificationService.register(owner, tweet.getOwner(), NotificationType.RETWEET, tweet);
         if (t == null) {
             //TODO handle null
         } else {

@@ -96,7 +96,7 @@ public class TweetServiceImplTest {
         ts.register(MESSAGE, owner);
         verify(tweetDAO).create(eq(MESSAGE), eq(owner));
         verify(hashtagService).register(eq(tweet));
-        verify(mentionService).register(eq(tweet));
+        verify(mentionService).register(eq(tweet),eq(owner));
 
     }
 

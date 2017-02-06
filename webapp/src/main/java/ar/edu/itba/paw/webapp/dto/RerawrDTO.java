@@ -57,8 +57,7 @@ public class RerawrDTO {
         RerawrDTO rerawrDTO = (RerawrDTO) o;
 
         if (createdTime != rerawrDTO.createdTime) return false;
-        if (id != null ? !id.equals(rerawrDTO.id) : rerawrDTO.id != null) return false;
-        return owner != null ? owner.equals(rerawrDTO.owner) : rerawrDTO.owner == null;
+        return (id != null ? id.equals(rerawrDTO.id) : rerawrDTO.id == null) && (owner != null ? owner.equals(rerawrDTO.owner) : rerawrDTO.owner == null);
     }
 
     @Override

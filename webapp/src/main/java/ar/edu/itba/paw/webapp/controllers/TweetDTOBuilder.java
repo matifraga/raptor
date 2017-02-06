@@ -31,11 +31,11 @@ public class TweetDTOBuilder {
         RerawrDTO rerawr = null;
         if (tweet.isRetweet()) {
             actualTweet = tweet.getRetweet();
-            UserDTO reOwner = userDTOBuilder.build(tweet.getOwner(),user);
+            UserDTO reOwner = userDTOBuilder.buildSimpleUser(tweet.getOwner());
             rerawr = new RerawrDTO(tweet.getId(),tweet.getTimestamp(),reOwner);
         }
         TweetCountsDTO count = new TweetCountsDTO(actualTweet.getCountFavorites(), actualTweet.getCountRetweets());
-        UserDTO owner = userDTOBuilder.build(actualTweet.getOwner(),user);
+        UserDTO owner = userDTOBuilder.buildSimpleUser(actualTweet.getOwner());
         Boolean userHasLiked = null;
         if (user != null)
             userHasLiked = favoriteService.isFavorited(tweet, user);

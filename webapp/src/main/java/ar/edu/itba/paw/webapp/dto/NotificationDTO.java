@@ -9,6 +9,7 @@ public class NotificationDTO {
     private String type;
     @XmlElement(name = "new")
     private boolean read;
+    @XmlElement(name = "created_time")
     private long created;
     private UserDTO user;
     @XmlElement(name = "status_id")

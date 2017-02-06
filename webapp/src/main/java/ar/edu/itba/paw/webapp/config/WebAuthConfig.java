@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.config;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,15 +24,10 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.models.User;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -242,8 +235,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.httpBasic().authenticationEntryPoint(authenticationEntryPoint)
 				.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				/*.and()
 				.formLogin().permitAll(false)
 				.loginProcessingUrl(LOGIN_PATH)
 				.usernameParameter(USERNAME)
@@ -253,7 +246,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.logout().permitAll(false)
 				.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PATH, "POST"))
-				.logoutSuccessHandler(logoutSuccessHandler);
+				.logoutSuccessHandler(logoutSuccessHandler);*/
 
 //				.maximumSessions(1);
 
@@ -264,9 +257,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(SIGNUP).anonymous()
 				.antMatchers(LOGIN_PATH).anonymous()
 				.antMatchers(LOGOUT_PATH).anonymous()
-				.requestMatchers(new AntPathRequestMatcher(USERS,"GET")).permitAll()
-				.requestMatchers(new AntPathRequestMatcher(RAWRS,"GET")).permitAll()
-				.anyRequest().authenticated();
+				.requestMatchers(new AntPathRequestMatcher(USERS,"POST")).authenticated()
+				.requestMatchers(new AntPathRequestMatcher(RAWRS,"POST")).authenticated()
+				.anyRequest().permitAll();
 
 
 	}

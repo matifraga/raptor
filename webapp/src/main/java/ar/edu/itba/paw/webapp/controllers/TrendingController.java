@@ -1,12 +1,8 @@
 package ar.edu.itba.paw.webapp.controllers;
 
-import java.io.StringReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonReader;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,7 +34,7 @@ public class TrendingController {
 		LOGGER.info("getTrendings");
 		if(count <=0)
 			return Response.status(Status.BAD_REQUEST).build();
-		List<HashtagDTO> hashtags = hs.getTrendingTopics(count).stream().map(s -> new HashtagDTO(s)).collect(Collectors.toList());
+		List<HashtagDTO> hashtags = hs.getTrendingTopics(count).stream().map(HashtagDTO::new).collect(Collectors.toList());
 		LOGGER.info("hashtags: " +hashtags.size());
 		GenericEntity<List<HashtagDTO>> trending = new GenericEntity<List<HashtagDTO>>(hashtags) {};
 		return Response.ok(trending).build();

@@ -39,16 +39,17 @@ public class SearchController {
 	@Path("/users")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response searchUsers(@QueryParam("page") final String p, @QueryParam("limit") final String lim, @QueryParam("term") final String term) {
-		Integer limit =  null;
+		Integer limit = null;
 		int page = 1;
 		try {
-			limit = Integer.valueOf(lim);
-			if (lim != null)
+			if (lim != null) {
 				page = Integer.valueOf(p);
+				limit = Integer.valueOf(lim);
+			}
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
-		if (term == null || term.length() == 0)
+		if (limit == null || term == null || term.length() == 0)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		LOGGER.info("searching users with term: " + term);

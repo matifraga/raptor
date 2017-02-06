@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
@@ -50,13 +51,15 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
-		cq.where(cb.equal(tweet.get("owner"), user));
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.equal(tweet.get("owner"), user));
 		
 		if(to != null)
-			cq.where(cb.lessThan(tweet.get("timestamp"), new Timestamp(to.getTime())));
+			predicates.add(cb.lessThan(tweet.get("timestamp"), new Timestamp(to.getTime())));
 		if(from != null)
-			cq.where(cb.greaterThan(tweet.get("timestamp"), new Timestamp(from.getTime())));
-		
+			predicates.add(cb.greaterThan(tweet.get("timestamp"), new Timestamp(from.getTime())));
+
+		cq.select(tweet).where(predicates.toArray(new Predicate[] {}));
 		cq.orderBy(cb.desc(tweet.get("timestamp")));
 		List<Tweet> list = em.createQuery(cq)
 				.setFirstResult((page-1)*resultsPerPage)
@@ -72,19 +75,21 @@ public class TweetHibernateDAO implements TweetDAO{
 				.setParameter(1, hashtag.toUpperCase())
 				.getResultList();
 		if(hashtagIDs.isEmpty())
-			return new ArrayList<Tweet>();
+			return new ArrayList<>();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
-		cq.where(root.get("id").in(hashtagIDs));
-		
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(root.get("id").in(hashtagIDs));
+
 		if(to != null)
-			cq.where(cb.lessThan(root.get("timestamp"), new Timestamp(to.getTime())));
+			predicates.add(cb.lessThan(root.get("timestamp"), new Timestamp(to.getTime())));
 		if(from != null)
-			cq.where(cb.greaterThan(root.get("timestamp"), new Timestamp(from.getTime())));
+			predicates.add(cb.greaterThan(root.get("timestamp"), new Timestamp(from.getTime())));
 		
 		cq.orderBy(cb.desc(root.get("timestamp")));
-	
+
+		cq.select(root).where(predicates.toArray(new Predicate[] {}));
 		return em.createQuery(cq)
 				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
@@ -98,19 +103,21 @@ public class TweetHibernateDAO implements TweetDAO{
 				.setParameter(1, user.getId())
 				.getResultList();
 		if(mentionIDs.isEmpty())
-			return new ArrayList<Tweet>();
+			return new ArrayList<>();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
-		cq.where(root.get("id").in(mentionIDs));
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(root.get("id").in(mentionIDs));
 		
 		if(to != null)
-			cq.where(cb.lessThan(root.get("timestamp"), new Timestamp(to.getTime())));
+			predicates.add(cb.lessThan(root.get("timestamp"), new Timestamp(to.getTime())));
 		if(from != null)
-			cq.where(cb.greaterThan(root.get("timestamp"), new Timestamp(from.getTime())));
+			predicates.add(cb.greaterThan(root.get("timestamp"), new Timestamp(from.getTime())));
 		
 		cq.orderBy(cb.desc(root.get("timestamp")));
-	
+
+		cq.select(root).where(predicates.toArray(new Predicate[] {}));
 		return em.createQuery(cq)
 				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
@@ -122,15 +129,16 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> root = cq.from(Tweet.class);
-		cq.where(cb.like(cb.upper(root.get("msg")), '%'+text.toUpperCase()+'%'));
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.like(cb.upper(root.get("msg")), '%'+text.toUpperCase()+'%'));
 		
 		if(to != null)
-			cq.where(cb.lessThan(root.get("timestamp"), new Timestamp(to.getTime())));
+			predicates.add(cb.lessThan(root.get("timestamp"), new Timestamp(to.getTime())));
 		if(from != null)
-			cq.where(cb.greaterThan(root.get("timestamp"), new Timestamp(from.getTime())));
+			predicates.add(cb.greaterThan(root.get("timestamp"), new Timestamp(from.getTime())));
 		
 		cq.orderBy(cb.desc(root.get("timestamp")));
-	
+		cq.select(root).where(predicates.toArray(new Predicate[] {}));
 		return em.createQuery(cq)
 				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
@@ -168,15 +176,16 @@ public class TweetHibernateDAO implements TweetDAO{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
-		cq.where(followingIDs.isEmpty()?cb.equal(tweet.get("owner"),user) : cb.or(tweet.get("owner").get("id").in(followingIDs), cb.equal(tweet.get("owner"),user)));
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(followingIDs.isEmpty()?cb.equal(tweet.get("owner"),user) : cb.or(tweet.get("owner").get("id").in(followingIDs), cb.equal(tweet.get("owner"),user)));
 		
 		if(to != null)
-			cq.where(cb.lessThan(tweet.get("timestamp"), new Timestamp(to.getTime())));
+			predicates.add(cb.lessThan(tweet.get("timestamp"), new Timestamp(to.getTime())));
 		if(from != null)
-			cq.where(cb.greaterThan(tweet.get("timestamp"), new Timestamp(from.getTime())));
+			predicates.add(cb.greaterThan(tweet.get("timestamp"), new Timestamp(from.getTime())));
 		
 		cq.orderBy(cb.desc(tweet.get("timestamp")));
-	
+		cq.select(tweet).where(predicates.toArray(new Predicate[] {}));
 		return em.createQuery(cq)
 				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)
@@ -248,19 +257,20 @@ public class TweetHibernateDAO implements TweetDAO{
 		List<String> favoriteTweetIDs = em.createNativeQuery("select tweetID from favorites where favoriteID = ?")
 				.setParameter(1, user.getId()).getResultList();
 		if(favoriteTweetIDs.isEmpty())
-			return new ArrayList<Tweet>();
+			return new ArrayList<>();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 		Root<Tweet> tweet = cq.from(Tweet.class);
-		cq.where(tweet.get("id").in(favoriteTweetIDs));
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(tweet.get("id").in(favoriteTweetIDs));
 		
 		if(to != null)
-			cq.where(cb.lessThan(tweet.get("timestamp"), new Timestamp(to.getTime())));
+			predicates.add(cb.lessThan(tweet.get("timestamp"), new Timestamp(to.getTime())));
 		if(from != null)
-			cq.where(cb.greaterThan(tweet.get("timestamp"), new Timestamp(from.getTime())));
+			predicates.add(cb.greaterThan(tweet.get("timestamp"), new Timestamp(from.getTime())));
 		
 		cq.orderBy(cb.desc(tweet.get("timestamp")));
-
+		cq.select(tweet).where(predicates.toArray(new Predicate[] {}));
 		return em.createQuery(cq)
 				.setFirstResult((page-1)*resultsPerPage)
 				.setMaxResults(resultsPerPage)

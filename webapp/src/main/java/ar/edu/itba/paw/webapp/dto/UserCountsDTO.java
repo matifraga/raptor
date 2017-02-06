@@ -48,8 +48,7 @@ public class UserCountsDTO {
         UserCountsDTO that = (UserCountsDTO) o;
 
         if (rawrs != null ? !rawrs.equals(that.rawrs) : that.rawrs != null) return false;
-        if (followers != null ? !followers.equals(that.followers) : that.followers != null) return false;
-        return following != null ? following.equals(that.following) : that.following == null;
+        return (followers != null ? followers.equals(that.followers) : that.followers == null) && (following != null ? following.equals(that.following) : that.following == null);
     }
 
     @Override

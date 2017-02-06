@@ -32,10 +32,11 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Transactional
 	@Override
-	public void favorite(final Tweet tweet, final User user) {
+	public void favorite(final Tweet tweet, final User user, final User liker) {
 		tweetService.increaseFavoriteCount(tweet);
 		favoriteDAO.favorite(tweet, user);
-		notificationService.register(user, tweet.getOwner(), NotificationType.FAVORITE, tweet);
+		if (!user.equals(liker))
+			notificationService.register(user, tweet.getOwner(), NotificationType.FAVORITE, tweet);
 	}
 
 	@Transactional

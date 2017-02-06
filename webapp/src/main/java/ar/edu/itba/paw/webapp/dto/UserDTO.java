@@ -103,21 +103,19 @@ public class UserDTO {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof UserDTO)) return false;
+        if (this == o) return true;
+        if (!(o instanceof UserDTO)) return false;
 
-		UserDTO userDTO = (UserDTO) o;
+        UserDTO userDTO = (UserDTO) o;
 
-		if (id != null ? !id.equals(userDTO.id) : userDTO.id != null) return false;
-		if (username != null ? !username.equals(userDTO.username) : userDTO.username != null) return false;
-		if (firstName != null ? !firstName.equals(userDTO.firstName) : userDTO.firstName != null) return false;
-		if (lastName != null ? !lastName.equals(userDTO.lastName) : userDTO.lastName != null) return false;
-		if (pics != null ? !pics.equals(userDTO.pics) : userDTO.pics != null) return false;
-		if (verified != null ? !verified.equals(userDTO.verified) : userDTO.verified != null) return false;
-		if (counts != null ? !counts.equals(userDTO.counts) : userDTO.counts != null)
-			return false;
-		return userFollows != null ? userFollows.equals(userDTO.userFollows) : userDTO.userFollows == null;
-	}
+        if (id != null ? !id.equals(userDTO.id) : userDTO.id != null) return false;
+        if (username != null ? !username.equals(userDTO.username) : userDTO.username != null) return false;
+        if (firstName != null ? !firstName.equals(userDTO.firstName) : userDTO.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(userDTO.lastName) : userDTO.lastName != null) return false;
+        if (pics != null ? !pics.equals(userDTO.pics) : userDTO.pics != null) return false;
+        if (verified != null ? !verified.equals(userDTO.verified) : userDTO.verified != null) return false;
+        return (counts != null ? counts.equals(userDTO.counts) : userDTO.counts == null) && (userFollows != null ? userFollows.equals(userDTO.userFollows) : userDTO.userFollows == null);
+    }
 
 	@Override
 	public int hashCode() {

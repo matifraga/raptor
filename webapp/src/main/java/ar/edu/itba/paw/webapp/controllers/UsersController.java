@@ -41,7 +41,7 @@ public class UsersController {
             return Response.status(Response.Status.NOT_FOUND).build();
 
         User loggedUser = SessionHandler.sessionUser();
-        return Response.ok(userDTOBuilder.build(user,loggedUser)).build();
+        return Response.ok(userDTOBuilder.buildFullUser(user,loggedUser)).build();
     }
 
     @GET

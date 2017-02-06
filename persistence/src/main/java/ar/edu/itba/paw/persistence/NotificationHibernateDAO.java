@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
@@ -49,13 +51,15 @@ public class NotificationHibernateDAO implements NotificationDAO {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Notification> cq = cb.createQuery(Notification.class);
 		Root<Notification> notif = cq.from(Notification.class);
-		cq.where(cb.equal(notif.get("to"), user));
-		
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.equal(notif.get("to"), user));
+
 		if(to != null)
-			cq.where(cb.lessThan(notif.get("timestamp"), new Timestamp(to.getTime())));
+			predicates.add(cb.lessThan(notif.get("timestamp"), new Timestamp(to.getTime())));
 		if(from != null)
-			cq.where(cb.greaterThan(notif.get("timestamp"), new Timestamp(from.getTime())));
-		
+			predicates.add(cb.greaterThan(notif.get("timestamp"), new Timestamp(from.getTime())));
+
+		cq.select(notif).where(predicates.toArray(new Predicate[] {}));
 		cq.orderBy(cb.desc(notif.get("timestamp")));
 		
 		return em.createQuery(cq)

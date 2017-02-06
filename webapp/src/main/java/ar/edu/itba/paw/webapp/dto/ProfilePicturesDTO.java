@@ -49,8 +49,7 @@ public class ProfilePicturesDTO {
         ProfilePicturesDTO that = (ProfilePicturesDTO) o;
 
         if (small != null ? !small.equals(that.small) : that.small != null) return false;
-        if (medium != null ? !medium.equals(that.medium) : that.medium != null) return false;
-        return large != null ? large.equals(that.large) : that.large == null;
+        return (medium != null ? medium.equals(that.medium) : that.medium == null) && (large != null ? large.equals(that.large) : that.large == null);
     }
 
     @Override
