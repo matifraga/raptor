@@ -40,13 +40,13 @@ public class FeedController {
 		Date from = null, to =   null;
 		int limit, page = 1;
 		try {
-			limit = Integer.valueOf(lim);
+			limit = Integer.parseInt(lim);
 			if (maxPosition != null)
-				to = new Date(Long.valueOf(maxPosition));
+				to = new Date(Long.parseLong(maxPosition));
 			if (minPosition != null)
-				from = new Date(Long.valueOf(minPosition));
+				from = new Date(Long.parseLong(minPosition));
 			if (p != null)
-				page = Integer.valueOf(p);
+				page = Integer.parseInt(p);
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
