@@ -195,6 +195,12 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${org.hibernate.version}</version>
+              <exclusions>
+                  <exclusion>
+                      <groupId>org.jboss.logging</groupId>
+                      <artifactId>jboss-logging</artifactId>
+                  </exclusion>
+              </exclusions>
           </dependency>
           <dependency>
             <groupId>org.springframework</groupId>
@@ -215,6 +221,12 @@
               <groupId>org.glassfish.jersey.ext</groupId>
               <artifactId>jersey-spring4</artifactId>
               <version>${jersey.version}</version>
+              <exclusions>
+                  <exclusion>
+                      <groupId>org.glassfish.hk2.external</groupId>
+                      <artifactId>bean-validator</artifactId>
+                  </exclusion>
+              </exclusions>
           </dependency>
           <dependency>
               <groupId>org.glassfish.jersey.core</groupId>
@@ -241,11 +253,17 @@
                 <groupId>org.apache.tomcat</groupId>
                 <artifactId>tomcat-catalina</artifactId>
                 <version>7.0.54</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>de.svenkubiak</groupId>
                 <artifactId>jBCrypt</artifactId>
                 <version>${jbcrypt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>3.3.0.Final</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

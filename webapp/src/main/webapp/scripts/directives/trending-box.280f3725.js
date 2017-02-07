@@ -1,0 +1,1 @@
+define(["AnguRaptor","controllers/TrendingBoxCtrl"],function(a){a.directive("trendingBox",function(){return{restrict:"E",templateUrl:"./views/trending-box.38dc8a44.html",controller:"TrendingBoxCtrl"}})});

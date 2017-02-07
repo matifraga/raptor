@@ -1,0 +1,1 @@
+define(["AnguRaptor","controllers/UserListCtrl"],function(a){a.directive("userList",function(){return{restrict:"E",templateUrl:"./views/user-list.7827f6d3.html",controller:"UserListCtrl",scope:{items:"="}}})});

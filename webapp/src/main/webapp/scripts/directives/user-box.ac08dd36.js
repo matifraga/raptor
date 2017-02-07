@@ -1,0 +1,1 @@
+define(["AnguRaptor","controllers/UserBoxCtrl"],function(a){a.directive("userBox",function(){return{restrict:"E",templateUrl:"./views/user-box.fb646c14.html",controller:"UserBoxCtrl",scope:{user:"=",showCounts:"="}}})});

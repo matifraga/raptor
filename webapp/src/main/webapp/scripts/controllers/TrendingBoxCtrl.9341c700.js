@@ -1,0 +1,1 @@
+define(["AnguRaptor","services/api"],function(a){a.controller("TrendingBoxCtrl",["$scope","api","$window",function(a,b,c){var d={trends:[],busy:!1};d.busy=!0,b.trends.get().then(function(a){d.trends=a,d.busy=!1}),a.trendingBox=d,a.encodeURIComponent=function(a){return c.encodeURIComponent(a)}}])});

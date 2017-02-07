@@ -1,0 +1,1 @@
+define(["AnguRaptor","services/api"],function(a){a.controller("UserBoxCtrl",["$scope","api",function(a,b){var c={};c.followingStatusChanged=function(c){switch(c){case"follow":a.user.user_follows=!0,b.users.follow(a.user.username);break;case"unfollow":a.user.user_follows=!1,b.users.unfollow(a.user.username)}},a.userBox=c}])});

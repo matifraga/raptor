@@ -1,0 +1,1 @@
+define(["AnguRaptor","services/api","directives/rawr-list"],function(a){a.controller("RawrCtrl",["$scope","api","$routeParams",function(a,b,c){var d={title:"Rawr",disabled:!0,rawrs:[]};b.rawr.get(c.rawr_id).then(function(b){d.rawrs.push(b),a.rawrItems=[d]}),a.rawrItems=[d]}])});
