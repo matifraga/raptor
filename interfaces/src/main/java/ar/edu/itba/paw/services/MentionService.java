@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
 
 public interface MentionService {
 
@@ -11,5 +10,5 @@ public interface MentionService {
      * @param tweet 	The hashtag's container
      * @param mentioner The owner of the tweet                 .
      */
-    void register(final Tweet tweet, User mentioner);
+    void register(final Tweet tweet);
 }

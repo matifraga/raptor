@@ -63,7 +63,7 @@ public class RawrsController {
 		if(t == null)
 			Response.status(Status.NOT_FOUND).build();
 		
-		fs.favorite(t, loggedUser,loggedUser);
+		fs.favorite(t, loggedUser);
 		return Response.ok().build();
 	}
 	

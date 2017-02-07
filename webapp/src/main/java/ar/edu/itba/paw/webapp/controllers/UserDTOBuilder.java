@@ -60,7 +60,7 @@ public class UserDTOBuilder {
     
     public GenericEntity<List<UserDTO>> buildList(List<User> userList) {
         return new GenericEntity<List<UserDTO>>(
-                userList.parallelStream().map(this::buildSimpleUser).collect(Collectors.toList())
+                userList.stream().map(this::buildSimpleUser).collect(Collectors.toList())
         ) {};
     }
 

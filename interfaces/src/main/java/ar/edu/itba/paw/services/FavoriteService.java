@@ -10,9 +10,8 @@ public interface FavoriteService {
 	 *
 	 * @param tweet 	The tweet.
 	 * @param user 		The user who favorite.
-	 * @param liker		The user who liked the tweet
 	 */
-	void favorite(final Tweet tweet, final User user, final User liker);
+	void favorite(final Tweet tweet, final User user);
 
 	/**
 	 * Returns whether a user favorited a tweet or not.

@@ -36,13 +36,13 @@ public class MentionServiceImpl implements MentionService {
 
     @Transactional
     @Override
-    public void register(Tweet tweet, User mentioner) {
+    public void register(Tweet tweet) {
         Set<String> mentions = tweet.getMentions();
         for (String ment : mentions) {
             User user = userDAO.getByUsername(ment);
 			if (user != null) {
 				mentionDAO.create(user, tweet);
-				if (!user.equals(mentioner))
+				if (!user.equals(tweet.getOwner()))
 				    notificationService.register(tweet.getOwner(), user, NotificationType.MENTION, tweet);
 			}
         }

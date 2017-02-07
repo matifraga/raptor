@@ -50,7 +50,7 @@ public class TweetServiceImpl implements TweetService {
             //TODO handle null (invalid message)
         } else {
             hashtagService.register(t);
-            mentionService.register(t,owner);
+            mentionService.register(t);
         }
         return t;
     }
