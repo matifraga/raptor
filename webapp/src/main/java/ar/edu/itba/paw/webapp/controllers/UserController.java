@@ -49,7 +49,6 @@ public class UserController {
     private UriInfo uriInfo;
 
     @GET
-    @Path("/")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUser() {
         User loggedUser = SessionHandler.sessionUser();
@@ -101,7 +100,7 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         User loggedUser = SessionHandler.sessionUser();
-        LOGGER.info(loggedUser.getUsername());
+        LOGGER.debug(loggedUser.getUsername());
         List<Notification> notifications = ns.getNotifications(loggedUser, limit, from, to, page);
         return Response.ok(notificationDTOBuilder.buildList(notifications)).build();
     }

@@ -33,7 +33,6 @@ public class FeedController {
     private UriInfo uriInfo;
 	
 	@GET
-	@Path("/")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response getGlobalFeed(@QueryParam("limit") final String lim, @QueryParam("max_position") final String maxPosition, @QueryParam("min_position") final String minPosition, @QueryParam("page") final String p) {
 

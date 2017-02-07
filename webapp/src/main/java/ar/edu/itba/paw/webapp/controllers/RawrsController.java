@@ -33,7 +33,6 @@ public class RawrsController {
 	TweetDTOBuilder tweetDTOBuilder;
 	
 	@POST
-	@Path("/")
 	@Consumes(value = {MediaType.APPLICATION_JSON})
 	public Response postRawr(StatusDTO status){
 		User loggedUser = SessionHandler.sessionUser();

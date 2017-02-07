@@ -21,12 +21,11 @@ import javax.ws.rs.core.Response;
 @Path("signup")
 @Component
 public class SignupController {
-    private final Logger LOGGER = LoggerFactory.getLogger(UserDTOBuilder.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SignupController.class);
     @Autowired
     UserService us;
 
     @POST
-    @Path("")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response signup(final SignupDTO signup) {
         if (!isValidSignup(signup))
@@ -44,7 +43,7 @@ public class SignupController {
 
 
     private boolean isValidSignup(SignupDTO signupDTO) {
-        LOGGER.info(signupDTO.toString());
+        LOGGER.debug(signupDTO.toString());
         return !(signupDTO.getFirstName() == null
                 || signupDTO.getLastName() == null
                 || signupDTO.getUsername() == null

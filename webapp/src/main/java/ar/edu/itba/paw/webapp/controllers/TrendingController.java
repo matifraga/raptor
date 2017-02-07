@@ -28,14 +28,13 @@ public class TrendingController {
 	private HashtagService hs;
 	
 	@GET
-	@Path("/")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response getTrendings(@QueryParam("count") final int count){
-		LOGGER.info("getTrendings");
+		LOGGER.debug("getTrendings");
 		if(count <=0)
 			return Response.status(Status.BAD_REQUEST).build();
 		List<HashtagDTO> hashtags = hs.getTrendingTopics(count).stream().map(HashtagDTO::new).collect(Collectors.toList());
-		LOGGER.info("hashtags: " +hashtags.size());
+		LOGGER.debug("hashtags: " +hashtags.size());
 		GenericEntity<List<HashtagDTO>> trending = new GenericEntity<List<HashtagDTO>>(hashtags) {};
 		return Response.ok(trending).build();
 	}

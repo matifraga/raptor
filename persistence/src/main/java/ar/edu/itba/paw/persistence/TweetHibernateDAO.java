@@ -149,15 +149,15 @@ public class TweetHibernateDAO implements TweetDAO{
 	public List<Tweet> getGlobalFeed(final int resultsPerPage, final Date from, final Date to, final int page) {
 		TypedQuery<Tweet> query;
 		if(from != null && to != null)
-			query = em.createQuery("from Tweet as t where timestamp between ? and ? order by t.timestamp desc", Tweet.class)
-				.setParameter(1, new Timestamp(from.getTime()))
-				.setParameter(2, new Timestamp(to.getTime()));
+			query = em.createQuery("from Tweet as t where timestamp between :from and :to order by t.timestamp desc", Tweet.class)
+				.setParameter("from", new Timestamp(from.getTime()))
+				.setParameter("to", new Timestamp(to.getTime()));
 		else if(from != null)
-			query = em.createQuery("from Tweet as t where ? < timestamp order by t.timestamp desc", Tweet.class)
-				.setParameter(1, new Timestamp(from.getTime()));
+			query = em.createQuery("from Tweet as t where :from < timestamp order by t.timestamp desc", Tweet.class)
+				.setParameter("from", new Timestamp(from.getTime()));
 		else if(to != null)
-			query = em.createQuery("from Tweet as t where ? > timestamp order by t.timestamp desc", Tweet.class)
-				.setParameter(1, new Timestamp(to.getTime()));
+			query = em.createQuery("from Tweet as t where :to > timestamp order by t.timestamp desc", Tweet.class)
+				.setParameter("to", new Timestamp(to.getTime()));
 		else
 			query = em.createQuery("from Tweet as t order by t.timestamp desc", Tweet.class);
 		
@@ -169,8 +169,8 @@ public class TweetHibernateDAO implements TweetDAO{
 	@Override
 	public List<Tweet> getLogedInFeed(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
 		@SuppressWarnings("unchecked")
-		List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = ?")
-				.setParameter(1, user.getId())
+		List<String> followingIDs = em.createNativeQuery("select followingID from followers where followerID = :id")
+				.setParameter("id", user.getId())
 				.getResultList();
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -236,26 +236,26 @@ public class TweetHibernateDAO implements TweetDAO{
 
 	@Override
 	public Boolean isRetweeted(final Tweet tweet, final User user) {
-		Boolean ans = (Boolean) em.createNativeQuery("SELECT EXISTS( SELECT * FROM tweets WHERE retweetFrom = ? AND userID = ?)")
-				.setParameter(1, tweet.isRetweet() ? tweet.getRetweet().getId() : tweet.getId())
-				.setParameter(2, user.getId())
+		Boolean ans = (Boolean) em.createNativeQuery("SELECT EXISTS( SELECT * FROM tweets WHERE retweetFrom = :isRetweet AND userID = :id)")
+				.setParameter("isRetweet", tweet.isRetweet() ? tweet.getRetweet().getId() : tweet.getId())
+				.setParameter("id", user.getId())
 				.getSingleResult();
 		return ans;
 	}
 
 	@Override
 	public void unretweet(final Tweet tweet, final User user) {
-		em.createNativeQuery("DELETE FROM tweets where retweetFrom = ? and userID = ?")
-			.setParameter(1, tweet.getId())
-			.setParameter(2, user.getId())
+		em.createNativeQuery("DELETE FROM tweets where retweetFrom = :tId and userID = :uId")
+			.setParameter("tId", tweet.getId())
+			.setParameter("uId", user.getId())
 			.executeUpdate();
 	}
 
 	@Override
 	public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
 		@SuppressWarnings("unchecked")
-		List<String> favoriteTweetIDs = em.createNativeQuery("select tweetID from favorites where favoriteID = ?")
-				.setParameter(1, user.getId()).getResultList();
+		List<String> favoriteTweetIDs = em.createNativeQuery("select tweetID from favorites where favoriteID = :id")
+				.setParameter("id", user.getId()).getResultList();
 		if(favoriteTweetIDs.isEmpty())
 			return new ArrayList<>();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
