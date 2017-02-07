@@ -33,10 +33,6 @@ public class HashtagServiceImpl implements HashtagService {
     @Transactional
     @Override
     public List<String> getTrendingTopics(final int count) {
-        List<String> ans = hashtagDAO.getTrendingTopics(count);
-        if (ans == null) {
-            //TODO handle null (db error)
-        }
-        return ans;
+        return hashtagDAO.getTrendingTopics(count);
     }
 }

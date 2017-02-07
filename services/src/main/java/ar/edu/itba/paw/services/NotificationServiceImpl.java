@@ -22,10 +22,7 @@ public class NotificationServiceImpl implements NotificationService {
 	@Transactional
 	@Override
 	public void register(final User from, final User to, final NotificationType type, final Tweet tweet) {
-		Notification notif = notifDAO.create(from, to, type, tweet);
-		if(notif == null){
-			//TODO handle null
-		}
+		notifDAO.create(from, to, type, tweet);
 	}
 
 	@Transactional
@@ -43,28 +40,16 @@ public class NotificationServiceImpl implements NotificationService {
 	@Transactional
 	@Override
 	public List<Notification> getNotifications(final User user, int resultsPerPage, final Date from, final Date to, final int page) {
-		List<Notification> ans = notifDAO.getNotifications(user, resultsPerPage, from, to, page);
-        if (ans == null) {
-            // TODO handle null
-        }
-        return ans;
+		return notifDAO.getNotifications(user, resultsPerPage, from, to, page);
 	}
 
 	@Override
 	public Notification getNotificationByID(long id) {
-		Notification notif = notifDAO.getNotificationByID(id);
-		if (notif == null) {
-            // TODO handle null
-        }
-        return notif;
+		return notifDAO.getNotificationByID(id);
 	}
 
 	@Override
 	public Integer getUnreadNotificationsCount(User user) {
-		Integer count = notifDAO.getUnreadNotificationsCount(user);
-		if (count == null) {
-            // TODO handle null
-        }
-        return count;
+		return notifDAO.getUnreadNotificationsCount(user);
 	}
 }

@@ -56,13 +56,13 @@ public class FavoriteHibernateDAOTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    @Transactional
-    @Rollback(true)
-    void favoriteTest() {
-        user =  userDAO.create(USERNAME,PASSWORD,EMAIL,FIRST_NAME,LAST_NAME);
-        tweet = tweetDAO.create(MSG,user);
-        favoriteHibernateDAO.favorite(tweet,user);
-        assert (favoriteHibernateDAO.isFavorited(tweet,user));
-    }
+//    @Test
+//    @Transactional
+//    @Rollback(true)
+//    void favoriteTest() {
+//        user =  userDAO.create(USERNAME,PASSWORD,EMAIL,FIRST_NAME,LAST_NAME);
+//        tweet = tweetDAO.create(MSG,user);
+//        favoriteHibernateDAO.favorite(tweet,user);
+//        assert (favoriteHibernateDAO.isFavorited(tweet,user));
+//    }
 }

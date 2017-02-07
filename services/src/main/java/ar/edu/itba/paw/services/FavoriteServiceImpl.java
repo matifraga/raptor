@@ -42,11 +42,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Transactional
 	@Override
 	public Boolean isFavorited(final Tweet tweet, final User user) {
-		Boolean ans = favoriteDAO.isFavorited(tweet, user);
-		if (ans == null) {
-			//TODO handle DB error
-		}
-		return ans;
+		return favoriteDAO.isFavorited(tweet, user);
 	}
 
 	@Transactional

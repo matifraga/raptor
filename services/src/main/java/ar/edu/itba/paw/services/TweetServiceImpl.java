@@ -46,9 +46,7 @@ public class TweetServiceImpl implements TweetService {
     @Override
     public Tweet register(final String msg, final User owner) {
         Tweet t = tweetDAO.create(msg, owner);
-        if (t == null) {
-            //TODO handle null (invalid message)
-        } else {
+        if (t != null) {
             hashtagService.register(t);
             mentionService.register(t);
         }
@@ -60,21 +58,13 @@ public class TweetServiceImpl implements TweetService {
     public Tweet getTweet(final String tweetID) {
         if (tweetID == null)
             return null;
-        Tweet t = tweetDAO.getTweetById(tweetID);
-        if (t == null) {
-            //TODO handle null
-        }
-        return t;
+        return tweetDAO.getTweetById(tweetID);
     }
 
 	@Transactional
     @Override
     public List<Tweet> getTimeline(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
-        List<Tweet> ans = tweetDAO.getTweetsForUser(user, resultsPerPage, from, to, page);
-        if (ans == null) {
-            //TODO handle null (db error)
-        }
-        return ans;
+        return tweetDAO.getTweetsForUser(user, resultsPerPage, from, to, page);
     }
 
 	@Transactional
@@ -83,82 +73,51 @@ public class TweetServiceImpl implements TweetService {
         Tweet t = tweetDAO.retweet(tweet, owner);
         if (!owner.equals(tweet.getOwner()))
             notificationService.register(owner, tweet.getOwner(), NotificationType.RETWEET, tweet);
-        if (t == null) {
-            //TODO handle null
-        } else {
+        if (t != null)
             increaseRetweetCount(tweet);
-        }
         return t;
     }
 
 	@Transactional
     @Override
     public List<Tweet> getMentions(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
-        List<Tweet> ans = tweetDAO.getTweetsByMention(user, resultsPerPage, from, to, page);
-        if (ans == null) {
-            //TODO handle null (db error)
-        }
-        return ans;
+        return tweetDAO.getTweetsByMention(user, resultsPerPage, from, to, page);
     }
 
 	@Transactional
     @Override
     public List<Tweet> getFavorites(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
-        List<Tweet> ans = tweetDAO.getFavorites(user, resultsPerPage, from, to, page);
-        if (ans == null) {
-            //TODO handle null (db error)
-        }
-        return ans;
+        return tweetDAO.getFavorites(user, resultsPerPage, from, to, page);
     }
 
 	@Transactional
     @Override
     public List<Tweet> getHashtag(final String hashtag, final int resultsPerPage, final Date from, final Date to, final int page) {
-        List<Tweet> ans = tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, from, to, page);
-        if (ans == null) {
-            //TODO handle null (db error)
-        }
-        return ans;
+        return tweetDAO.getTweetsByHashtag(hashtag, resultsPerPage, from, to, page);
     }
 
 	@Transactional
     @Override
 	public List<Tweet> searchTweets(final String text, final int resultsPerPage, final Date from, final Date to, final int page) {
-        List<Tweet> ans = tweetDAO.searchTweets(text, resultsPerPage, from, to, page);
-        if (ans == null) {
-            //TODO handle null
-        }
-        return ans;
+        return tweetDAO.searchTweets(text, resultsPerPage, from, to, page);
     }
 
 	@Transactional
 	@Override 
     public List<Tweet> globalFeed(int resultsPerPage, final Date from, final Date to, final int page) {
-        List<Tweet> ans = tweetDAO.getGlobalFeed(resultsPerPage, from, to, page);
-        if (ans == null) {
-            // TODO handle null
-        }
-        return ans;
+        return tweetDAO.getGlobalFeed(resultsPerPage, from, to, page);
     }
 
 	@Transactional
     @Override
     public List<Tweet> currentSessionFeed(final User user, final int resultsPerPage, final Date from, final Date to, final int page) {
-        List<Tweet> ans = tweetDAO.getLogedInFeed(user, resultsPerPage, from, to, page);
-        if (ans == null) {
-            // TODO handle null
-        }
-        return ans;
+        return tweetDAO.getLogedInFeed(user, resultsPerPage, from, to, page);
     }
 
 	@Transactional
     @Override
     public Integer countTweets(final User user) {
-        Integer ans = tweetDAO.countTweets(user);
-        if (ans == null) {
-            //TODO handle DB error
-        }
-        return ans;
+        return tweetDAO.countTweets(user);
     }
 
 	@Transactional
@@ -188,11 +147,7 @@ public class TweetServiceImpl implements TweetService {
 	@Transactional
     @Override
     public Boolean isRetweeted(final Tweet tweet, final User user) {
-        Boolean ans = tweetDAO.isRetweeted(tweet, user);
-        if (ans == null) {
-            //TODO handle DB error
-        }
-        return ans;
+        return tweetDAO.isRetweeted(tweet, user);
     }
 
 	@Transactional

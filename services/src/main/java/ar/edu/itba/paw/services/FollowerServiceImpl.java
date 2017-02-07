@@ -33,11 +33,7 @@ public class FollowerServiceImpl implements FollowerService {
 	@Transactional
     @Override
     public Boolean isFollower(final User follower, final User following) {
-        Boolean ans = followerDAO.isFollower(follower, following);
-        if (ans == null) {
-            //TODO handle DB error
-        }
-        return ans;
+        return followerDAO.isFollower(follower, following);
     }
 
 	@Transactional
@@ -51,20 +47,12 @@ public class FollowerServiceImpl implements FollowerService {
 	@Transactional
     @Override
     public Integer countFollowers(final User user) {
-        Integer ans = followerDAO.countFollowers(user);
-        if (ans == null) {
-            //TODO handle DB error
-        }
-        return ans;
+        return followerDAO.countFollowers(user);
     }
 
 	@Transactional
     @Override
     public Integer countFollowing(final User user) {
-        Integer ans = followerDAO.countFollowing(user);
-        if (ans == null) {
-            //TODO handle DB error
-        }
-        return ans;
+        return followerDAO.countFollowing(user);
     }
 }

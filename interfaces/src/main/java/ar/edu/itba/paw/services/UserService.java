@@ -28,14 +28,6 @@ public interface UserService {
 	User authenticateUser(final String username, final String password);
 
 	/**
-	 * Get a user with a given ID.
-	 *
-	 * @param userId 			The user's ID.
-	 * @return 					The user with the given identifier.
-	 */
-	User getUserWithId(final String userId);
-
-	/**
 	 * Get a user with a given username.
 	 *
 	 * @param username 			The user's username.
@@ -72,6 +64,4 @@ public interface UserService {
 	 * @return 					The recovered list.
 	 */
 	List<User> getFollowing(final User user, final int resultsPerPage, final int page);
-	
-	public void hashEverything(); //TODO erase it
 }

@@ -113,15 +113,5 @@ public class UserHibernateDAO implements UserDAO{
 		return em.createQuery(cq)
 				.getResultList();
 	}
-
-	@Override
-	public void hashEverything(){		//TODO erase it
-		List<User> everySingleUser = em.createQuery("from User", User.class).getResultList();
-		for(User u : everySingleUser){
-			System.out.println(String.format("USERNAME: %s , PASSWORD: %s", u.getUsername(), u.getHash()));
-			u.setPassword(BCrypt.hashpw(u.getHash(), BCrypt.gensalt()));
-			em.merge(u);
-		}
-	}
 }
 

@@ -80,6 +80,4 @@ public interface UserDAO {
      * @return The recovered 	list.
      */
     List<User> getFollowing(final User user, final int resultsPerPage, final int page);
-    
-    void hashEverything(); //TODO erase it
 }
