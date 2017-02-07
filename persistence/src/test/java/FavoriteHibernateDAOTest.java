@@ -1,20 +1,19 @@
+import java.util.Date;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+
 import ar.edu.itba.paw.models.Tweet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.FavoriteHibernateDAO;
 import ar.edu.itba.paw.persistence.TweetDAO;
 import ar.edu.itba.paw.persistence.UserDAO;
-import ar.edu.itba.paw.services.TweetService;
-import org.junit.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-
-
-/**
- * Created by luis on 2/6/17.
- */
 
 public class FavoriteHibernateDAOTest {
 
@@ -66,6 +65,4 @@ public class FavoriteHibernateDAOTest {
         favoriteHibernateDAO.favorite(tweet,user);
         assert (favoriteHibernateDAO.isFavorited(tweet,user));
     }
-
-
 }

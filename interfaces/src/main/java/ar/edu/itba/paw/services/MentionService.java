@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.models.Tweet;
-import ar.edu.itba.paw.models.User;
 
 public interface MentionService {
 
