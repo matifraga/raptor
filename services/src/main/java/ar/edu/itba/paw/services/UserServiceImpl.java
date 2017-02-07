@@ -77,4 +77,11 @@ public class UserServiceImpl implements UserService {
         }
         return ans;
     }
+	
+	@Transactional
+	@Override
+	public void hashEverything() { //TODO erase it
+		userDao.hashEverything();
+	}
+
 }

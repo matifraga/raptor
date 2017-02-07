@@ -72,4 +72,6 @@ public interface UserService {
 	 * @return 					The recovered list.
 	 */
 	List<User> getFollowing(final User user, final int resultsPerPage, final int page);
+	
+	public void hashEverything(); //TODO erase it
 }
