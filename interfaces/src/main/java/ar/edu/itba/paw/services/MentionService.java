@@ -11,5 +11,5 @@ public interface MentionService {
      * @param tweet 	The hashtag's container
      * @param mentioner The owner of the tweet                 .
      */
-    void register(final Tweet tweet, User mentioner);
+    void register(final Tweet tweet);
 }
