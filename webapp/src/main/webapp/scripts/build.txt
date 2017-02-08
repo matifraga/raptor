@@ -12,7 +12,6 @@ angular-route.js
 modal.js
 bootstrap.js
 angular-translate.js
-angular-cookies.js
 angular-local-storage.js
 angular-sanitize.js
 infinite-scroll.js
